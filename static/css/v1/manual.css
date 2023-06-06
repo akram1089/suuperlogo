@@ -286,3 +286,6 @@ a.pricing__btn.c-btn.c-btn--bg {
 
 
 
+.main__bg-col{
+    display: none !important;
+}

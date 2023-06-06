@@ -1,7 +1,7 @@
 
 .list-group-item-action:focus, .list-group-item-action:hover{
     all: unset;
-      color: white !important;
+      color: rgba(55, 138, 255, 0.921) !important;
     }
     body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
       margin-left: 0;
@@ -86,9 +86,10 @@
     }
     .active_dash{
     
-    color: white !important;
-    background: #00000057 !important;
-    border-left: 4px solid #01deff !important;
+    color: rgb(0, 162, 255) !important;
+    background: #ffffff57 !important;
+    border-left: 4px solid rgb(0, 162, 255) !important;
+    font-weight: 500 !important;
     }
     
     
@@ -203,11 +204,11 @@
       .sidebar .nav-link {
         font-size: .875rem;
         font-weight: 500;
-        color: #ffffff9e;
+        color: rgba(0, 0, 0, 0.582) !important;
     }
       
       .sidebar .nav-link.active {
-        color: #ffffff !important;
+        color: rgb(0, 132, 255) !important;
         border-left: 4px solid #00f1ff;
     }
       
@@ -233,10 +234,17 @@
     a.list-group-item{
         align-items: baseline !important;
         padding: 14px 0 0px 23px !important;
-color: rgb(197, 197, 197) ;
+color: rgba(0, 0, 0, 0.582);
         cursor: pointer !important;
-        background: #263544 !important;
+        background: white !important;
         transition: 0.3s !important;
+        font-weight: 400;
+    }
+
+    a.list-group-item:focus{
+      background-color: rgb(255, 255, 255) !important;
+      color: rgb(0, 132, 255) !important;;
+
     }
 
     .sidebar{
@@ -244,12 +252,13 @@ color: rgb(197, 197, 197) ;
         border: none !important;
     }
     .sub-menu.nav-item:hover{
-        color: white;
+      color: rgb(0, 132, 255) !important;
+
         
     }
     .sidebar .nav-link:hover {
 
-        color: #ffffffec;
+      color: rgb(0, 132, 255) !important;
     }
 
 
@@ -333,4 +342,18 @@ color: rgb(197, 197, 197) ;
   width: 104%;
 
 
+}
+
+.nav-item{
+  font-weight: 700 !important;
+  background: white !important;
+  color: #000000ba !important;
+
+}
+.navbar-brand{
+  background-color:white !important;
+}
+
+.sidebar{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
