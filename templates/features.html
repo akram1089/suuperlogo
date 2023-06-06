@@ -12,7 +12,7 @@ Features | Algo Trading
 
     <!-- SECTION main :: START-->
     <section class="main main--features position-relative" id="trading-engine">
-        <div class="main__bg main__bg-0 position-absolute w-100 h-100"><img class="main__bg-img main__bg-img-1 position-absolute" src="{% static '/img/img-main-bg-1.png' %}" srcset="/img/img-main-bg-1@2x.png 2x, /img/img-main-bg-1@3x.png 3x" alt="Background Image" title="Background Image"></div>
+        {% comment %} <div class="main__bg main__bg-0 position-absolute w-100 h-100"><img class="main__bg-img main__bg-img-1 position-absolute" src="{% static '/img/img-main-bg-1.png' %}" srcset="/img/img-main-bg-1@2x.png 2x, /img/img-main-bg-1@3x.png 3x" alt="Background Image" title="Background Image"></div> {% endcomment %}
         <div class="main__wrapper position-relative">
             <div class="container">
                 <div class="row">
@@ -36,19 +36,19 @@ Features | Algo Trading
                 </div>
             </div>
         </div>
-        <div class="main__bg main__bg-1 position-absolute w-100 h-100">
-            <div class="main__bg-row d-flex position-absolute w-100 h-100 justify-content-between">
-                <div class="main__bg-col main__bg-col-1 position-absolute"></div>
-                <div class="main__bg-col main__bg-col-2 d-flex align-items-start justify-content-end position-absolute">
-                    <img class="main__bg-img main__bg-img-3 img-fluid d-block position-absolute" src="{% static '/img/img-main-bg-2.png' %}" 
-                    srcset="/img/img-main-bg-2@2x.png 2x, /img/img-main-bg-2@3x.png 3x" alt="Background Image" title="Background Image">
+        {% comment %} <div class="main__bg main__bg-1 position-absolute w-100 h-100"> {% endcomment %}
+            {% comment %} <div class="main__bg-row d-flex position-absolute w-100 h-100 justify-content-between"> {% endcomment %}
+                {% comment %} <div class="main__bg-col main__bg-col-1 position-absolute"></div> {% endcomment %}
+                {% comment %} <div class="main__bg-col main__bg-col-2 d-flex align-items-start justify-content-end position-absolute"> {% endcomment %}
+                    {% comment %} <img class="main__bg-img main__bg-img-3 img-fluid d-block position-absolute" src="{% static '/img/img-main-bg-2.png' %}" 
+                    srcset="/img/img-main-bg-2@2x.png 2x, /img/img-main-bg-2@3x.png 3x" alt="Background Image" title="Background Image"> {% endcomment %}
                     <img class="main__bg-img main__bg-img-2 img-fluid d-block position-absolute" src="{% static '/img/img-main-macbook-1.png' %}"
-                     srcset="/img/img-main-macbook-1@2x.png 2x, /img/img-main-macbook-1@3x.png 3x" alt="Background Image" title="Background Image">
+                   alt="Background Image" title="Background Image">
                      <img class="main__bg-img main__bg-img-4 img-fluid position-absolute" src="{% static '/img/img-main-macbook-1-mobile.png' %}" 
-                     srcset="/img/img-main-macbook-1-mobile@2x.png 2x, /img/img-main-macbook-1-mobile@3x.png 3x"
-                      alt="Background Image" title="Background Image"></div>
-            </div>
-        </div>
+                  
+                      alt="Background Image" title="Background Image">
+            {% comment %} </div> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
     </section>
     <!-- SECTION main :: END-->
     <!-- SECTION broker :: START-->
