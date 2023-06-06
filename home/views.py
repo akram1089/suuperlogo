@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 from django.contrib import messages  #
 from django.contrib.auth import get_user_model
+
+from home.helper import send_forget_password_mail
 User = get_user_model()
 
 def home(request):
@@ -167,3 +169,60 @@ def logout_user(request):
     logout(request)
     messages.success(request, 'You are successfully logout')
     return redirect("/")
+
+
+
+ 
+import uuid
+def reset_password(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        print(email)
+        if User.objects.filter(email=email):
+            token = str(uuid.uuid4())
+            profile_email = User.objects.get(email=email)
+            profile_email.forget_password_token = token
+            profile_email.save()
+            send_forget_password_mail(email, token)
+            messages.success(request, 'An email has been sent you to ,please check the mail box')
+            return redirect('/')
+
+        else:
+            messages.success(request, 'Sorry your email is not registered')
+            return redirect('/')
+
+    return render(request, 'reset_password.html')
+
+
+def change_pass(request, token):
+
+    profile_email = User.objects.filter(
+        forget_password_token=token).first()
+
+    print(profile_email)
+    context = {'user_id': profile_email.id}
+
+    if request.method == 'POST':
+        l_pass = request.POST['new_pass']
+        cpass = request.POST['confirm_pass']
+        user_id = request.POST.get('user_id')
+        print(l_pass, cpass)
+
+  
+
+        if l_pass != cpass:
+            messages.error(request, 'both should  be equal.')
+            return redirect(f'/change_pass/{token}/')
+
+        else:
+            change_pass = User.objects.get(id=user_id)
+            change_pass.password = l_pass
+            change_pass.confirm_password = cpass
+            change_pass.set_password(l_pass)
+            change_pass.save()
+            messages.success(request, 'Your password has been changed.')
+
+            return redirect('/')
+
+    return render(request, 'change_pass.html', context)
+

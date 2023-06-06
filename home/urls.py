@@ -20,6 +20,7 @@ urlpatterns = [
     path('signUp', views.signUp, name='signUp'),
     path('login_user', views.login_user, name='login_user'),
     path('logout_user', views.logout_user, name='logout_user'),
+    path('change_pass/<token>/',views.change_pass,name='change_pass'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 from django.conf import settings
