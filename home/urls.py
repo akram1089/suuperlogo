@@ -21,6 +21,9 @@ urlpatterns = [
     path('login_user', views.login_user, name='login_user'),
     path('logout_user', views.logout_user, name='logout_user'),
     path('change_pass/<token>/',views.change_pass,name='change_pass'),
+    path('get_option_chain/',views.get_option_chain,name='get_option_chain'),
+    path('Algo_market_place',views.Algo_market_place,name='Algo_market_place'),
+    path('tests',views.tests,name='tests'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 from django.conf import settings
