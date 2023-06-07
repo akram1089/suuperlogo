@@ -51,18 +51,17 @@
 </head>
 <style>
     #spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
-    z-index: 99999;
-}
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .5s ease-out, visibility 0s linear .5s;
+        z-index: 99999;
+    }
 
-#spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
-    visibility: visible;
-    opacity: 1;
-}
-
+    #spinner.show {
+        transition: opacity .5s ease-out, visibility 0s linear 0s;
+        visibility: visible;
+        opacity: 1;
+    }
 </style>
 
 <body>
@@ -74,9 +73,9 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <div id="spinner"
-    class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-</div>
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
     <!-- HEADER :: START-->
     <header class="header" id="header" style="top: 0px; height: 100px;">
         <div class="header__wrapper">
@@ -86,7 +85,6 @@
                         <div class="logotype logotype--header">
                             <a class="logotype__link d-flex align-items-start" href="/" title="">
                                 <img class="logotype__img img-fluid" src="{% static '/img/img-logotype-dark.png' %}"
-
                                     alt="Logo" title="Logo">
                             </a>
                         </div>
@@ -243,7 +241,7 @@
                                 </div>
                                 <div>
                                     {% if user.is_authenticated %}
-                                    <button class="button btn btn-outline">Dashboard</button>
+                                    <a class="button btn btn-primary" href="{% url 'dashboard' %}">Dashboard</a>
                                     Welcome--{{user.full_name}}
                                     {% else %}
 
@@ -537,11 +535,10 @@
     position: fixed;
     background-color: white;
     box-shadow: rgb(0 0 0 / 95%) 0px 5px 15px;
-    right: 16px;"><a
-            href="https://api.whatsapp.com/send?phone=" target="_blank" rel="noopener"><img
+    right: 16px;"><a href="https://api.whatsapp.com/send?phone=" target="_blank" rel="noopener"><img
                 src="/static/img/logos/whatsappSocial.d300daea.svg" alt="whatsapp"></a><a href="tel:+"><img
-                src="/static/img/logos/phone.782354bc.svg" alt="phone"></a><a><img src="/static/img/logos/email.62a27ea7.svg"
-                alt="feedback"></a></div>
+                src="/static/img/logos/phone.782354bc.svg" alt="phone"></a><a><img
+                src="/static/img/logos/email.62a27ea7.svg" alt="feedback"></a></div>
 
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="    z-index: 99999999;
@@ -582,7 +579,6 @@
                         <div class="logotype logotype--footer"><a class="logotype__link d-flex align-items-start"
                                 href="#" title="">
                                 <img class="logotype__img img-fluid" src="{% static '/img/img-logotype-dark.png' %}"
-                                   
                                     alt="Logo" title="Logo"></a></div>
                     </div>
                     <div class="col-6 order-2 d-block d-md-none">
@@ -882,8 +878,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="modalPasswordSignIn">Password</label>
-                                <input class="form-control" id="modalPasswordSignIn" type="password" name="password" required
-                                    aria-describedby="passwordHelp">
+                                <input class="form-control" id="modalPasswordSignIn" type="password" name="password"
+                                    required aria-describedby="passwordHelp">
                                 <span class="text-danger show-error-text" id="error_login_password"></span>
                                 <a class="form-text text-muted" id="passwordHelp"
                                     href="{% url 'reset_password' %}">Forgot password?</a>
@@ -936,16 +932,17 @@
                                         aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content py-5">
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close" style="
                                                         position: relative;
     display: flex;
     top: -2rem;
     left: 92%;"></button>
                                                 <div class="modal-header justify-content-center pb-3">
-                                                   
-                                                    
+
+
                                                     <h5 class="modal-title" id="SignUp">Sign up</h5>
-                                                   
+
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="modal-body-cover">
@@ -1323,7 +1320,7 @@
             </div>
         </div>
    
-        <input type="hidden" name="force_redirect" id="force_redirect" value="" />
+        <input type=" hidden" name="force_redirect" id="force_redirect" value="" />
                                                                 </div>
                                                         </div>
 

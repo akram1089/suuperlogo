@@ -37,6 +37,7 @@
   <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
   <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
   <link rel="stylesheet" href=" {% static 'css/v1/dashboard.css' %} ">
+  <link rel="stylesheet" href=" {% static 'css/v1/market_place.css' %} ">
   <meta name="theme-color" content="#712cf9">
   
   
@@ -472,7 +473,7 @@
               <i class="bi bi-pie-chart"></i><p>Open Interest Analysis   </p>
             </a>
             <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" href="{% url 'Algo_market_place' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-map"></i><p>Algo Market Place   </p>
             </a>
             <a
