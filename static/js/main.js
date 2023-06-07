@@ -153,138 +153,138 @@ $('.counter').counterUp({
   
   });
 
-  var swiper2 = new Swiper(".testimonials", {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    }, breakpoints: {  
-  '1200': {
-    slidesPerView: 3,
-    spaceBetween: 30,},
-  '400': {
-    slidesPerView: 1,
-    spaceBetween: 30, },
+//   var swiper2 = new Swiper(".testimonials", {
+//     slidesPerView: 3,
+//     spaceBetween: 30,
+//     loop: true,
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     }, breakpoints: {  
+//   '1200': {
+//     slidesPerView: 3,
+//     spaceBetween: 30,},
+//   '400': {
+//     slidesPerView: 1,
+//     spaceBetween: 30, },
     
-  '300': {
-    slidesPerView: 1,
-    spaceBetween:30, },
-}
+//   '300': {
+//     slidesPerView: 1,
+//     spaceBetween:30, },
+// }
   
-  });
+//   });
   
   
-  var swiper3 = new Swiper(".swiper-container-strategy", {
+//   var swiper3 = new Swiper(".swiper-container-strategy", {
     
-    spaceBetween: 30,
-    loop: true,
-    breakpoints: {  
-  '1200': {
-    slidesPerView: 3,
-    spaceBetween: 40,},
-  '640': {
-    slidesPerView: 1,
-    spaceBetween: 30, },
-},
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
+//     spaceBetween: 30,
+//     loop: true,
+//     breakpoints: {  
+//   '1200': {
+//     slidesPerView: 3,
+//     spaceBetween: 40,},
+//   '640': {
+//     slidesPerView: 1,
+//     spaceBetween: 30, },
+// },
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     },
   
-  });
+//   });
   
-  var swiper4 = new Swiper(".swiper-container-features", {
-    slidesPerView: 5,
-    spaceBetween: 30,
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".features__carousel-btn--next",
-      prevEl: ".features__carousel-btn--prev",
-    },
-    breakpoints: {  
-  '1200': {
-    slidesPerView: 5,
-    spaceBetween: 30,},
-  '640': {
-    slidesPerView: 1,
-    spaceBetween: 30, },
+//   var swiper4 = new Swiper(".swiper-container-features", {
+//     slidesPerView: 5,
+//     spaceBetween: 30,
+//     loop: true,
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     },
+//     navigation: {
+//       nextEl: ".features__carousel-btn--next",
+//       prevEl: ".features__carousel-btn--prev",
+//     },
+//     breakpoints: {  
+//   '1200': {
+//     slidesPerView: 5,
+//     spaceBetween: 30,},
+//   '640': {
+//     slidesPerView: 1,
+//     spaceBetween: 30, },
     
-  '400': {
-    slidesPerView: 1,
-    spaceBetween:30, },
-}
+//   '400': {
+//     slidesPerView: 1,
+//     spaceBetween:30, },
+// }
 
   
-  });
+//   });
 
-  var swiper5 = new Swiper(".swiper-container-pricing", {
-    slidesPerView: 5,
-    spaceBetween: 30,
+//   var swiper5 = new Swiper(".swiper-container-pricing", {
+//     slidesPerView: 5,
+//     spaceBetween: 30,
     
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".features__carousel-btn--next",
-      prevEl: ".features__carousel-btn--prev",
-    },
-    breakpoints: {  
-  '1200': {
-    slidesPerView: 7,
-    spaceBetween: 0,
-    loop: false,
-    noSwiping: true,
-  },
-  '800': {
-    slidesPerView: 3,
-    spaceBetween: 30, },
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     },
+//     navigation: {
+//       nextEl: ".features__carousel-btn--next",
+//       prevEl: ".features__carousel-btn--prev",
+//     },
+//     breakpoints: {  
+//   '1200': {
+//     slidesPerView: 7,
+//     spaceBetween: 0,
+//     loop: false,
+//     noSwiping: true,
+//   },
+//   '800': {
+//     slidesPerView: 3,
+//     spaceBetween: 30, },
     
-  '400': {
-    slidesPerView: 1,
-    spaceBetween:30, },
-}
-
-  
-  });
-  var swiper5 = new Swiper(".swiper-container-partners", {
-    slidesPerView: 5,
-    spaceBetween: 30,
-    
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".features__carousel-btn--next",
-      prevEl: ".features__carousel-btn--prev",
-    },
-    breakpoints: {  
-  '1200': {
-    slidesPerView: 7,
-    spaceBetween: 0,
-    loop: false,
-    noSwiping: true,
-  },
-  '800': {
-    slidesPerView: 3,
-    spaceBetween: 30, },
-    
-  '400': {
-    slidesPerView: 1,
-    spaceBetween:30, },
-},autoplay: {
-  delay: 1000,
-},
+//   '400': {
+//     slidesPerView: 1,
+//     spaceBetween:30, },
+// }
 
   
-  });
+//   });
+//   var swiper5 = new Swiper(".swiper-container-partners", {
+//     slidesPerView: 5,
+//     spaceBetween: 30,
+    
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     },
+//     navigation: {
+//       nextEl: ".features__carousel-btn--next",
+//       prevEl: ".features__carousel-btn--prev",
+//     },
+//     breakpoints: {  
+//   '1200': {
+//     slidesPerView: 7,
+//     spaceBetween: 0,
+//     loop: false,
+//     noSwiping: true,
+//   },
+//   '800': {
+//     slidesPerView: 3,
+//     spaceBetween: 30, },
+    
+//   '400': {
+//     slidesPerView: 1,
+//     spaceBetween:30, },
+// },autoplay: {
+//   delay: 1000,
+// },
+
+  
+//   });
   controlVideoVolume.addEventListener('click', function() {
   if (bannerVideo.muted) {
       bannerVideo.muted = false;

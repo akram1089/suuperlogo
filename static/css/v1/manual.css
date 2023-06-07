@@ -201,7 +201,7 @@ button{
 
 
     .swiper-slide-cover{
-        gap: 1rem !important;
+        gap: 2rem !important;
     display: flex !important;
     justify-content: center !important;
     }
