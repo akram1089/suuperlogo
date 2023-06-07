@@ -544,11 +544,16 @@
                 alt="feedback"></a></div>
 
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="z-index: 99999999;
-      position: fixed;
-      top: 5rem;
-      left: 1rem;
-      width: fit-content;">
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="    z-index: 99999999;
+    position: fixed;
+    top: 3rem;
+    width: fit-content;
+    margin: auto;
+    white-space: nowrap;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+">
         <strong>Msg:</strong> {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -855,6 +860,11 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content py-5">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="
+                                                        position: relative;
+    display: flex;
+    top: -2rem;
+    left: 92%;"></button>
                 <div class="modal-header justify-content-center pb-3">
                     <h5 class="modal-title" id="SignIn">Sign in</h5>
                 </div>
@@ -926,8 +936,16 @@
                                         aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content py-5">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="
+                                                        position: relative;
+    display: flex;
+    top: -2rem;
+    left: 92%;"></button>
                                                 <div class="modal-header justify-content-center pb-3">
+                                                   
+                                                    
                                                     <h5 class="modal-title" id="SignUp">Sign up</h5>
+                                                   
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="modal-body-cover">

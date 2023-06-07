@@ -51,7 +51,7 @@ def reset_password(request):
     return render(request, "reset_password.html")
 
 
-def Symbol_filter(request):
+def Open_interest_analysis(request):
     if request.method == "POST":
         symbol = request.POST['symbols']
         expiry_dates = request.POST["expiryDates"]
@@ -87,7 +87,7 @@ def Symbol_filter(request):
 
         else:
             print("No data available for the specified expiry date.")
-        return render(request, 'Symbol_filter.html', {"dataframe": data_filter})
+        return render(request, 'Open_interest_analysis.html', {"dataframe": data_filter})
 
     else:
         url = 'https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY'
@@ -113,7 +113,7 @@ def Symbol_filter(request):
         json_records = datashort.reset_index().to_json(orient='records')
         data = []
         data = json.loads(json_records)
-    return render(request, "Symbol_filter.html", {"dataframe": data})
+    return render(request, "Open_interest_analysis.html", {"dataframe": data})
 
 
 def signUp(request):

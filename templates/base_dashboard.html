@@ -235,35 +235,7 @@
       </symbol>
     </svg>
   
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (dark)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#sun-fill"></use></svg>
-            Light
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="dark" aria-pressed="true">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-            Dark
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-      </ul>
-    </div>
+ 
   
     
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -316,7 +288,9 @@
   </symbol>
   </svg>
   
-  <header class="navbar sticky-top bg-light flex-md-nowrap p-0 shadow" data-bs-theme="light"  id="dashboard_nav">
+<header class="navbar sticky-top bg-light flex-md-nowrap p-0 shadow" data-bs-theme="light"  id="dashboard_nav">
+
+  
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white " href="/" style="  background: white !important">
 
 
@@ -367,6 +341,23 @@
 
   
   </header>
+
+
+  <div class="antd-pro-layouts-basic-layout-floatingSocialContainer" style=" bottom: 20px;
+  z-index: 9999999999;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 25px;
+  position: fixed;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 95%) 0px 5px 15px;
+  right: 16px;"><a
+          href="https://api.whatsapp.com/send?phone=" target="_blank" rel="noopener"><img
+              src="/static/img/logos/whatsappSocial.d300daea.svg" alt="whatsapp"></a><a href="tel:+"><img
+              src="/static/img/logos/phone.782354bc.svg" alt="phone"></a><a><img src="/static/img/logos/email.62a27ea7.svg"
+              alt="feedback"></a></div>
   
   <div class="container-fluid">
   <div class="row">
@@ -475,9 +466,9 @@
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2
               
-              {% if request.path == "/Symbol_filter"  %} active_dash {% endif %} "
-              href=" {% url 'Symbol_filter' %}
-              " href="{% url 'Symbol_filter' %}" style="   padding: 10px 0 0px 23px;">          
+              {% if request.path == "/Open_interest_analysis"  %} active_dash {% endif %} "
+              href=" {% url 'Open_interest_analysis' %}
+              " href="{% url 'Open_interest_analysis' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-pie-chart"></i><p>Open Interest Analysis   </p>
             </a>
             <a

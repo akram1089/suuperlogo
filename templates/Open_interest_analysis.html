@@ -1,0 +1,117 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block dashboard_body %}
+<style>
+
+
+
+</style>
+<div class="container">
+
+    <h2 class="text-center text-primary">Option chain</h2>
+
+
+
+<form action=" {% url 'Open_interest_analysis' %} " method="post">
+{% csrf_token %}
+<div class="filter_main d-flex gap-2 px-2">
+
+    <select class="form-select" aria-label="Default select example" name="symbols">
+     <optgroup label="Select Options">
+        <option value="NIFTY">NIFTY</option>
+        <option value="BANKNIFTY">BANKNIFTY</option>
+        <option value="FINNIFTY">FINNIFTY</option>
+        <option value="MIDCPNIFTY">MIDCPNIFTY</option>
+    </optgroup>
+      </select>
+
+      <select class="form-select" aria-label="Default select example" name="expiryDates">
+        <option selected>Open this select menu</option>
+        <option value="01-Jun-2023">01Jun2023</option>
+        <option value="08-Jun-2023">08Jun2023</option>
+        
+      </select>
+
+      <button class="button btn btn-primary">REFRESH</button>
+</div>
+
+</form>
+{% comment %} 
+"strikePrice":16100,
+"expiryDate":"01-Jun-2023",
+"underlying":"NIFTY",
+"identifier":"OPTIDXNIFTY01-06-2023PE16100.00",
+"openInterest":24474,
+"changeinOpenInterest":-2591,
+"pchangeinOpenInterest":-9.573249584334011,
+"totalTradedVolume":167271,
+"impliedVolatility":92.85,
+"lastPrice":0.4,
+"change":-0.44999999999999996,
+"pChange":-52.94117647058824,
+"totalBuyQuantity":1634500,
+"totalSellQuantity":316950,
+"bidQty":35050,
+"bidprice":0.4,
+"askQty":16600,
+"askPrice":0.45,
+"underlyingValue":18534.4 {% endcomment %}
+{% comment %} 
+<table class="table  mt-3 table-responsive small">
+
+  </table> {% endcomment %}
+
+
+
+  <div class="table-responsive small">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr class="text-center">
+              <th scope="col">#</th>
+              <th scope="col">Underlying</th>
+              <th scope="col">Strike  Price</th>
+              <th scope="col">Expiry Date</th>
+              <th scope="col">OpenInterest </th>
+              <th scope="col">C-OI </th>
+              <th scope="col">TotalTradedVolume </th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+       {% for df in dataframe %}
+       <tr class="text-center">
+          <th >{{forloop.counter}}</th>
+          <td >{{df.underlying}}</td>
+          <td >{{df.strikePrice}}</td>
+          <td >{{df.expiryDate}}</td>
+          <td >
+      
+              {% if df.openInterest < 0%}
+              <span class="text-danger">-{{df.openInterest}}</span>
+              {% else %}
+              <span class="text-success">+{{df.openInterest}}</span>
+              {% endif %}
+              
+          </td>
+          
+          <td >
+              {% if df.changeinOpenInterest < 0%}
+              <span class="text-danger">-{{df.changeinOpenInterest}}</span>
+              {% else %}
+              <span class="text-success">+{{df.changeinOpenInterest}}</span>
+              {% endif %}
+          </td>
+          <td >{{df.totalTradedVolume}}</td>
+        </tr>
+       {% endfor %}
+         
+          </tbody>
+    </table>
+  </div>
+
+
+</div>
+
+
+
+
+{% endblock dashboard_body %}

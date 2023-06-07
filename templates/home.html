@@ -273,14 +273,20 @@ Home | Algo trading
                             </a>
                         </div>
                     </div>
+{% if user.is_authenticated %}
 
-                    <div
-                        class="d-flex d-xl-none justify-content-center justify-content-md-start home-hero-btn py-5 gap-3">
-                        <a href="https://tradetron.tech/login" class="c-btn c-btn--border w-auto mr-4">Sign
-                            In</a>
-                        <a href="https://tradetron.tech/register" class="c-btn c-btn--bg w-auto ">Sign Up</a>
-                    </div>
+{% else %}
 
+<div
+class="d-flex d-xl-none justify-content-center justify-content-md-start home-hero-btn py-5 gap-3">
+<a href="#" class="c-btn c-btn--border w-auto mr-4" style="white-space: nowrap;" data-bs-toggle="modal"
+data-bs-target="#signinModal">Sign
+    In</a>
+<a href="#"class="c-btn c-btn--bg w-auto " data-bs-toggle="modal"
+data-bs-target="#signupModal" >Sign Up</a>
+</div>
+
+{% endif %}
                 </div>
 
                 <div class="col-lg-6">
