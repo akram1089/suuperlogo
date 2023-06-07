@@ -18,6 +18,10 @@
       body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
         margin-left: -15rem;
       }
+      .sidebar{
+        bottom: auto !important;
+        z-index: 999999999 !important;
+      }
     }
     
     @media (min-width: 768px) {
@@ -31,6 +35,7 @@
       body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
         margin-left: -15rem;
       }
+
     }
     .wrapper {
         left: -13px;
@@ -73,7 +78,7 @@
     .list-group-flush>.list-group-item {
     all: unset;
     transform: translateX(0 0 0 0);
-    background: #263544 ;
+    background: WHITE ;
     color: #ffffffb8 ;
     cursor: pointer !important;
     transition: 0.3s;
@@ -81,7 +86,7 @@
     }
     
     #dashboard_navigations{
-    background: #263544 !important;
+    background: WHITE !important;
     color: #ffffffb8 !important;
     }
     .active_dash{
@@ -250,7 +255,7 @@ color: rgba(0, 0, 0, 0.582);
     }
 
     .sidebar{
-        background: #263544 !important;
+        background: WHITE !important;
         border: none !important;
     }
     .sub-menu.nav-item:hover{
@@ -362,4 +367,22 @@ color: rgba(0, 0, 0, 0.582);
 
 .first_finance_collapse,.finance_collapse{
   align-items: baseline !important;
+}
+
+
+
+.sidebar::-webkit-scrollbar {
+  width: 10px;  /* adjust as needed */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* adjust as needed */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #888; /* adjust as needed */
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* adjust as needed */
 }
