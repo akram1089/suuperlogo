@@ -51,6 +51,13 @@ def learning_center(request):
 def blog(request):
     return render(request, "blog.html")
 
+def my_strategies(request):
+    return render(request, "my_strategies.html")
+def my_portfolio(request):
+    return render(request, "my_portfolio.html")
+def broking_details(request):
+    return render(request, "broking_details.html")
+
 
 def reset_password(request):
     return render(request, "reset_password.html")

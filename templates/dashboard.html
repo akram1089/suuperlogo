@@ -1,9 +1,196 @@
 {% extends "base_dashboard.html" %}
 {% load static %}
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 {% block dashboard_body %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script>
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+        }, function (start, end, label) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+</script>
+<div class="container">
 
 
+    <div class="market_header d-flex mt-4">
+        <h4 class="">Algo Marketplace</h4> <span><i class="bi bi-exclamation-circle" class="btn btn-primary"
+                type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample"></i></span>
+    </div>
+    <div class="collapse" id="collapseExample" style="    margin-bottom: 25px;
+">
+        <div class="card card-body">
+            <div class="antd-pro-components-markdown-index-markdownStyle">
+                <p>Get an overview of your AlgoBulls account's key performance indicators, metrics, and data points.
+                    Track and analyse your algo strategies, funds, subscriptions, and more.</p>
+                <ul>
+
+                    <li>Analyse your algo trading strategies.</li>
+                    <li>Subscribe to a plan, add a broker, or add new strategies to your portfolio.</li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+    <div class="algo_strategies">
+
+        <div class="main_title">
+            <h5>Algo Trading Strategy Analytics</h5>
+        </div>
+
+        <div class="time_date_filter">
+            <div class="today">
+                <p>Today</p>
+            </div>
+            <div class="week date_time_active">
+                <p>This Week</p>
+            </div>
+            <div class="month">
+                <p>This Month</p>
+            </div>
+
+            <div class="year">
+                <p>This Year</p>
+            </div>
+            <div class="date_picker">
+                <input type="text" name="daterange" class="form-control" value="01/01/2018 - 01/15/2018"
+                    style="    width: fit-content;" /> <span><i class="bi bi-calendar"
+                        style="    font-size: 25px;"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="Trading_volume_prifit_loss mt-3 d-flex flex-wrap"
+        style="justify-content: space-between; row-gap: 1rem;">
+
+        <div class="card border-1" style="width: 37rem; height: 30rem;">
+
+            <div class="trading_volume_head">
+
+             <div class="first_volume_main">
+                <div class="first_volume_card d-flex">
+                    <p style="    margin-bottom: auto;">Trading valume</p>
+                    <i class="bi bi-box-arrow-up-right text-primary"></i>
+                </div>
+                <div class="volume_price">
+                    <h5>₹0</h5>
+                </div>
+
+             </div>
+             <div class="first_volume_main volume_main_active">
+                <div class="first_volume_card d-flex">
+                    <p style="    margin-bottom: auto;">Trading valume</p>
+                    <i class="bi bi-box-arrow-up-right text-primary"></i>
+                </div>
+                <div class="volume_price">
+                    <h5>₹0</h5>
+                </div>
+
+             </div>
+             <div class="first_volume_main">
+                <div class="first_volume_card d-flex">
+                    <p style="    margin-bottom: auto;">Trading valume</p>
+                    <i class="bi bi-box-arrow-up-right text-primary"></i>
+                </div>
+                <div class="volume_price">
+                    <h5>₹0</h5>
+                </div>
+
+             </div>
+
+            </div>
+
+<div class="data_not_found_section">
+    <img src="{% static "/img/course_not_found_icon.png" %}" style="    width: 13rem;" alt="">
+    <h5>
+        No Trading Volume data found
+    </h5>
+    <p>Run some strategies to visualize data here</p>
+    <button class="button btn btn-primary">Explore Marketplace</button>
+</div>
+
+        </div>
+
+
+
+        <div class="card border-1" style="width: 37rem; height: 30rem;">
+
+<div class="profit_loss_volume">
+    <h5>P&L & Trading Volume
+    </h5>
+
+    <div class="icons_ref_full">
+        <i class="bi bi-arrow-clockwise"></i>
+        <i class="bi bi-arrows-expand"></i>
+        <i class="bi bi-gear"></i>
+        <i class="bi bi-arrows-fullscreen"></i>
+    </div>
+</div>
+
+
+
+
+<table class="table " style="overflow: auto;">
+    <thead class="bg-light">
+      <tr>
+        <th scope="col " class="border-end">Strategy Name</th>
+        <th scope="col" class="border-end">Total Txns.</th>
+        <th scope="col" class="border-end">Volume (₹)</th>
+        <th scope="col">P&L (₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+
+
+
+            <div class="data_not_found_section">
+                <img src="{% static "/img/course_not_found_icon.png" %}" style="    width: 13rem;" alt="">
+                <h5>
+                    No P&L & Trading Volume data found
+                </h5>
+                <p>Run some strategies to visualize data here</p>
+                <button class="button btn btn-primary">Explore Marketplace</button>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
 <div class="main_chart d-flex mt-4">
 
     <div class="chart_child mb-3">

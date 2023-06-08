@@ -38,6 +38,11 @@
   <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
   <link rel="stylesheet" href=" {% static 'css/v1/dashboard.css' %} ">
   <link rel="stylesheet" href=" {% static 'css/v1/market_place.css' %} ">
+  <link rel="stylesheet" href=" {% static 'css/v1/my_strategies.css' %} ">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <meta name="theme-color" content="#712cf9">
   
   
@@ -409,12 +414,16 @@
 
 
               <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/my_strategies"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'my_strategies' %}">          
               <i class="bi bi-hdd-stack"></i><p>My Strategies</p>
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-shop"></i><p>Market Movers </p>
+            </a>
+            <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/my_portfolio"  %} active_dash {% endif %}" href="{% url 'my_portfolio' %}" style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-graph-up-arrow"></i><p>My portfolio </p>
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
@@ -426,7 +435,7 @@
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
-              <i class="bi bi-shop-window"></i><p>Pre-open mareket  </p>
+              <i class="bi bi-shop-window"></i><p>Pre-open market  </p>
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
@@ -465,7 +474,10 @@
 
 
 
-
+              <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/broking_details"  %} active_dash {% endif %} " href={% url 'broking_details' %} style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-person-add"></i><p>Broking Details  </p>
+            </a>
 
 
 
@@ -594,6 +606,15 @@
   };
   spinner();
   
+
+  $(function() {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+  });
+
    (() => {
     'use strict'
   

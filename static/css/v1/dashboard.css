@@ -386,3 +386,112 @@ color: rgba(0, 0, 0, 0.582);
 .sidebar::-webkit-scrollbar-thumb:hover {
   background: #555; /* adjust as needed */
 }
+
+.algo_strategies{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.2px solid #80808029;
+
+}
+.time_date_filter{
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+   cursor: pointer;
+
+}
+
+.date_time_active{
+  border-bottom: 3px solid #00a6ff;
+    color: #00a6ff;
+}
+.market_header{
+  margin: 0 0 30px 0;
+}
+
+.date_picker{
+  display: flex;
+  gap: 0.2rem;
+  align-items: baseline;
+}
+
+.day,.week,.month,.year{
+  clear: both;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+
+@media screen and (max-width: 760px) {
+ 
+  .time_date_filter{
+    overflow: auto;
+    align-items: baseline;
+  
+  }
+  .algo_strategies {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.2px solid #80808029;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+}
+.first_volume_main{
+  clear: both;
+  display: inline-block;
+  white-space: nowrap;
+  width: fit-content;
+}
+.trading_volume_head{
+  overflow: auto;
+  gap: 0.4rem !important;
+}
+}
+
+
+.first_volume_card{
+  align-items: center;
+  gap: 0.4rem;
+}
+.trading_volume_head{
+  display: flex;
+  margin-top: 1rem;
+  padding: 0 17px 7px 17px;
+  justify-content: space-between;
+}
+
+.first_volume_main{
+  padding: 7px 15px 7px 17px;
+  border-radius: 7px;
+  border: 0.5px solid #80808033;
+}
+
+.volume_main_active{
+  border: 0.5px solid #0093ff;
+
+  background-color: #0076ff1a;
+}
+
+.data_not_found_section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profit_loss_volume{
+  display: flex;
+  justify-content: space-between;
+  padding: 9px;
+      align-items: center;
+}
+
+.icons_ref_full{
+  display: flex;
+  gap: 1.2rem;
+  font-size: 19px;
+  padding: 0px 9px 0 0;
+}
+
+.bi{
+  cursor: pointer;
+}
