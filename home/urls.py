@@ -27,6 +27,7 @@ urlpatterns = [
     path('my_portfolio',views.my_portfolio,name='my_portfolio'),
     path('broking_details',views.broking_details,name='broking_details'),
     path('tests',views.tests,name='tests'),
+    path('courses_details',views.courses_details,name='courses_details'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 from django.conf import settings

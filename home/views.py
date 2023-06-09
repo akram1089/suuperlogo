@@ -57,6 +57,8 @@ def my_portfolio(request):
     return render(request, "my_portfolio.html")
 def broking_details(request):
     return render(request, "broking_details.html")
+def courses_details(request):
+    return render(request, "courses_details.html")
 
 
 def reset_password(request):
