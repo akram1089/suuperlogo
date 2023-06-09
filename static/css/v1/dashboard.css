@@ -1,7 +1,7 @@
 
 .list-group-item-action:focus, .list-group-item-action:hover{
     all: unset;
-      color: rgba(55, 138, 255, 0.921) !important;
+      color: rgba(255, 255, 255, 0.921) !important;
     }
     body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
       margin-left: 0;
@@ -86,20 +86,23 @@
     }
     
     #dashboard_navigations{
-    background: WHITE !important;
+    background: rgb(255, 255, 255) !important;
     color: #ffffffb8 !important;
     }
     .active_dash{
     
-    color: rgb(0, 162, 255) !important;
-    background: #ffffff57 !important;
-    border-left: 4px solid rgb(0, 162, 255) !important;
+    color: rgb(255, 255, 255) !important;
+
+    background-color: rgba(0, 0, 0, 0.093) !important;
+    border-left: 4px solid rgb(255, 255, 255) !important;
     font-weight: 500 !important;
     }
     
     
     
-    
+    #dashboard_nav{
+      background: linear-gradient(178deg, rgb(0 102 255) 0%, rgb(0 158 255) 0%, rgb(48 131 208) 50%)  !important;
+    }
     
     
     
@@ -209,7 +212,7 @@
       .sidebar .nav-link {
         font-size: .875rem;
         font-weight: 500;
-        color: rgba(0, 0, 0, 0.582) !important;
+     
     }
       
       .sidebar .nav-link.active {
@@ -228,7 +231,7 @@
       .navbar-brand {
         padding-top: .75rem;
         padding-bottom: .75rem;
-        background-color: rgba(0, 0, 0, .25);
+      
         box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
       }
       
@@ -239,9 +242,9 @@
     a.list-group-item{
         align-items: baseline !important;
         padding: 14px 0 0px 23px !important;
-color: rgba(0, 0, 0, 0.582);
+
         cursor: pointer !important;
-        background: white !important;
+
         transition: 0.3s !important;
         font-weight: 400;
         font-weight: 400 !important ;
@@ -249,8 +252,8 @@ color: rgba(0, 0, 0, 0.582);
     }
 
     a.list-group-item:focus{
-      background-color: rgb(255, 255, 255) !important;
-      color: rgb(0, 132, 255) !important;;
+      background-color: rgba(0, 0, 0, 0.093) !important;
+      color: rgb(255, 255, 255) !important;
 
     }
 
@@ -259,13 +262,13 @@ color: rgba(0, 0, 0, 0.582);
         border: none !important;
     }
     .sub-menu.nav-item:hover{
-      color: rgb(0, 132, 255) !important;
+      color: rgb(255, 255, 255) !important;
 
         
     }
     .sidebar .nav-link:hover {
 
-      color: rgb(0, 132, 255) !important;
+      color: rgb(255, 255, 255) !important;
     }
 
 
@@ -357,9 +360,7 @@ color: rgba(0, 0, 0, 0.582);
   color: #000000ba !important;
 
 }
-.navbar-brand{
-  background-color:white !important;
-}
+
 
 .sidebar{
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -494,4 +495,38 @@ color: rgba(0, 0, 0, 0.582);
 
 .bi{
   cursor: pointer;
+}
+
+
+.head_dashboard_img{
+
+  padding: 19px;
+  margin-left: -36px;
+  color: white;
+  width: 106%;
+  height: 12rem;
+}
+
+.pa-1{
+  display: flex;
+  width: 100%;
+  padding: 12px 0 0 0;
+  justify-content: center;
+}
+
+.offcanvas-body,.nav.flex-column {
+  background-image: url("../../img/sidebar_background.jpg") !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.list-group-item-light{
+  --bs-list-group-bg:none  !important;
+}
+.nav-item{
+  background: transparent !important;
+}
+a.list-group-item,.sidebar .nav-link{
+  background: transparent ;
+  color: rgba(255, 255, 255, 0.645) ;
 }

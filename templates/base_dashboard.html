@@ -176,7 +176,7 @@
       .navbar-brand {
         padding-top: .75rem;
         padding-bottom: .75rem;
-        background-color: rgba(0, 0, 0, .25);
+        
         box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
       }
       
@@ -297,7 +297,7 @@
 <header class="navbar sticky-top bg-light flex-md-nowrap p-0" data-bs-theme="light"  id="dashboard_nav" style="z-index: 999999999;">
 
   
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white " href="/" style="  background: white !important">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white " href="/" >
 
 
     <img class="logotype__img img-fluid" src="{% static '/img/img-logotype-dark.png' %}"  alt="Logo" title="Logo" style="    width: 111px !important;">
@@ -510,6 +510,7 @@
             class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 nav-link collapsed  
             {% if request.path == "/blog"  %} active_dash
             {% elif request.path == "/learning_center" %} active_dash
+            {% elif request.path == "/courses_details" %} active_dash
             {% endif %}
             
             " style="   padding: 10px 0 0px 23px;" data-bs-toggle="collapse" href="#education" aria-expanded="false" aria-controls="#education">    
