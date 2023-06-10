@@ -34,10 +34,116 @@ def use_cases_invester(request):
 
 def Strategy_builder_straddle(request):
     return render(request, "Strategy_builder_straddle.html")
+def Futures_Buildup(request):
+    return render(request, "Futures_Buildup.html")
+
+
+
+def fetch_top_gainers():
+    url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
+    headers = {
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    top_gainers = []
+    for stock in data['FOSec']['data']:
+        symbol = stock['symbol']
+        previous_close = stock['prev_price']
+        current_price = stock['ltp']
+
+        if symbol and previous_close and current_price:
+            gain_percentage = round(((current_price - previous_close) / previous_close) * 100, 2)
+            top_gainers.append({
+                "symbol": symbol,
+                "gain_percentage": gain_percentage
+            })
+
+    top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
+    return top_gainers[:10]
+
+
+def fetch_top_losers():
+    url = "https://www.nseindia.com/api/live-analysis-variations?index=loosers"
+    headers = {
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    top_losers = []
+    for stock in data['FOSec']['data']:
+        symbol_loser = stock['symbol']
+        previous_close = stock['prev_price']
+        current_price = stock['ltp']
+
+        if symbol_loser and previous_close and current_price:
+            loss_percentage = round(((previous_close - current_price) / previous_close) * 100, 2)
+            top_losers.append({
+                "symbol_loser": symbol_loser,
+                "loss_percentage": loss_percentage
+            })
+
+    top_losers.sort(key=lambda x: x['loss_percentage'], reverse=True)
+    return top_losers[:10]
+
+
+
+
+
 
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+    gainers = fetch_top_gainers()
+    losers = fetch_top_losers()
+    url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    sorted_data_looser = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=False)
+    top_symbols_looser = sorted_data_looser[:10]
+
+    symbol_labels_looser = [symbol_data['symbol'] for symbol_data in top_symbols_looser]
+    avgInOI_data_looser = [symbol_data['avgInOI'] for symbol_data in top_symbols_looser]
+
+    sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=True)
+    top_symbols = sorted_data[:10]
+
+    symbol_labels = [symbol_data['symbol'] for symbol_data in top_symbols]
+    avgInOI_data = [symbol_data['avgInOI'] for symbol_data in top_symbols]
+    
+
+
+    
+    symbols = [stock['symbol'] for stock in gainers]
+    percentages = [stock['gain_percentage'] for stock in gainers]
+   
+    symbols_loser = [stock['symbol_loser'] for stock in losers]
+    loss_percentage = [stock['loss_percentage'] for stock in losers]
+
+
+    context = {
+        'symbols': symbols,
+        'percentages': percentages,
+        'symbols_loser': symbols_loser,
+        'loss_percentage': loss_percentage,
+        'symbol_labels': symbol_labels,
+        'avgInOI_data': avgInOI_data,
+        'symbol_labels_looser': symbol_labels_looser,
+        'avgInOI_data_looser': avgInOI_data_looser,
+    
+    }
+    return render(request, "dashboard.html",context)
 
 
 def help_support(request):
@@ -59,6 +165,47 @@ def broking_details(request):
     return render(request, "broking_details.html")
 def courses_details(request):
     return render(request, "courses_details.html")
+
+
+import requests
+from django.shortcuts import render
+
+def chart_topgainer(request):
+  
+    url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    sorted_data_looser = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=False)
+    top_symbols_looser = sorted_data_looser[:10]
+
+    symbol_labels_looser = [symbol_data['symbol'] for symbol_data in top_symbols_looser]
+    avgInOI_data_looser = [symbol_data['avgInOI'] for symbol_data in top_symbols_looser]
+
+    context = {
+        'symbol_labels_looser': symbol_labels_looser,
+        'avgInOI_data_looser': avgInOI_data_looser,
+    }
+
+
+    return render(request, 'chart_topgainer.html', context)
+
+
+
+
+
+
+
+   
+
+
+
+
+
 
 
 def reset_password(request):
@@ -298,42 +445,72 @@ def get_option_chain(request):
 
 
 def tests(request):
-     if request.method == "POST":
-        symbol = request.POST['symbols']
-        expiry_dates = request.POST["expiryDates"]
-        print(symbol, expiry_dates)
-
-        url = 'https://www.nseindia.com/api/option-chain-indices?symbol='+symbol
-        print(url)
-        headers = {
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "en-US,en;q=0.9",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+        data = {
+    "data": [
+        {
+            "Unnamed: 0": 0,
+            "fivedayoichange": 8.76,
+            "fivedaypricechange": -0.02,
+            "futuresPrice": 18631.55,
+            "ivchange": 3.36,
+            "mediumtermoutlook": "-",
+            "onedayoichange": -0.93,
+            "onedaypricechange": -0.42,
+            "shorttermoutlook": "-",
+            "ticker": "NIFTY",
+            "volper": 60.71,
+            "volumechange": 106.87
+        },
+        {
+            "Unnamed: 0": 1,
+            "fivedayoichange": 8.72,
+            "fivedaypricechange": 0.02,
+            "futuresPrice": 44117.95,
+            "ivchange": -2.73,
+            "mediumtermoutlook": "-",
+            "onedayoichange": -0.72,
+            "onedaypricechange": -0.07,
+            "shorttermoutlook": "-",
+            "ticker": "BANKNIFTY",
+            "volper": 68.25,
+            "volumechange": 102.76
+        },
+        {
+            "Unnamed: 0": 2,
+            "fivedayoichange": 7.42,
+            "fivedaypricechange": -1.81,
+            "futuresPrice": 508.1,
+            "ivchange": -2.2,
+            "mediumtermoutlook": "-",
+            "onedayoichange": 1.53,
+            "onedaypricechange": -1.52,
+            "shorttermoutlook": "-",
+            "ticker": "AARTIIND",
+            "volper": 10.71,
+            "volumechange": 102.07
+        },
+        {
+            "Unnamed: 0": 3,
+            "fivedayoichange": -0.07,
+            "fivedaypricechange": 2.89,
+            "futuresPrice": 4138.05,
+            "ivchange": -1.29,
+            "mediumtermoutlook": "-",
+            "onedayoichange": -0.07,
+            "onedaypricechange": 0.77,
+            "shorttermoutlook": "-",
+            "ticker": "ABB",
+            "volper": 0.0,
+            "volumechange": 78.52
         }
-        session = requests.Session()
-
-        data = session.get(url, headers=headers).json()["records"]["data"]
-        ocdata = []
-
-        for i in data:
-            for j, k in i.items():
-                if j == "CE" or j == "PE":
-                    info = k
-                    info['instrumentType'] = j
-                    ocdata.append(info)
-        dataopt = pd.DataFrame(ocdata)
-        filtered_data = dataopt[dataopt['expiryDate'] == str(expiry_dates)]
-        if not filtered_data.empty:
-            print(filtered_data)
-            filtered_datas = filtered_data.head(100)
-            print(filtered_datas)
-            json_records = filtered_datas.reset_index().to_json(orient='records')
-            data_filter = []
-            data_filter = json.loads(json_records)
-
-        else:
-            print("No data available for the specified expiry date.")
-        return render(request, 'tests.html', {"dataframe": data_filter})
+    ]
+}
+        data1=[]
+        for d in data["data"]:
+            data1.append(d)
+      
+   
+        return render(request, 'tests.html',{'data1':data1})
 
 
 def Algo_market_place(request):

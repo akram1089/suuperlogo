@@ -1,0 +1,183 @@
+{% extends "base_dashboard.html" %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+{% block dashboard_body %}
+
+<style>
+    .filter,
+    .term_filter {
+        width: 21px;
+        height: 23px;
+    }
+
+    .radio_button {
+        display: flex !important;
+        gap: 0.3rem !important;
+        align-items: flex-end !important;
+
+    }
+</style>
+
+<div class=" container ">
+    <div class="last_update_more_refresh d-flex" style="    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+">
+        <h5 >Last Updated At: 09-Jun-2023 22:05</h5>
+        <div class="btn_refresh_more">
+            <button class="button btn btn-primary">MORE INFO</button>
+            <button class="button btn btn-secondary">REFRESH</button>
+        </div>
+    </div>
+
+    <div class="collapse_filters d-flex" style="     align-items: baseline;
+    justify-content: space-between;">
+        <div class="market_header d-flex mt-4">
+            <h4 class="text-dark">Futures Buildup Screener </h4> <span><i class="bi bi-exclamation-circle"
+                    class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample"></i></span>
+        </div>
+        <div class="main_filter" style="    display: flex;
+        flex-direction: column;
+        row-gap: 2rem;">
+            <div class="filters d-flex" style="gap: 0.5rem;">
+                <label class="radio_button">
+                    <input type="radio" name="filter" class="filter" value="all" checked>
+                    All
+                </label>
+                <label class="radio_button">
+                    <input type="radio" name="filter" class="filter" value="long_buildup">
+                    Long Buildup
+                </label>
+                <label class="radio_button">
+                    <input type="radio" name="filter" class="filter" value="short_covering">
+                    Short Covering
+                </label>
+                <label class="radio_button">
+                    <input type="radio" name="filter" class="filter" value="short_buildup">
+                    Short Buildup
+                </label>
+                <label class="radio_button">
+                    <input type="radio" name="filter" class="filter" value="long_unwinding">
+                    Long Unwinding
+                </label>
+            </div>
+
+            <div class="filters d-flex" style="gap: 0.5rem;">
+                <label class="radio_button">
+                    <input type="radio" name="term_filter" class="term_filter" value="all" checked>
+                    All
+                </label>
+                <label class="radio_button">
+                    <input type="radio" name="term_filter" class="term_filter" value="short_term">
+                    Short Term Outlook
+                </label>
+                <label class="radio_button">
+                    <input type="radio" name="term_filter" class="term_filter" value="medium_term">
+                    Medium Term Outlook
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse" id="collapseExample" style="    margin-bottom: 25px;">
+        <div class="card card-body text-dark position-relative">
+            <div class="antd-pro-components-markdown-index-markdownStyle">
+                <p>Get an overview of your AlgoBulls account's key performance indicators, metrics, and data points.
+                    Track and analyse your algo strategies, funds, subscriptions, and more.</p>
+                <ul>
+
+                    <li>Analyse your algo trading strategies.</li>
+                    <li>Subscribe to a plan, add a broker, or add new strategies to your portfolio.</li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+    <table id="table_db" class="display">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        {% comment %} "Unnamed: 0": 3,
+        "fivedayoichange": -0.07,
+        "fivedaypricechange": 2.89,
+        "futuresPrice": 4138.05,
+        "ivchange": -1.29,
+        "mediumtermoutlook": "-",
+        "onedayoichange": -0.07,
+        "onedaypricechange": 0.77,
+        "shorttermoutlook": "-",
+        "ticker": "ABB",
+        "volper": 0.0,
+        "volumechange": 78.52 {% endcomment %}
+        <tbody>
+            {% for item in data1 %}
+            <tr>
+                <td>{{item.ticker}}</td>
+                <td>{{item.futuresPrice}}</td>
+            </tr>
+          
+            
+            {% endfor %}
+       
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+        
+        </script>
+</body>
+
+
+
+    {% endblock dashboard_body %}
+
+
+    {% block js %} 
+ 
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+     
+    <script>
+        $(document).ready(function () {
+        $('#table_db').DataTable( {
+            "paging": true,
+            "searching": true,
+            "autoWidth": false,
+            "ordering": true,
+            "columnDefs": [
+                {"width": "50px", "targets": 0},
+                {"width": "250px", "targets": 1},
+            ],
+        }
+        );
+    } );
+    </script>
+     
+    <!-- Added this script to see if the page would recognize the items within block -->
+    <script>
+    window.onload = function() {
+        if (window.jQuery) { 
+            // jQuery is loaded 
+            alert("Yeah!");
+        } else {
+            // jQuery is not loaded
+            alert("Doesn't Work");
+        }
+    }
+     </script>
+    {% endblock js %}

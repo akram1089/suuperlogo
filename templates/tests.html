@@ -1,92 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Option Chain</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+
+    <title>Document</title>
 </head>
 <body>
-    <h1>Option Chain</h1>
-    <form id="optionForm" method="post" action="{% url "tests" %}">
-        {% csrf_token %}
-        <select id="symbolSelect" name="symbols">
-            <option value="NIFTY" selected>-- Select Symbol --</option>
-            <option value="NIFTY">NIFTY</option>
-            <option value="BANKNIFTY">BANKNIFTY</option>
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        {% comment %} "Unnamed: 0": 3,
+        "fivedayoichange": -0.07,
+        "fivedaypricechange": 2.89,
+        "futuresPrice": 4138.05,
+        "ivchange": -1.29,
+        "mediumtermoutlook": "-",
+        "onedayoichange": -0.07,
+        "onedaypricechange": 0.77,
+        "shorttermoutlook": "-",
+        "ticker": "ABB",
+        "volper": 0.0,
+        "volumechange": 78.52 {% endcomment %}
+        <tbody>
+            {% for item in data1 %}
+            <tr>
+                <td>{{item.ticker}}</td>
+                <td>{{item.futuresPrice}}</td>
+            </tr>
+          
             
-        </select>
-        <select id="expirySelect" disabled name="expiryDates">
-            <option value="">-- Select Expiry --</option>
-        </select>
-        <button type="submit">Submit</button>
-    </form>
+            {% endfor %}
+       
+        </tbody>
+    </table>
+</body>
+<script>
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
 
-
-<table>
-    <tr>
-        <th>PRICE</th>
-    </tr>
-    <tr>
-        {% for i in dataframe %}
-          <td>{{i.expiryDate}}</td>
-        {% endfor %}
-
-    </tr>
-
-</table>
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#symbolSelect').change(function() {
-                const selectedSymbol = $(this).val();
-    
-                if (selectedSymbol === '') {
-                    $('#expirySelect').prop('disabled', true);
-                    $('#expirySelect').html('<option value="">-- Select Expiry --</option>');
-                    return;
-                }
-    
-                $.ajax({
-                    url: '{% url "get_option_chain" %}',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        'symbol': selectedSymbol
-                    },
-                    success: function(response) {
-                        if (response.expiry_dates) {
-                            $('#expirySelect').prop('disabled', false);
-                            $('#expirySelect').html('<option value="">-- Select Expiry --</option>');
-    
-                            const expiryDates = response.expiry_dates;
-                            $.each(expiryDates, function(index, date) {
-                                $('#expirySelect').append($('<option>', {
-                                    value: date,
-                                    text: date
-                                }));
-                            });
-                        } else {
-                            console.error('Invalid response format');
-                        }
-                    },
-                    error: function(xhr, textStatus, error) {
-                        console.error(error);
-                    }
-                });
-            });
-    
-        //     $('#optionForm').submit(function(e) {
-        //         e.preventDefault();
-        //         const symbol = $('#symbolSelect').val();
-        //         const expiry = $('#expirySelect').val();
-    
-        //         // Perform further actions based on the selected symbol and expiry
-        //         console.log('Selected Symbol:', symbol);
-        //         console.log('Selected Expiry:', expiry);
-        //     });
-        });
-    </script>
-    
-    </script>
-    </dody>
+</script>
 </html>
