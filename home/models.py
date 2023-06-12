@@ -22,4 +22,27 @@ class User(AbstractUser):
 
 
 
-    
+
+
+class ChartData(models.Model):
+    data_json = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.created_at)
+class ChartOI(models.Model):
+    data_json_oi = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.created_at)
+
+class ChartGainerData(models.Model):
+    data_json = models.TextField()
+
+
+class Top_Gainer(models.Model):
+ top_gainers = models.TextField()
+
+
+

@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Symbol Chart</title>
+    <title>Chart Example</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <canvas id="symbolChart" width="400" height="400"></canvas>
-    <script>
+    <div id="chartContainer" style='    width: 400px;
+    height: 800px;'>
+     
 
-        var symbol_labels_looser = {{ symbol_labels_looser|safe }};
-        var avgInOI_data_looser = {{ avgInOI_data_looser|safe }};
 
-        var ctx = document.getElementById('symbolChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: symbol_labels_looser,
-                datasets: [{
-                    label: 'AvgInOI',
-                    data: avgInOI_data_looser,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            <canvas id="chart"></canvas>
+            <script>
+                var symbols = {{ symbols | safe }};
+                var gainPercentages = {{ gain_percentages | safe }};
+        
+                var chartData = {
+                    labels: symbols,
+                    datasets: [{
+                        label: 'Gain Percentage',
+                        data: gainPercentages,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                };
+        
+                var chartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
-                }
-            }
-        });
-    </script>
+                };
+        
+                var chart = new Chart(document.getElementById('chart'), {
+                    type: 'bar',
+                    data: chartData,
+                    options: chartOptions
+                });
+            </script>
 </body>
 </html>

@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 from django.contrib import messages  #
 from django.contrib.auth import get_user_model
-
+from .models import ChartData
 from home.helper import send_forget_password_mail
 User = get_user_model()
 
@@ -34,36 +34,39 @@ def use_cases_invester(request):
 
 def Strategy_builder_straddle(request):
     return render(request, "Strategy_builder_straddle.html")
+
+
 def Futures_Buildup(request):
     return render(request, "Futures_Buildup.html")
 
 
+# def fetch_top_gainers():
+#     url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
+#     headers = {
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+#         "Connection": "keep-alive"
+#     }
+#     response = requests.get(url, headers=headers)
+#     data = response.json()
 
-def fetch_top_gainers():
-    url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
-    headers = {
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
-    }
-    response = requests.get(url, headers=headers)
-    data = response.json()
+#     top_gainers = []
+#     for stock in data['FOSec']['data']:
+#         symbol = stock['symbol']
+#         previous_close = stock['prev_price']
+#         current_price = stock['ltp']
 
-    top_gainers = []
-    for stock in data['FOSec']['data']:
-        symbol = stock['symbol']
-        previous_close = stock['prev_price']
-        current_price = stock['ltp']
+#         if symbol and previous_close and current_price:
+#             gain_percentage = round(
+#                 ((current_price - previous_close) / previous_close) * 100, 2)
+#             top_gainers.append({
+#                 "symbol": symbol,
+#                 "gain_percentage": gain_percentage
+#             })
 
-        if symbol and previous_close and current_price:
-            gain_percentage = round(((current_price - previous_close) / previous_close) * 100, 2)
-            top_gainers.append({
-                "symbol": symbol,
-                "gain_percentage": gain_percentage
-            })
-
-    top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
-    return top_gainers[:10]
+#     top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
+#     return top_gainers[:10]
 
 
 def fetch_top_losers():
@@ -71,7 +74,8 @@ def fetch_top_losers():
     headers = {
         "Accept-Encoding": "gzip, deflate, br",
         "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+        "Connection": "keep-alive"
     }
     response = requests.get(url, headers=headers)
     data = response.json()
@@ -83,7 +87,8 @@ def fetch_top_losers():
         current_price = stock['ltp']
 
         if symbol_loser and previous_close and current_price:
-            loss_percentage = round(((previous_close - current_price) / previous_close) * 100, 2)
+            loss_percentage = round(
+                ((previous_close - current_price) / previous_close) * 100, 2)
             top_losers.append({
                 "symbol_loser": symbol_loser,
                 "loss_percentage": loss_percentage
@@ -93,57 +98,158 @@ def fetch_top_losers():
     return top_losers[:10]
 
 
+from django.shortcuts import render
+from .models import Top_Gainer
+import requests
 
 
+def chart_topgainer(request):
 
+    url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
+    headers = {
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+        "Connection": "keep-alive"
+    }
 
+    response = requests.get(url, headers=headers)
+
+    try:
+        data = response.json()
+    except ValueError:
+        data = None
+
+    if data:
+        symbols = [entry['symbol'] for entry in data['data']]
+        gain_percentages = [entry['gain_percentage'] for entry in data['data']]
+
+        # Replace existing data in the database with new data
+        chart_data = Top_Gainer.objects.first()
+        if chart_data:
+            chart_data.top_gainers = ", ".join(symbols[:10])
+            chart_data.save()
+        else:
+            Top_Gainer.objects.create(top_gainers=", ".join(symbols[:10]))
+
+    else:
+        # Retrieve the top 10 gainers from the database
+        chart_data = Top_Gainer.objects.first()
+        if chart_data:
+            symbols = chart_data.top_gainers.split(", ")
+            gain_percentages = []
+        else:
+            symbols = []
+            gain_percentages = []
+
+    context = {
+        'symbols': symbols,
+        'gain_percentages': gain_percentages,
+    }
+
+    return render(request, 'chart_topgainer.html', context)
 
 def dashboard(request):
-    gainers = fetch_top_gainers()
-    losers = fetch_top_losers()
+    
     url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
         "Accept-Language": "en-US,en;q=0.9",
         "Accept-Encoding": "gzip, deflate, br",
     }
+
     response = requests.get(url, headers=headers)
-    data = response.json()
 
-    sorted_data_looser = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=False)
-    top_symbols_looser = sorted_data_looser[:10]
+    try:
+        data = response.json()
+    except json.JSONDecodeError as e:
+        print("Error decoding JSON:", str(e))
+        data = None
 
-    symbol_labels_looser = [symbol_data['symbol'] for symbol_data in top_symbols_looser]
-    avgInOI_data_looser = [symbol_data['avgInOI'] for symbol_data in top_symbols_looser]
+    if data is not None:
+        # Sort the data based on avgInOI in ascending order
+        sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
 
-    sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=True)
-    top_symbols = sorted_data[:10]
+        # Get the top 10 symbols with the lowest avgInOI values
+        top_symbols_lowest = sorted_data[:10]
 
-    symbol_labels = [symbol_data['symbol'] for symbol_data in top_symbols]
-    avgInOI_data = [symbol_data['avgInOI'] for symbol_data in top_symbols]
-    
+        # Create lists to store symbols and avgInOI for the chart (lowest values)
+        symbols_lowest = [symbol_data['symbol'] for symbol_data in top_symbols_lowest]
+        avgInOI_values_lowest = [symbol_data['avgInOI'] for symbol_data in top_symbols_lowest]
+
+        # Sort the data based on avgInOI in descending order
+        sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=True)
+
+        # Get the top 10 symbols with positive avgInOI values
+        top_symbols_highest_positive = [symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
+
+        # Create lists to store symbols and avgInOI for the chart (highest positive values)
+        symbols_highest_positive = [symbol_data['symbol'] for symbol_data in top_symbols_highest_positive]
+        avgInOI_values_highest_positive = [symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
+
+        # Save the data into the database
+        chart_data = ChartData(data_json=json.dumps(data))
+        chart_data.save()
+
+        # Generate the HTML content with the charts
+        context = {
+            'symbols_lowest': symbols_lowest,
+            'avgInOI_values_lowest': avgInOI_values_lowest,
+            'symbols_highest_positive': symbols_highest_positive,
+            'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
+        }
+
+        # Render the template
+        return render(request, 'dashboard.html', context)
+    else:
+        # Retrieve the data from the database
+        chart_data = ChartData.objects.last()
+        if chart_data:
+            data = json.loads(chart_data.data_json)
+            # Sort the data based on avgInOI in ascending order
+            sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
+
+            # Get the top 10 symbols with the lowest avgInOI values
+            top_symbols_lowest = sorted_data[:10]
+
+            symbols_lowest = [symbol_data['symbol'] for symbol_data in top_symbols_lowest]
+            avgInOI_values_lowest = [symbol_data['avgInOI'] for symbol_data in top_symbols_lowest]
+
+            # Sort the data based on avgInOI in descending order
+            sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=True)
+
+            # Get the top 10 symbols with positive avgInOI values
+            top_symbols_highest_positive = [symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
+
+            symbols_highest_positive = [symbol_data['symbol'] for symbol_data in top_symbols_highest_positive]
+            avgInOI_values_highest_positive = [symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
+
+            context = {
+                'symbols_lowest': symbols_lowest,
+                'avgInOI_values_lowest': avgInOI_values_lowest,
+                'symbols_highest_positive': symbols_highest_positive,
+                'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
+            }
+            return render(request, 'dashboard.html', context)
+        else:
+            return HttpResponse("No data available.")
 
 
-    
-    symbols = [stock['symbol'] for stock in gainers]
-    percentages = [stock['gain_percentage'] for stock in gainers]
-   
-    symbols_loser = [stock['symbol_loser'] for stock in losers]
-    loss_percentage = [stock['loss_percentage'] for stock in losers]
 
 
-    context = {
-        'symbols': symbols,
-        'percentages': percentages,
-        'symbols_loser': symbols_loser,
-        'loss_percentage': loss_percentage,
-        'symbol_labels': symbol_labels,
-        'avgInOI_data': avgInOI_data,
-        'symbol_labels_looser': symbol_labels_looser,
-        'avgInOI_data_looser': avgInOI_data_looser,
-    
-    }
-    return render(request, "dashboard.html",context)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def help_support(request):
@@ -157,55 +263,29 @@ def learning_center(request):
 def blog(request):
     return render(request, "blog.html")
 
+
 def my_strategies(request):
     return render(request, "my_strategies.html")
+
+
 def my_portfolio(request):
     return render(request, "my_portfolio.html")
+
+
 def broking_details(request):
     return render(request, "broking_details.html")
+
+
 def courses_details(request):
     return render(request, "courses_details.html")
 
 
-import requests
-from django.shortcuts import render
 
-def chart_topgainer(request):
+
+ 
   
-    url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-    }
-    response = requests.get(url, headers=headers)
-    data = response.json()
-    sorted_data_looser = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=False)
-    top_symbols_looser = sorted_data_looser[:10]
 
-    symbol_labels_looser = [symbol_data['symbol'] for symbol_data in top_symbols_looser]
-    avgInOI_data_looser = [symbol_data['avgInOI'] for symbol_data in top_symbols_looser]
-
-    context = {
-        'symbol_labels_looser': symbol_labels_looser,
-        'avgInOI_data_looser': avgInOI_data_looser,
-    }
-
-
-    return render(request, 'chart_topgainer.html', context)
-
-
-
-
-
-
-
-   
-
-
-
-
-
+  
 
 
 def reset_password(request):
@@ -217,7 +297,7 @@ def Open_interest_analysis(request):
         symbol = request.POST['symbols']
         expiry_dates = request.POST["expiryDates"]
         print(symbol, expiry_dates)
-        if expiry_dates=="":
+        if expiry_dates == "":
             url = 'https://www.nseindia.com/api/option-chain-indices?symbol='+symbol
             print(url)
             headers = {
@@ -242,7 +322,7 @@ def Open_interest_analysis(request):
             data = []
             data = json.loads(json_records)
             return render(request, "Open_interest_analysis.html", {"dataframe": data})
-            
+
         else:
             url = 'https://www.nseindia.com/api/option-chain-indices?symbol='+symbol
             print(url)
@@ -410,8 +490,6 @@ def change_pass(request, token):
     return render(request, 'change_pass.html', context)
 
 
-from django.http import JsonResponse
-
 def get_option_chain(request):
     if request.method == 'GET':
         symbol = request.GET.get('symbol')
@@ -424,9 +502,9 @@ def get_option_chain(request):
             return JsonResponse({'success': False, 'message': 'Invalid symbol'})
 
         headers = {
-           'Accept-Encoding': 'gzip, deflate, br',
-  'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8',
-  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
         }
 
         try:
@@ -438,79 +516,76 @@ def get_option_chain(request):
             return JsonResponse({'expiry_dates': expiry_dates})
         except requests.exceptions.RequestException as e:
             return JsonResponse({'success': False, 'message': 'Error fetching option chain data'})
-        
 
     return JsonResponse({'success': False, 'message': 'Invalid request'})
- 
 
 
 def tests(request):
-        data = {
-    "data": [
-        {
-            "Unnamed: 0": 0,
-            "fivedayoichange": 8.76,
-            "fivedaypricechange": -0.02,
-            "futuresPrice": 18631.55,
-            "ivchange": 3.36,
-            "mediumtermoutlook": "-",
-            "onedayoichange": -0.93,
-            "onedaypricechange": -0.42,
-            "shorttermoutlook": "-",
-            "ticker": "NIFTY",
-            "volper": 60.71,
-            "volumechange": 106.87
-        },
-        {
-            "Unnamed: 0": 1,
-            "fivedayoichange": 8.72,
-            "fivedaypricechange": 0.02,
-            "futuresPrice": 44117.95,
-            "ivchange": -2.73,
-            "mediumtermoutlook": "-",
-            "onedayoichange": -0.72,
-            "onedaypricechange": -0.07,
-            "shorttermoutlook": "-",
-            "ticker": "BANKNIFTY",
-            "volper": 68.25,
-            "volumechange": 102.76
-        },
-        {
-            "Unnamed: 0": 2,
-            "fivedayoichange": 7.42,
-            "fivedaypricechange": -1.81,
-            "futuresPrice": 508.1,
-            "ivchange": -2.2,
-            "mediumtermoutlook": "-",
-            "onedayoichange": 1.53,
-            "onedaypricechange": -1.52,
-            "shorttermoutlook": "-",
-            "ticker": "AARTIIND",
-            "volper": 10.71,
-            "volumechange": 102.07
-        },
-        {
-            "Unnamed: 0": 3,
-            "fivedayoichange": -0.07,
-            "fivedaypricechange": 2.89,
-            "futuresPrice": 4138.05,
-            "ivchange": -1.29,
-            "mediumtermoutlook": "-",
-            "onedayoichange": -0.07,
-            "onedaypricechange": 0.77,
-            "shorttermoutlook": "-",
-            "ticker": "ABB",
-            "volper": 0.0,
-            "volumechange": 78.52
-        }
-    ]
-}
-        data1=[]
-        for d in data["data"]:
-            data1.append(d)
-      
-   
-        return render(request, 'tests.html',{'data1':data1})
+    data = {
+        "data": [
+            {
+                "Unnamed: 0": 0,
+                "fivedayoichange": 8.76,
+                "fivedaypricechange": -0.02,
+                "futuresPrice": 18631.55,
+                "ivchange": 3.36,
+                "mediumtermoutlook": "-",
+                "onedayoichange": -0.93,
+                "onedaypricechange": -0.42,
+                "shorttermoutlook": "-",
+                "ticker": "NIFTY",
+                "volper": 60.71,
+                "volumechange": 106.87
+            },
+            {
+                "Unnamed: 0": 1,
+                "fivedayoichange": 8.72,
+                "fivedaypricechange": 0.02,
+                "futuresPrice": 44117.95,
+                "ivchange": -2.73,
+                "mediumtermoutlook": "-",
+                "onedayoichange": -0.72,
+                "onedaypricechange": -0.07,
+                "shorttermoutlook": "-",
+                "ticker": "BANKNIFTY",
+                "volper": 68.25,
+                "volumechange": 102.76
+            },
+            {
+                "Unnamed: 0": 2,
+                "fivedayoichange": 7.42,
+                "fivedaypricechange": -1.81,
+                "futuresPrice": 508.1,
+                "ivchange": -2.2,
+                "mediumtermoutlook": "-",
+                "onedayoichange": 1.53,
+                "onedaypricechange": -1.52,
+                "shorttermoutlook": "-",
+                "ticker": "AARTIIND",
+                "volper": 10.71,
+                "volumechange": 102.07
+            },
+            {
+                "Unnamed: 0": 3,
+                "fivedayoichange": -0.07,
+                "fivedaypricechange": 2.89,
+                "futuresPrice": 4138.05,
+                "ivchange": -1.29,
+                "mediumtermoutlook": "-",
+                "onedayoichange": -0.07,
+                "onedaypricechange": 0.77,
+                "shorttermoutlook": "-",
+                "ticker": "ABB",
+                "volper": 0.0,
+                "volumechange": 78.52
+            }
+        ]
+    }
+    data1 = []
+    for d in data["data"]:
+        data1.append(d)
+
+    return render(request, 'tests.html', {'data1': data1})
 
 
 def Algo_market_place(request):
