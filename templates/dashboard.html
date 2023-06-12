@@ -328,15 +328,15 @@
 </div>
 
 <script>
-{% comment %} 
-      var symbols_gainer = {{ symbols_gainer|safe }};
+
+      var symbols = {{ symbols|safe }};
       var gain_percentages = {{ gain_percentages|safe }};
 
       var ctx = document.getElementById('gainersChart').getContext('2d');
       var chart = new Chart(ctx, {
           type: 'bar',
           data: {
-              labels: symbols_gainer,
+              labels: symbols,
               datasets: [{
                   label: '% Price Change',
                   data: gain_percentages,
@@ -363,12 +363,12 @@
               display: true,
               text: 'Chart.js Horizontal Bar Chart'
             }
-      });  {% endcomment %}
+      }); 
 
 
-      {% comment %}
-      var symbols_loser = {{ symbols_loser|safe }};
-      var loss_percentage = {{ loss_percentage|safe }};
+  
+   var symbols_loser = {{ symbols_losers|safe }};
+      var loss_percentage = {{ loss_percentages|safe }};
 
       var ctx = document.getElementById('losersChart').getContext('2d');
       var chart = new Chart(ctx, {
@@ -402,7 +402,7 @@
               text: 'Chart.js Horizontal Bar Chart'
             }
       }); 
-      {% endcomment %}
+
       var symbols_highest_positive = {{ symbols_highest_positive|safe }};
       var avgInOI_values_highest_positive = {{ avgInOI_values_highest_positive|safe }};
 

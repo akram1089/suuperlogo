@@ -1,3 +1,4 @@
+from .models import Top_Gainer
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -69,6 +70,72 @@ def Futures_Buildup(request):
 #     return top_gainers[:10]
 
 
+# def fetch_top_losers():
+#     url = "https://www.nseindia.com/api/live-analysis-variations?index=loosers"
+#     headers = {
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+#         "Connection": "keep-alive"
+#     }
+#     response = requests.get(url, headers=headers)
+#     data = response.json()
+
+#     top_losers = []
+#     for stock in data['FOSec']['data']:
+#         symbol_loser = stock['symbol']
+#         previous_close = stock['prev_price']
+#         current_price = stock['ltp']
+
+#         if symbol_loser and previous_close and current_price:
+#             loss_percentage = round(
+#                 ((previous_close - current_price) / previous_close) * 100, 2)
+#             top_losers.append({
+#                 "symbol_loser": symbol_loser,
+#                 "loss_percentage": loss_percentage
+#             })
+
+#     top_losers.sort(key=lambda x: x['loss_percentage'], reverse=True)
+#     return top_losers[:10]
+
+
+def fetch_top_gainers():
+    url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
+    headers = {
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+        "Connection": "keep-alive"
+    }
+    response = requests.get(url, headers=headers)
+
+    try:
+        data = response.json()
+    except ValueError:
+        data = None
+
+    top_gainers = []
+    if data and 'FOSec' in data and 'data' in data['FOSec']:
+        for stock in data['FOSec']['data']:
+            symbol = stock['symbol']
+            previous_close = stock['prev_price']
+            current_price = stock['ltp']
+
+            if symbol and previous_close and current_price:
+                gain_percentage = round(
+                    ((current_price - previous_close) / previous_close) * 100, 2)
+                top_gainers.append({
+                    "symbol": symbol,
+                    "gain_percentage": gain_percentage
+                })
+
+    top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
+    return top_gainers[:10]
+
+import requests
+from django.shortcuts import render
+from .models import Top_Loser
+
 def fetch_top_losers():
     url = "https://www.nseindia.com/api/live-analysis-variations?index=loosers"
     headers = {
@@ -78,65 +145,104 @@ def fetch_top_losers():
         "Connection": "keep-alive"
     }
     response = requests.get(url, headers=headers)
-    data = response.json()
-
-    top_losers = []
-    for stock in data['FOSec']['data']:
-        symbol_loser = stock['symbol']
-        previous_close = stock['prev_price']
-        current_price = stock['ltp']
-
-        if symbol_loser and previous_close and current_price:
-            loss_percentage = round(
-                ((previous_close - current_price) / previous_close) * 100, 2)
-            top_losers.append({
-                "symbol_loser": symbol_loser,
-                "loss_percentage": loss_percentage
-            })
-
-    top_losers.sort(key=lambda x: x['loss_percentage'], reverse=True)
-    return top_losers[:10]
-
-
-from django.shortcuts import render
-from .models import Top_Gainer
-import requests
-
-
-def chart_topgainer(request):
-
-    url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
-    headers = {
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
-        "Connection": "keep-alive"
-    }
-
-    response = requests.get(url, headers=headers)
 
     try:
         data = response.json()
     except ValueError:
         data = None
 
-    if data:
-        symbols = [entry['symbol'] for entry in data['data']]
-        gain_percentages = [entry['gain_percentage'] for entry in data['data']]
+    top_losers = []
+    if data and 'FOSec' in data and 'data' in data['FOSec']:
+        for stock in data['FOSec']['data']:
+            symbol = stock['symbol']
+            previous_close = stock['prev_price']
+            current_price = stock['ltp']
+
+            if symbol and previous_close and current_price:
+                loss_percentage = round(((previous_close - current_price) / previous_close) * 100, 2)
+                loss_percentage_with_sign = f"-{loss_percentage}"
+                top_losers.append({
+                    "symbol": symbol,
+                    "loss_percentage": loss_percentage_with_sign
+                })
+
+    top_losers.sort(key=lambda x: x['loss_percentage'], reverse=True)
+    return top_losers[:10]
+
+
+
+
+
+def chart_topgainer(request):
+
+    try:
+        top_losers = fetch_top_losers()
+        symbols = [loser['symbol'] for loser in top_losers]
+        loss_percentages = [loser['loss_percentage'] for loser in top_losers]
 
         # Replace existing data in the database with new data
-        chart_data = Top_Gainer.objects.first()
-        if chart_data:
-            chart_data.top_gainers = ", ".join(symbols[:10])
-            chart_data.save()
-        else:
-            Top_Gainer.objects.create(top_gainers=", ".join(symbols[:10]))
+        Top_Loser.objects.all().delete()  # Clear existing data
+        Top_Loser.objects.create(top_losers=", ".join(symbols))
 
-    else:
-        # Retrieve the top 10 gainers from the database
-        chart_data = Top_Gainer.objects.first()
-        if chart_data:
-            symbols = chart_data.top_gainers.split(", ")
+    except Exception as e:
+        # Retrieve the data from the database
+        top_loser_data = Top_Loser.objects.first()
+        if top_loser_data:
+            symbols = top_loser_data.top_losers.split(", ")
+            loss_percentages = []
+        else:
+            symbols = []
+            loss_percentages = []
+
+    context = {
+        'symbols': symbols,
+        'loss_percentages': loss_percentages,
+    }
+
+
+
+    return render(request, 'chart_topgainer.html', context)
+
+
+def dashboard(request):
+    try:
+        top_losers = fetch_top_losers()
+        symbols = [loser['symbol'] for loser in top_losers]
+        loss_percentages = [loser['loss_percentage'] for loser in top_losers]
+
+        # Replace existing data in the database with new data
+        Top_Loser.objects.all().delete()  # Clear existing data
+        Top_Loser.objects.create(top_losers=", ".join(symbols))
+
+    except Exception as e:
+        # Retrieve the data from the database
+        top_loser_data = Top_Loser.objects.first()
+        if top_loser_data:
+            symbols = top_loser_data.top_losers.split(", ")
+            loss_percentages = []
+        else:
+            symbols = []
+            loss_percentages = []
+
+    context = {
+        'symbols_losers': symbols,
+        'loss_percentages': loss_percentages,
+    }
+    try:
+        top_gainers = fetch_top_gainers()
+        symbols = [gainer['symbol'] for gainer in top_gainers]
+        gain_percentages = [gainer['gain_percentage']
+                            for gainer in top_gainers]
+
+        # Replace existing data in the database with new data
+        Top_Gainer.objects.all().delete()  # Clear existing data
+        Top_Gainer.objects.create(top_gainers=", ".join(symbols))
+
+    except Exception as e:
+        # Retrieve the data from the database
+        top_gainer_data = Top_Gainer.objects.first()
+        if top_gainer_data:
+            symbols = top_gainer_data.top_gainers.split(", ")
             gain_percentages = []
         else:
             symbols = []
@@ -147,10 +253,6 @@ def chart_topgainer(request):
         'gain_percentages': gain_percentages,
     }
 
-    return render(request, 'chart_topgainer.html', context)
-
-def dashboard(request):
-    
     url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
 
     headers = {
@@ -168,88 +270,82 @@ def dashboard(request):
         data = None
 
     if data is not None:
-        # Sort the data based on avgInOI in ascending order
+
         sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
 
-        # Get the top 10 symbols with the lowest avgInOI values
         top_symbols_lowest = sorted_data[:10]
 
-        # Create lists to store symbols and avgInOI for the chart (lowest values)
-        symbols_lowest = [symbol_data['symbol'] for symbol_data in top_symbols_lowest]
-        avgInOI_values_lowest = [symbol_data['avgInOI'] for symbol_data in top_symbols_lowest]
+        symbols_lowest = [symbol_data['symbol']
+                          for symbol_data in top_symbols_lowest]
+        avgInOI_values_lowest = [symbol_data['avgInOI']
+                                 for symbol_data in top_symbols_lowest]
 
-        # Sort the data based on avgInOI in descending order
-        sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=True)
+        sorted_data = sorted(
+            data['data'], key=lambda x: x['avgInOI'], reverse=True)
 
-        # Get the top 10 symbols with positive avgInOI values
-        top_symbols_highest_positive = [symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
+        top_symbols_highest_positive = [
+            symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
 
-        # Create lists to store symbols and avgInOI for the chart (highest positive values)
-        symbols_highest_positive = [symbol_data['symbol'] for symbol_data in top_symbols_highest_positive]
-        avgInOI_values_highest_positive = [symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
+        symbols_highest_positive = [symbol_data['symbol']
+                                    for symbol_data in top_symbols_highest_positive]
+        avgInOI_values_highest_positive = [
+            symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
 
-        # Save the data into the database
         chart_data = ChartData(data_json=json.dumps(data))
         chart_data.save()
 
-        # Generate the HTML content with the charts
         context = {
             'symbols_lowest': symbols_lowest,
             'avgInOI_values_lowest': avgInOI_values_lowest,
             'symbols_highest_positive': symbols_highest_positive,
             'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
+            'symbols': symbols,
+            'gain_percentages': gain_percentages,
+               'symbols_losers': symbols,
+        'loss_percentages': loss_percentages,
         }
 
         # Render the template
         return render(request, 'dashboard.html', context)
     else:
-        # Retrieve the data from the database
+
         chart_data = ChartData.objects.last()
         if chart_data:
             data = json.loads(chart_data.data_json)
-            # Sort the data based on avgInOI in ascending order
+
             sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
 
-            # Get the top 10 symbols with the lowest avgInOI values
             top_symbols_lowest = sorted_data[:10]
 
-            symbols_lowest = [symbol_data['symbol'] for symbol_data in top_symbols_lowest]
-            avgInOI_values_lowest = [symbol_data['avgInOI'] for symbol_data in top_symbols_lowest]
+            symbols_lowest = [symbol_data['symbol']
+                              for symbol_data in top_symbols_lowest]
+            avgInOI_values_lowest = [symbol_data['avgInOI']
+                                     for symbol_data in top_symbols_lowest]
 
-            # Sort the data based on avgInOI in descending order
-            sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'], reverse=True)
+            sorted_data = sorted(
+                data['data'], key=lambda x: x['avgInOI'], reverse=True)
 
-            # Get the top 10 symbols with positive avgInOI values
-            top_symbols_highest_positive = [symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
+            top_symbols_highest_positive = [
+                symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
 
-            symbols_highest_positive = [symbol_data['symbol'] for symbol_data in top_symbols_highest_positive]
-            avgInOI_values_highest_positive = [symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
+            symbols_highest_positive = [symbol_data['symbol']
+                                        for symbol_data in top_symbols_highest_positive]
+            avgInOI_values_highest_positive = [
+                symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
 
             context = {
                 'symbols_lowest': symbols_lowest,
                 'avgInOI_values_lowest': avgInOI_values_lowest,
                 'symbols_highest_positive': symbols_highest_positive,
                 'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
+                'symbols': symbols,
+                'gain_percentages': gain_percentages,
+                   'symbols_losers': symbols,
+        'loss_percentages': loss_percentages,
             }
             return render(request, 'dashboard.html', context)
         else:
             return HttpResponse("No data available.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def help_support(request):
@@ -278,14 +374,6 @@ def broking_details(request):
 
 def courses_details(request):
     return render(request, "courses_details.html")
-
-
-
-
- 
-  
-
-  
 
 
 def reset_password(request):

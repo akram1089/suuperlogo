@@ -30,19 +30,14 @@ class ChartData(models.Model):
 
     def __str__(self):
         return str(self.created_at)
-class ChartOI(models.Model):
-    data_json_oi = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return str(self.created_at)
-
-class ChartGainerData(models.Model):
-    data_json = models.TextField()
 
 
 class Top_Gainer(models.Model):
  top_gainers = models.TextField()
+
+class Top_Loser(models.Model):
+ top_losers = models.TextField()
 
 
 

@@ -13,13 +13,13 @@
             <canvas id="chart"></canvas>
             <script>
                 var symbols = {{ symbols | safe }};
-                var gainPercentages = {{ gain_percentages | safe }};
+                var loss_percentages = {{ loss_percentages | safe }};
         
                 var chartData = {
                     labels: symbols,
                     datasets: [{
                         label: 'Gain Percentage',
-                        data: gainPercentages,
+                        data: loss_percentages,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1

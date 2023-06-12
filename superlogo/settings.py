@@ -168,3 +168,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'tufailakram8190@gmail.com'
 EMAIL_HOST_PASSWORD = 'sxwwgptgifiljqsj'
 
+SITE_ID = 1

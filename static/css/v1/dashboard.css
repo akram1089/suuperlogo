@@ -1,7 +1,7 @@
 
 .list-group-item-action:focus, .list-group-item-action:hover{
     all: unset;
-      color: rgba(255, 255, 255, 0.921) !important;
+      color: rgba(34, 164, 250, 0.921) !important;
     }
     body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
       margin-left: 0;
@@ -56,7 +56,7 @@
     #sidebarToggle{
     
     border-radius: 5px;
-    color: white;
+    color: rgb(0, 149, 255);
     margin-right: 13px;
     cursor: pointer;
     }
@@ -79,7 +79,7 @@
     all: unset;
     transform: translateX(0 0 0 0);
     background: WHITE ;
-    color: #ffffffb8 ;
+    color: #0c6dffb8 ;
     cursor: pointer !important;
     transition: 0.3s;
     align-items: baseline;
@@ -87,21 +87,21 @@
     
     #dashboard_navigations{
     background: rgb(255, 255, 255) !important;
-    color: #ffffffb8 !important;
+    color: #000000b8 !important;
     }
     .active_dash{
     
-    color: rgb(255, 255, 255) !important;
+    color: rgb(49, 159, 255) !important;
 
     background-color: rgba(0, 0, 0, 0.093) !important;
-    border-left: 4px solid rgb(255, 255, 255) !important;
+    border-left: 4px solid rgb(49, 148, 255) !important;
     font-weight: 500 !important;
     }
     
     
     
     #dashboard_nav{
-      background: linear-gradient(178deg, rgb(0 102 255) 0%, rgb(0 158 255) 0%, rgb(48 131 208) 50%)  !important;
+      /* background: linear-gradient(178deg, rgb(0 102 255) 0%, rgb(0 158 255) 0%, rgb(48 131 208) 50%)  !important; */
     }
     
     
@@ -253,7 +253,7 @@
 
     a.list-group-item:focus{
       background-color: rgba(0, 0, 0, 0.093) !important;
-      color: rgb(255, 255, 255) !important;
+      color: rgb(59, 147, 255) !important;
 
     }
 
@@ -262,13 +262,13 @@
         border: none !important;
     }
     .sub-menu.nav-item:hover{
-      color: rgb(255, 255, 255) !important;
+      color: rgb(15, 122, 228) !important;
 
         
     }
     .sidebar .nav-link:hover {
 
-      color: rgb(255, 255, 255) !important;
+      color: rgb(0, 136, 240) !important;
     }
 
 
@@ -515,7 +515,7 @@
 }
 
 .offcanvas-body,.nav.flex-column {
-  background-image: url("../../img/sidebar_background.jpg") !important;
+ 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -528,5 +528,5 @@
 }
 a.list-group-item,.sidebar .nav-link{
   background: transparent ;
-  color: rgba(255, 255, 255, 0.645) ;
+  color: rgba(0, 123, 255, 0.748) ;
 }
