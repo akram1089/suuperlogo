@@ -301,7 +301,7 @@
                                 </div>
                                 <div>
                                     {% if user.is_authenticated %}
-                                    <a class="button btn btn-primary" href="{% url 'strategy_builder' %}">Strategy Builder</a>
+                                    <a class="button btn btn-primary" href="{% url 'dashboard' %}">Dashboard</a>
                                     Welcome--{{user.full_name}}
                                     {% else %}
 
@@ -566,7 +566,7 @@
                     <div class="col-3 d-none d-xl-block">
                         {% if user.is_authenticated %}
                         <a class="button btn btn-outline-primary" type="button"
-                            href="{% url 'strategy_builder' %}">Strategy Builder</a>
+                            href="{% url 'dashboard' %}">Dashboard</a>
                         {% else %}
                         <div class="header__btn-wrapper d-flex align-items-center justify-content-end">
                             <a class="header__btn header__btn--signup btn" href="#" title="" data-bs-toggle="modal"
