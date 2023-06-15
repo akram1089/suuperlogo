@@ -899,34 +899,34 @@ def dii_fii(request):
     return render(request, 'dii_fii.html', context)
 
 
-def chart_topgainer(request):
+# def chart_topgainer(request):
 
-    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
+#     url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
 
-    response = requests.get(url, headers=headers)
-    data = response.json()
+#     response = requests.get(url, headers=headers)
+#     data = response.json()
 
-    all_list = []
-    for d in data['data']:
-        if d['symbol'] != 'NIFTY 50':
-            all_list.append({
-                'symbol': d['symbol'],
-                'pChange': d['pChange']
-            })
+#     all_list = []
+#     for d in data['data']:
+#         if d['symbol'] != 'NIFTY 50':
+#             all_list.append({
+#                 'symbol': d['symbol'],
+#                 'pChange': d['pChange']
+#             })
 
-    # Randomly select 10 symbols from the top 50
-    random_symbols = random.sample(all_list, 10)
+#     # Randomly select 10 symbols from the top 50
+#     random_symbols = random.sample(all_list, 10)
 
-    df = pd.DataFrame(random_symbols)
-    symbols = df.to_dict(orient='records')
+#     df = pd.DataFrame(random_symbols)
+#     symbols = df.to_dict(orient='records')
 
-    return render(request, 'chart_topgainer.html', {'symbols': symbols})
+#     return render(request, 'chart_topgainer.html', {'symbols': symbols})
 
 
 def base(request):
@@ -965,3 +965,44 @@ def option_strategies(request):
 
 def strategy_builder(request):
     return render(request, 'strategy_builder.html')
+
+
+def chart_topgainer(request):
+  
+    try:
+        url = "https://www.nseindia.com/api/equity-stockIndices?index=SECURITIES%20IN%20F%26O"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive"
+        }
+
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        # Create a DataFrame from the data
+        df = pd.DataFrame(data['data'])
+
+        # Convert totalTradedVolume column to numeric
+        df['totalTradedVolume'] = pd.to_numeric(df['totalTradedVolume'])
+
+        # Sort DataFrame by totalTradedVolume in descending order
+        df_sorted = df.sort_values(by='totalTradedVolume', ascending=False)
+
+        # Filter the top 10 rows
+        top_10 = df_sorted.head(10)
+
+        # Get the symbol and total traded volume as lists
+        symbols_volume = top_10['symbol'].tolist()
+        traded_volumes = top_10['totalTradedVolume'].tolist()
+
+        # Render the chart
+        labels = symbols_volume
+        data = traded_volumes
+
+        return render(request, 'chart_topgainer.html', {'labels': labels, 'data': data})
+    except requests.exceptions.RequestException:
+        # Handle the error case here or display a default chart
+        return render(request, 'chart_topgainer.html')
+
