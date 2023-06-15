@@ -58,7 +58,7 @@
     class="top_gainer_loser_graph d-flex mt-5"
     style="flex-wrap: wrap; gap: 2rem; justify-content: center;"
   >
-    <div
+    {% comment %} <div
       class="chart-container"
       style="
         position: relative;
@@ -72,9 +72,9 @@
     >
       <h5>Top Price Gainers</h5>
       <canvas id="gainersChart"></canvas>
-    </div>
+    </div> {% endcomment %}
 
-    <div
+    {% comment %} <div
       class="chart-container"
       style="
         position: relative;
@@ -88,7 +88,7 @@
     >
       <h5>Top Price Loosers</h5>
       <canvas id="losersChart"></canvas>
-    </div>
+    </div> {% endcomment %}
     <div
       class="chart-container"
       style="
@@ -343,7 +343,7 @@
 </div>
 
 <script>
-
+{% comment %} 
       var symbols = {{ symbols|safe }};
       var gain_percentages = {{ gain_percentages|safe }};
 
@@ -378,10 +378,10 @@
               display: true,
               text: 'Chart.js Horizontal Bar Chart'
             }
-      }); 
+      });  {% endcomment %}
 
 
-  
+{% comment %}   
    var symbols_loser = {{ symbols_losers|safe }};
       var loss_percentage = {{ loss_percentages|safe }};
 
@@ -416,7 +416,7 @@
               display: true,
               text: 'Chart.js Horizontal Bar Chart'
             }
-      }); 
+      });  {% endcomment %}
 
       var symbols_highest_positive = {{ symbols_highest_positive|safe }};
       var avgInOI_values_highest_positive = {{ avgInOI_values_highest_positive|safe }};

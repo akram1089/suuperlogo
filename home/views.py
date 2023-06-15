@@ -110,73 +110,73 @@ def Futures_Buildup(request):
 #     return top_losers[:10]
 
 
-def fetch_top_gainers():
-    url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
-    headers = {
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
-        "Connection": "keep-alive"
-    }
-    response = requests.get(url, headers=headers)
+# def fetch_top_gainers():
+#     url = "https://www.nseindia.com/api/live-analysis-variations?index=gainers"
+#     headers = {
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+#         "Connection": "keep-alive"
+#     }
+#     response = requests.get(url, headers=headers)
 
-    try:
-        data = response.json()
-    except ValueError:
-        data = None
+#     try:
+#         data = response.json()
+#     except ValueError:
+#         data = None
 
-    top_gainers = []
-    if data and 'FOSec' in data and 'data' in data['FOSec']:
-        for stock in data['FOSec']['data']:
-            symbol = stock['symbol']
-            previous_close = stock['prev_price']
-            current_price = stock['ltp']
+#     top_gainers = []
+#     if data and 'FOSec' in data and 'data' in data['FOSec']:
+#         for stock in data['FOSec']['data']:
+#             symbol = stock['symbol']
+#             previous_close = stock['prev_price']
+#             current_price = stock['ltp']
 
-            if symbol and previous_close and current_price:
-                gain_percentage = round(
-                    ((current_price - previous_close) / previous_close) * 100, 2)
-                top_gainers.append({
-                    "symbol": symbol,
-                    "gain_percentage": gain_percentage
-                })
+#             if symbol and previous_close and current_price:
+#                 gain_percentage = round(
+#                     ((current_price - previous_close) / previous_close) * 100, 2)
+#                 top_gainers.append({
+#                     "symbol": symbol,
+#                     "gain_percentage": gain_percentage
+#                 })
 
-    top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
-    return top_gainers[:10]
+#     top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
+#     return top_gainers[:10]
 
 
-def fetch_top_losers():
-    url = "https://www.nseindia.com/api/live-analysis-variations?index=loosers"
-    headers = {
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
-        "Connection": "keep-alive"
-    }
-    response = requests.get(url, headers=headers)
+# def fetch_top_losers():
+#     url = "https://www.nseindia.com/api/live-analysis-variations?index=loosers"
+#     headers = {
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+#         "Connection": "keep-alive"
+#     }
+#     response = requests.get(url, headers=headers)
 
-    try:
-        data = response.json()
-    except ValueError:
-        data = None
+#     try:
+#         data = response.json()
+#     except ValueError:
+#         data = None
 
-    top_losers = []
-    if data and 'FOSec' in data and 'data' in data['FOSec']:
-        for stock in data['FOSec']['data']:
-            symbol = stock['symbol']
-            previous_close = stock['prev_price']
-            current_price = stock['ltp']
+#     top_losers = []
+#     if data and 'FOSec' in data and 'data' in data['FOSec']:
+#         for stock in data['FOSec']['data']:
+#             symbol = stock['symbol']
+#             previous_close = stock['prev_price']
+#             current_price = stock['ltp']
 
-            if symbol and previous_close and current_price:
-                loss_percentage = round(
-                    ((previous_close - current_price) / previous_close) * 100, 2)
-                loss_percentage_with_sign = f"-{loss_percentage}"
-                top_losers.append({
-                    "symbol": symbol,
-                    "loss_percentage": loss_percentage_with_sign
-                })
+#             if symbol and previous_close and current_price:
+#                 loss_percentage = round(
+#                     ((previous_close - current_price) / previous_close) * 100, 2)
+#                 loss_percentage_with_sign = f"-{loss_percentage}"
+#                 top_losers.append({
+#                     "symbol": symbol,
+#                     "loss_percentage": loss_percentage_with_sign
+#                 })
 
-    top_losers.sort(key=lambda x: x['loss_percentage'], reverse=True)
-    return top_losers[:10]
+#     top_losers.sort(key=lambda x: x['loss_percentage'], reverse=True)
+#     return top_losers[:10]
 
 
 def get_chart_data():
@@ -227,51 +227,51 @@ def get_chart_data():
 def dashboard(request):
     symbols_volume, traded_volumes = get_chart_data()
 
-    try:
-        top_losers = fetch_top_losers()
-        symbols = [loser['symbol'] for loser in top_losers]
-        loss_percentages = [loser['loss_percentage'] for loser in top_losers]
+    # try:
+    #     top_losers = fetch_top_losers()
+    #     symbols = [loser['symbol'] for loser in top_losers]
+    #     loss_percentages = [loser['loss_percentage'] for loser in top_losers]
 
-        Top_Loser.objects.all().delete()
-        Top_Loser.objects.create(top_losers=", ".join(symbols))
+    #     Top_Loser.objects.all().delete()
+    #     Top_Loser.objects.create(top_losers=", ".join(symbols))
 
-    except Exception as e:
+    # except Exception as e:
 
-        top_loser_data = Top_Loser.objects.first()
-        if top_loser_data:
-            symbols = top_loser_data.top_losers.split(", ")
-            loss_percentages = []
-        else:
-            symbols = []
-            loss_percentages = []
+    #     top_loser_data = Top_Loser.objects.first()
+    #     if top_loser_data:
+    #         symbols = top_loser_data.top_losers.split(", ")
+    #         loss_percentages = []
+    #     else:
+    #         symbols = []
+    #         loss_percentages = []
 
-    context = {
-        'symbols_losers': symbols,
-        'loss_percentages': loss_percentages,
-    }
-    try:
-        top_gainers = fetch_top_gainers()
-        symbols = [gainer['symbol'] for gainer in top_gainers]
-        gain_percentages = [gainer['gain_percentage']
-                            for gainer in top_gainers]
+    # context = {
+    #     'symbols_losers': symbols,
+    #     'loss_percentages': loss_percentages,
+    # }
+    # try:
+    #     top_gainers = fetch_top_gainers()
+    #     symbols = [gainer['symbol'] for gainer in top_gainers]
+    #     gain_percentages = [gainer['gain_percentage']
+    #                         for gainer in top_gainers]
 
-        Top_Gainer.objects.all().delete()
-        Top_Gainer.objects.create(top_gainers=", ".join(symbols))
+    #     Top_Gainer.objects.all().delete()
+    #     Top_Gainer.objects.create(top_gainers=", ".join(symbols))
 
-    except Exception as e:
+    # except Exception as e:
 
-        top_gainer_data = Top_Gainer.objects.first()
-        if top_gainer_data:
-            symbols = top_gainer_data.top_gainers.split(", ")
-            gain_percentages = []
-        else:
-            symbols = []
-            gain_percentages = []
+    #     top_gainer_data = Top_Gainer.objects.first()
+    #     if top_gainer_data:
+    #         symbols = top_gainer_data.top_gainers.split(", ")
+    #         gain_percentages = []
+    #     else:
+    #         symbols = []
+    #         gain_percentages = []
 
-    context = {
-        'symbols': symbols,
-        'gain_percentages': gain_percentages,
-    }
+    # context = {
+    #     'symbols': symbols,
+    #     'gain_percentages': gain_percentages,
+    # }
 
     url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
 
@@ -319,10 +319,10 @@ def dashboard(request):
             'avgInOI_values_lowest': avgInOI_values_lowest,
             'symbols_highest_positive': symbols_highest_positive,
             'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
-            'symbols': symbols,
-            'gain_percentages': gain_percentages,
-            'symbols_losers': symbols,
-            'loss_percentages': loss_percentages,
+            # 'symbols': symbols,
+            # 'gain_percentages': gain_percentages,
+            # 'symbols_losers': symbols,
+            # 'loss_percentages': loss_percentages,
             'symbols_volume': symbols_volume,
             'traded_volumes': traded_volumes,
         }
@@ -359,10 +359,10 @@ def dashboard(request):
                 'avgInOI_values_lowest': avgInOI_values_lowest,
                 'symbols_highest_positive': symbols_highest_positive,
                 'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
-                'symbols': symbols,
-                'gain_percentages': gain_percentages,
-                'symbols_losers': symbols,
-                'loss_percentages': loss_percentages,
+                # 'symbols': symbols,
+                # 'gain_percentages': gain_percentages,
+                # 'symbols_losers': symbols,
+                # 'loss_percentages': loss_percentages,
                 'symbols_volume': symbols_volume,
                 'traded_volumes': traded_volumes,
             }
