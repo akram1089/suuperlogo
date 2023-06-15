@@ -225,14 +225,7 @@ def get_chart_data():
         return symbols_volume, [float(volume.trade_volume) for volume in traded_volumes]
 
 
-def dashboard(request):
-    # symbols_volume, traded_volumes = get_chart_data()
-    # context = {
-    #     'symbols_volume': symbols_volume,
-    #     'traded_volumes': traded_volumes,
-    # }
 
-    return render(request, 'dashboard.html')
 
 # def dashboard(request):
 #     symbols_volume, traded_volumes = get_chart_data()
@@ -969,6 +962,41 @@ def strategy_builder(request):
 
 def chart_topgainer(request):
 
+    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response_oi_loser = requests.get(url, headers=headers)
+    data_oi_loser = response_oi_loser.json()
+
+    # Extract the name and value data_oi_loser
+    name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
+
+    # Create a pandas DataFrame
+    df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
+
+    # Select the top 10 rows
+    top_10_df_oi_loser = df_oi_loser.head(10)
+
+    # Prepare data for Chart.js
+    labels_oi_loser = top_10_df_oi_loser["name"].tolist()
+    values_oi_loser = top_10_df_oi_loser["value"].tolist()
+
+    context = {
+        "labels_oi_loser": labels_oi_loser,
+        "values_oi_loser": values_oi_loser,
+    }
+
+    return render(request, 'chart_topgainer.html',context)
+
+
+def dashboard(request):
+    
     url = "https://etmarketsapis.indiatimes.com/ET_Stats/gainers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=desc&marketcap=largecap&duration=1d"
 
     headers = {
@@ -990,17 +1018,102 @@ def chart_topgainer(request):
     top_10 = df.head(10)
 
     # Prepare data for Chart.js
-    labels = top_10["companyShortName"].tolist()
-    values = top_10["percentChange"].tolist()
+    top_gainer_labels = top_10["companyShortName"].tolist()
+    top_gainer_values = top_10["percentChange"].tolist()
+  
 
-    context = {
-        "labels": labels,
-        "values": values,
+    url = "https://etmarketsapis.indiatimes.com/ET_Stats/losers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=asc&marketcap=largecap&duration=1d"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
     }
 
+    response_losers = requests.get(url, headers=headers)
+    data_losers = response_losers.json()
+
+    # Create a pandas DataFrame
+    df_losers = pd.DataFrame(data_losers["searchresult"])
+
+    # Select the desired columns
+    df_losers = df_losers[["companyShortName", "percentChange"]]
+
+    # Get the top 10 losers
+    top_10_losers = df_losers.head(10)
+
+    # Prepare data for Chart.js
+    looser_labels = top_10_losers["companyShortName"].tolist()
+    looser_values = top_10_losers["percentChange"].tolist()
+    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_gainers/"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response_oi = requests.get(url, headers=headers)
+    data_oi = response_oi.json()
+
+    # Extract the name and value data_oi
+    name_value_list = [(item[0]["name"], item[7]) for item in data_oi["tableData"]]
+
+    # Create a pandas DataFrame
+    df_oi = pd.DataFrame(name_value_list, columns=["name", "value"])
+
+    # Get the top 10 rows
+    top_10_df_oi = df_oi.head(10)
+
+    # Prepare data for Chart.js
+    labels_oi_gainer = top_10_df_oi["name"].tolist()
+    values_oi_losers = top_10_df_oi["value"].tolist()
+    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response_oi_loser = requests.get(url, headers=headers)
+    data_oi_loser = response_oi_loser.json()
+
+    # Extract the name and value data_oi_loser
+    name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
+
+    # Create a pandas DataFrame
+    df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
+
+    # Select the top 10 rows
+    top_10_df_oi_loser = df_oi_loser.head(10)
+
+    # Prepare data for Chart.js
+    labels_oi_loser = top_10_df_oi_loser["name"].tolist()
+    values_oi_loser = top_10_df_oi_loser["value"].tolist()
 
 
-  
        
-    return render(request, 'chart_topgainer.html',context)
+    
 
+    
+        
+    
+ 
+
+    context = {
+        "looser_labels": looser_labels,
+        "looser_values": looser_values,
+        "top_gainer_labels": top_gainer_labels,
+        "top_gainer_values": top_gainer_values,
+        "labels_oi_gainer": labels_oi_gainer,
+        "values_oi_losers": values_oi_losers,
+         "labels_oi_loser": labels_oi_loser,
+        "values_oi_loser": values_oi_loser,
+    }
+    print(context)
+
+    return render(request, 'dashboard.html',context)
