@@ -968,41 +968,39 @@ def strategy_builder(request):
 
 
 def chart_topgainer(request):
+
+    url = "https://etmarketsapis.indiatimes.com/ET_Stats/gainers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=desc&marketcap=largecap&duration=1d"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    # Create a pandas DataFrame
+    df = pd.DataFrame(data["searchresult"])
+
+    # Select the desired columns
+    df = df[["companyShortName", "percentChange"]]
+
+    top_10 = df.head(10)
+
+    # Prepare data for Chart.js
+    labels = top_10["companyShortName"].tolist()
+    values = top_10["percentChange"].tolist()
+
+    context = {
+        "labels": labels,
+        "values": values,
+    }
+
+
+
   
-    try:
-        url = "https://www.nseindia.com/api/equity-stockIndices?index=SECURITIES%20IN%20F%26O"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Connection": "keep-alive"
-        }
-
-        response = requests.get(url, headers=headers)
-        data = response.json()
-
-        # Create a DataFrame from the data
-        df = pd.DataFrame(data['data'])
-
-        # Convert totalTradedVolume column to numeric
-        df['totalTradedVolume'] = pd.to_numeric(df['totalTradedVolume'])
-
-        # Sort DataFrame by totalTradedVolume in descending order
-        df_sorted = df.sort_values(by='totalTradedVolume', ascending=False)
-
-        # Filter the top 10 rows
-        top_10 = df_sorted.head(10)
-
-        # Get the symbol and total traded volume as lists
-        symbols_volume = top_10['symbol'].tolist()
-        traded_volumes = top_10['totalTradedVolume'].tolist()
-
-        # Render the chart
-        labels = symbols_volume
-        data = traded_volumes
-
-        return render(request, 'chart_topgainer.html', {'labels': labels, 'data': data})
-    except requests.exceptions.RequestException:
-        # Handle the error case here or display a default chart
-        return render(request, 'chart_topgainer.html')
+       
+    return render(request, 'chart_topgainer.html',context)
 
