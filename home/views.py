@@ -226,13 +226,13 @@ def get_chart_data():
 
 
 def dashboard(request):
-    symbols_volume, traded_volumes = get_chart_data()
-    context = {
-        'symbols_volume': symbols_volume,
-        'traded_volumes': traded_volumes,
-    }
+    # symbols_volume, traded_volumes = get_chart_data()
+    # context = {
+    #     'symbols_volume': symbols_volume,
+    #     'traded_volumes': traded_volumes,
+    # }
 
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard.html')
 
 # def dashboard(request):
 #     symbols_volume, traded_volumes = get_chart_data()
