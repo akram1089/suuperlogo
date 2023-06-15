@@ -12,7 +12,10 @@
 
   <h2 class="text-center text-primary">Option chain</h2>
 
-
+<h5 class="text-warning " style='    display: flex;
+flex-direction: row-reverse;
+margin: 11px 0 24px 0;
+border-top: 1px solid beige; '>Page will referesh after every 15 minutes</h5>
 
   <form action=" {% url 'Open_interest_analysis' %} " method="post">
     {% csrf_token %}
@@ -166,6 +169,10 @@ console.log("HI tehre");
   });
 </script>
 
-
+<script>
+  setInterval(function() {
+      location.reload();
+  }, 150000); //15 minute refresh
+</script>
 
 {% endblock dashboard_body %}

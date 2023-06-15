@@ -1,0 +1,477 @@
+{% extends "base_dashboard.html" %} {% load static %} {% block dashboard_body %}
+<style>
+
+  
+
+</style>
+<div class="main_head_strategies border-bottom my-4">
+   
+    <div class="strategies d-flex mt-4" style="align-items: center; gap: 0.3rem;">
+        <h4 class="">Option Strategies  
+        </h4> <span><i class="bi bi-exclamation-circle" class="btn btn-primary" type="button"
+                data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample"></i></span>
+    </div>
+
+
+
+
+</div>
+<div class="collapse" id="collapseExample" style="    margin-bottom: 25px;">
+    <div class="card card-body">
+        <div class="antd-pro-components-markdown-index-markdownStyle">
+            <p> Strategies </p>
+            <ul>
+                <li>Bear Call,Put, Spread</li>
+                <li>Bull Call,Put, Spread</li>
+          
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+<div class="column-left pt-2">
+  <div class="row">
+    <div class="col-12">
+    
+      <div class="nifty-chart-panel">
+        <div class="content-box">
+          <div>
+            <p class="float-lg-end float-xl-end ps-lg-3 fs-5 label-color-6">
+              <img
+                src="https://d4rwm6gigk5fh.cloudfront.net/images/options/option-payoff-diagram.webp"
+                alt="Bear Call Spread"
+                width="470"
+                title="Bear Call Spread"
+                class="img-fluid ml-0 ml-lg-3 ml-xl-3"
+              />
+            </p>
+            <h2 class="mb-3 label-color-4 fs-5">Bear Call Spread</h2>
+            <p class="fs-5 label-color-6">
+              A bear call spread is a limited-risk-limited-reward strategy,
+              consisting of one short call option and one long call option. This
+              strategy generally profits if the stock price holds steady or
+              declines. It is one of the basic option strategies.
+            </p>
+          </div>
+          <div>
+            <p class="fs-5 label-color-6">
+              The most it can generate is the net premium received at the
+              outset. If the forecast is wrong and the stock rallies instead,
+              the losses grow only until long call caps the amount.
+            </p>
+            <div class="clearfix mb-4"></div>
+            <p class="float-lg-start float-xl-start pe-lg-3">
+              <img
+                src="https://d4rwm6gigk5fh.cloudfront.net/images/options/option-payoff-diagram2.webp"
+                alt="Bear Put Spread"
+                width="470"
+                title="Bear Put Spread"
+                class="img-fluid mr-0 mr-lg-3 mr-xl-3"
+              />
+            </p>
+          </div>
+          <h3 class="mb-3 label-color-4 fs-5">Bear Put Spread</h3>
+          <p class="fs-5 label-color-6">
+            A bear put spread consists of buying one put and selling another
+            put, at a lower strike, to offset part of the upfront cost. The
+            spread generally profits if the stock price moves lower. The
+            potential profit is limited, but so is the risk should the stock
+            unexpectedly rally. also a simple and most used option strategies
+            used by traders.
+          </p>
+          <div class="clearfix mb-4"></div>
+          <div>
+            <h4 class="mb-3 label-color-4 fs-5">Bear Spread Spread</h4>
+            <p class="mb-4 pb-4 fs-5 label-color-6">
+              This strategy is the combination of a bear put spread and a bear
+              call spread. A key part of the strategy is to initiate the
+              position at even money, so the cost of the put spread should be
+              offset by the proceeds from the call spread.
+            </p>
+            <p class="float-lg-end float-xl-end ps-lg-3 fs-5 label-color-6">
+              <img
+                src="https://d4rwm6gigk5fh.cloudfront.net/images/options/option-payoff-diagram3.webp"
+                alt="Bull Call Spread"
+                width="470"
+                title="Bull Call Spread"
+                class="img-fluid ml-0 ml-lg-3 ml-xl-3"
+              />
+            </p>
+          </div>
+          <h4 class="mb-3 label-color-4 fs-5">Bull Call Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy consists of buying one call option and selling another
+            at a higher strike price to help pay the cost. The spread generally
+            profits if the stock price moves higher, just as a regular long call
+            strategy would, up to the point where the short call caps further
+            gains.
+          </p>
+          <div class="clearfix mb-2"></div>
+          <div class="mb-4 option-strategies-yt">
+            <iframe
+              src="https://www.youtube.com/embed/GpIK1uQilw4?rel=0&amp;showinfo=0&amp;autoplay=false"
+              width="100%"
+              height="400"
+              controls=""
+            ></iframe>
+          </div>
+          <p class="float-lg-end float-xl-end ps-lg-3 fs-5 label-color-6">
+            <img
+              src="https://d4rwm6gigk5fh.cloudfront.net/images/options/option-payoff-diagram4.webp"
+              alt="Bull Put Spread"
+              width="470"
+              title="Bull Put Spread"
+              class="img-fluid ml-0 ml-lg-3 ml-xl-3"
+            />
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Bull Put Spread</h4>
+          <p class="fs-5 label-color-6">
+            A bull put spread is a limited-risk-limited-reward strategy,
+            consisting of a short put option and a long put option with a lower
+            strike. This spread generally profits if the stock price holds
+            steady or rises.
+          </p>
+          <div class="clearfix mb-4"></div>
+          <h4 class="mb-3 label-color-4 fs-5">Bull Spread Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy is the combination of a bull call spread and a bull
+            put spread. A key part of the strategy is to initiate the position
+            at even money, so the cost of the call spread should be offset by
+            the proceeds from the put spread.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Cash-Backed Call</h4>
+          <p class="fs-5 label-color-6">
+            This strategy allows an investor to purchase stock at the lower of
+            strike price or market price during the life of the option.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Cash-Secured Put</h4>
+          <p class="fs-5 label-color-6">
+            The cash-secured put involves writing a put option and
+            simultaneously setting aside the cash to buy the stock if assigned.
+            If things go as hoped, it allows an investor to buy the stock at a
+            price below its current market value.
+          </p>
+          <p class="pb-4">
+            The investor must be prepared for the possibility that the put won’t
+            be assigned. In that case, the investor simply keeps the interest on
+            the T-Bill and the premium received for selling the put option.
+          </p>
+          <div>
+            <p class="float-lg-start float-xl-start pe-lg-3">
+              <img
+                src="https://d4rwm6gigk5fh.cloudfront.net/images/options/option-payoff-diagram5..webp"
+                alt="Collar"
+                title="Collar"
+                width="470"
+                class="img-fluid mr-3"
+              />
+            </p>
+            <h4 class="mb-3 label-color-4 fs-5">Collar</h4>
+            <p class="fs-5 label-color-6">
+              The investor adds a collar to an existing long stock position as a
+              temporary, slightly less-than-complete hedge against the effects
+              of a possible near-term decline. The long put strike provides a
+              minimum selling price for the stock, and the short call strike
+              sets a maximum price.
+            </p>
+          </div>
+          <div class="clearfix mb-4"></div>
+          <div>
+            <p class="float-lg-end float-xl-end ps-lg-3 fs-5 label-color-6">
+              <img
+                src="https://d4rwm6gigk5fh.cloudfront.net/images/options/option-payoff-diagram6..webp"
+                width="470"
+                alt="Covered Call"
+                title="Covered Call"
+                class="img-fluid mr-0 mr-lg-3 mr-xl-3"
+              />
+            </p>
+            <h4 class="mb-3 label-color-4 fs-5">Covered Call</h4>
+            <p class="fs-5 label-color-6">
+              This strategy consists of writing a call that is covered by an
+              equivalent long stock position. It provides a small hedge on the
+              stock and allows an investor to earn premium income, in return for
+              temporarily forfeiting much of the stock’s upside potential.
+            </p>
+          </div>
+          <div class="clearfix"></div>
+          <h4 class="mb-3 label-color-4 fs-5">Covered Put</h4>
+          <p class="fs-5 label-color-6">
+            This strategy is used to arbitrage a put that is overvalued because
+            of its early-exercise feature. The investor simultaneously sells an
+            in-the-money put at its intrinsic value and shorts the stock, and
+            then invests the proceeds in an instrument earning the overnight
+            interest rate. When the option is exercised, the position liquidates
+            at breakeven, but the investor keeps the interest earned.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Covered Ratio Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock moves up to, but not
+            above, the strike price of the short calls. Beyond that, the profit
+            is eroded and then hits a plateau.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Covered Strangle</h4>
+          <p class="fs-5 label-color-6">
+            This strategy is appropriate for a stock considered to be fairly
+            valued. The investor has a long stock position and is willing to
+            sell the stock if it goes higher or buy more of the stock if it goes
+            lower.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Call</h4>
+          <p class="fs-5 label-color-6">
+            This strategy consists of buying a call option. It is a candidate
+            for investors who want a chance to participate in the underlying
+            stock’s expected appreciation during the term of the option. If
+            things go as planned, the investor will be able to sell the call at
+            a profit at some point before expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Call Butterfly</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is at the body of the
+            butterfly at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Call Calendar Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy combines a longer-term bullish outlook with a
+            near-term neutral/bearish outlook. If the underlying stock remains
+            steady or declines during the life of the near-term option, that
+            option will expire worthless and leave the investor owning the
+            longer-term option free and clear. If both options have the same
+            strike price, the strategy will always require paying a premium to
+            initiate the position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Call Condor</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying security is between the two
+            short call strikes at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Condor</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is outside the outer
+            wings at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Iron Butterfly</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is outside the wings
+            of the iron butterfly at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Put</h4>
+          <p class="fs-5 label-color-6">
+            This strategy consists of buying puts as a means to profit if the
+            stock price moves lower. It is a candidate for bearish investors who
+            want to participate in an anticipated downturn, but without the risk
+            and inconveniences of selling the stock short.
+          </p>
+          <p class="fs-5 label-color-6">
+            The time horizon is limited to the life of the option.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Put Butterfly</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is at the body of the
+            butterfly at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Put Calendar Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy combines a longer-term bearish outlook with a
+            near-term neutral/bullish outlook. If the stock remains steady or
+            rises during the life of the near-term option, it will expire
+            worthless and leave the investor owning the longer-term option. If
+            both options have the same strike price, the strategy will always
+            require paying a premium to initiate the position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Put Condor</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying security is between the two
+            short put strikes at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Ratio Call Spread</h4>
+          <p class="fs-5 label-color-6">
+            The initial cost to initiate this strategy is rather low, and may
+            even earn a credit, but the upside potential is unlimited. The basic
+            concept is for the total delta of the two long calls to roughly
+            equal the delta of the single short call. If the underlying stock
+            only moves a little, the change in value of the option position will
+            be limited. But if the stock rises enough to where the total delta
+            of the two long calls approaches 200 the strategy acts like a long
+            stock position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Ratio Put Spread</h4>
+          <p class="fs-5 label-color-6">
+            The initial cost to initiate this strategy is rather low, and may
+            even earn a credit, but the downside potential is substantial. The
+            basic concept is for the total delta of the two long puts to roughly
+            equal the delta of the single short put. If the underlying stock
+            only moves a little, the change in value of the option position will
+            be limited. But if the stock declines enough to where the total
+            delta of the two long puts approaches 200 the strategy acts like a
+            short stock position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Stock</h4>
+          <p class="fs-5 label-color-6">
+            This strategy is simple. It consists of acquiring stock in
+            anticipation of rising prices. The gains, if there are any, are
+            realized only when the asset is sold. Until that time, the investor
+            faces the possibility of partial or total loss of the investment,
+            should the stock lose value.
+          </p>
+          <p class="fs-5 label-color-6">
+            In some cases the stock may generate dividend income.
+          </p>
+          <p class="fs-5 label-color-6">
+            In principle, this strategy imposes no fixed timeline. However,
+            special circumstances could delay or accelerate an exit. For
+            example, a margin purchase is subject to margin calls at any time,
+            which could force a quick sale unexpectedly.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Straddle</h4>
+          <p class="fs-5 label-color-6">
+            This strategy consists of buying a call option and a put option with
+            the same strike price and expiration. The combination generally
+            profits if the stock price moves sharply in either direction during
+            the life of the options.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Long Strangle</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the stock price moves sharply in either
+            direction during the life of the option.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Naked Call</h4>
+          <p class="fs-5 label-color-6">
+            This strategy consists of writing an uncovered call option. It
+            profits if the stock price holds steady or declines, and does best
+            if the option expires worthless.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Naked Put</h4>
+          <p class="fs-5 label-color-6">
+            A naked put involves writing a put option without the reserved cash
+            on hand to purchase the underlying stock.
+          </p>
+          <p class="fs-5 label-color-6">
+            This strategy entails a great deal of risk and relies on a steady or
+            rising stock price. It does best if the option expires worthless.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Protective Put</h4>
+          <p class="fs-5 label-color-6">
+            This strategy consists of adding a long put position to a long stock
+            position. The protective put establishes a ‘floor’ price under which
+            investor’s stock value cannot fall..
+          </p>
+          <p class="fs-5 label-color-6">
+            If the stock keeps rising, the investor benefits from the upside
+            gains. Yet no matter how low the stock might fall, the investor can
+            exercise the put to liquidate the stock at the strike price.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Call Butterfly</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is outside the wings
+            of the butterfly at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Call Calendar Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits from the different characteristics of near and
+            longer-term call options. If the stock holds steady, the strategy
+            suffers from time decay. If the underlying stock moves sharply up or
+            down, both options will move toward their intrinsic value or zero,
+            thus narrowing the difference between their values. If both options
+            have the same strike price, the strategy will always receive a
+            premium when initiating the position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Condor</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is inside the inner
+            wings at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Iron Butterfly</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is inside the wings of
+            the iron butterfly at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Put Butterfly</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the underlying stock is outside the wings
+            of the butterfly at expiration.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Put Calendar Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits from the different characteristics of near and
+            longer-term put options. If the underlying stock holds steady, the
+            strategy suffers from time decay. If the stock moves sharply up or
+            down, both options will move toward their intrinsic value or zero,
+            thus narrowing the difference between their values. If both options
+            have the same strike price, the strategy will always receive a
+            premium when initiating the position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Stock</h4>
+          <p class="fs-5 label-color-6">
+            A candidate for bearish investors who wish to profit from a
+            depreciation in the stock’s price. The strategy involves borrowing
+            stock through the brokerage firm and selling the shares in the
+            marketplace at the prevailing price. The goal is to buy them back
+            later at a lower price, thereby locking in a profit.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Straddle</h4>
+          <p class="fs-5 label-color-6">
+            This strategy involves selling a call option and a put option with
+            the same expiration and strike price. It generally profits if the
+            stock price and volatility remain steady.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Strangle</h4>
+          <p class="fs-5 label-color-6">
+            This strategy profits if the stock price and volatility remain
+            steady during the life of the options.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Ratio Call Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy can profit from a steady stock price, or from a
+            falling implied volatility. The actual behavior of the strategy
+            depends largely on the delta, theta and Vega of the combined
+            position as well as whether a debit is paid or a credit received
+            when initiating the position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Short Ratio Put Spread</h4>
+          <p class="fs-5 label-color-6">
+            This strategy can profit from a slightly falling stock price, or
+            from a rising stock price. The actual behavior of the strategy
+            depends largely on the delta, theta and vega of the combined
+            position as well as whether a debit is paid or a credit received
+            when initiating the position.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Synthetic Long Put</h4>
+          <p class="fs-5 label-color-6">
+            This strategy combines a long call and a short stock position. Its
+            payoff profile is equivalent to a long put’s characteristics. The
+            strategy profits if the stock price moves lower–the more
+            dramatically, the better. The time horizon is limited to the life of
+            the option.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Synthetic Long Stock</h4>
+          <p class="fs-5 label-color-6">
+            This strategy is essentially a long futures position on the
+            underlying stock. The long call and the short put combined simulate
+            a long stock position. The net result entails the same risk/reward
+            profile, though only for the term of the option: unlimited potential
+            for appreciation, and large (though limited) risk should the
+            underlying stock fall in value.
+          </p>
+          <h4 class="mb-3 label-color-4 fs-5">Synthetic Short Stock</h4>
+          <p class="mb-0 fs-5 label-color-6">
+            This strategy is essentially a short futures position on the
+            underlying stock. The long put and the short call combined simulate
+            a short stock position. The net result entails the same risk/reward
+            profile, though only for the term of the options: limited but large
+            potential for appreciation if the stock declines, and unlimited risk
+            should the
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock dashboard_body %}
