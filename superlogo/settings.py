@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from django.contrib.messages import constants as messages
+import os
 from pathlib import Path
 import dj_database_url
 import environ
-env=environ.Env()
+env = environ.Env()
 environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -43,7 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-     'django.contrib.sites',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -57,12 +63,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'superlogo.urls'
-AUTH_USER_MODEL='home.User'
-import os
+AUTH_USER_MODEL = 'home.User'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },
     },
@@ -89,11 +95,20 @@ WSGI_APPLICATION = 'superlogo.wsgi.application'
 # }
 
 
-DATABASES={
+DATABASES = {
     'default': dj_database_url.parse(env('DATABASE_URL'))
 }
 
+# Google Authentication
 
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 
 # Password validation
@@ -133,31 +148,29 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
-  
+
 ]
 STATIC_ROOT = 'home/static'
 
 
-from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
-        messages.DEBUG: 'secondary',
-        messages.INFO: 'info',
-        messages.SUCCESS: 'success',
-        messages.WARNING: 'warning',
-        messages.ERROR: 'danger',
- }
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
-        messages.DEBUG: 'secondary',
-        messages.INFO: 'info',
-        messages.SUCCESS: 'success',
-        messages.WARNING: 'warning',
-        messages.ERROR: 'danger',
- }
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
