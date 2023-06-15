@@ -89,7 +89,7 @@
       <h5>Top Price Loosers</h5>
       <canvas id="losersChart"></canvas>
     </div> {% endcomment %}
-    <div
+    {% comment %} <div
       class="chart-container"
       style="
         position: relative;
@@ -118,7 +118,7 @@
     >
       <h5>Top OI Loosers</h5>
       <canvas id="symbolChart_looser"></canvas>
-    </div>
+    </div> {% endcomment %}
     <div
       class="chart-container"
       style="
@@ -418,7 +418,7 @@
             }
       });  {% endcomment %}
 
-      var symbols_highest_positive = {{ symbols_highest_positive|safe }};
+      {% comment %} var symbols_highest_positive = {{ symbols_highest_positive|safe }};
       var avgInOI_values_highest_positive = {{ avgInOI_values_highest_positive|safe }};
 
       var ctx = document.getElementById('symbolChart').getContext('2d');
@@ -494,7 +494,7 @@
               display: true,
               text: 'Chart.js Horizontal Bar Chart'
             }
-      });
+      }); {% endcomment %}
 
    var symbols_volume = {{ symbols_volume|safe }};
       var traded_volumes = {{ traded_volumes|safe }};

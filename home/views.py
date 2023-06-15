@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 from collections import defaultdict
 from decimal import Decimal
@@ -226,6 +227,15 @@ def get_chart_data():
 
 def dashboard(request):
     symbols_volume, traded_volumes = get_chart_data()
+    context = {
+        'symbols_volume': symbols_volume,
+        'traded_volumes': traded_volumes,
+    }
+
+    return render(request, 'dashboard.html', context)
+
+# def dashboard(request):
+#     symbols_volume, traded_volumes = get_chart_data()
 
     # try:
     #     top_losers = fetch_top_losers()
@@ -273,102 +283,102 @@ def dashboard(request):
     #     'gain_percentages': gain_percentages,
     # }
 
-    url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
+    # url = "https://www.nseindia.com/api/live-analysis-oi-spurts-underlyings"
 
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-    }
+    # headers = {
+    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+    #     "Accept-Language": "en-US,en;q=0.9",
+    #     "Accept-Encoding": "gzip, deflate, br",
+    # }
 
-    response = requests.get(url, headers=headers)
+    # response = requests.get(url, headers=headers)
 
-    try:
-        data = response.json()
-    except json.JSONDecodeError as e:
-        print("Error decoding JSON:", str(e))
-        data = None
+    # try:
+    #     data = response.json()
+    # except json.JSONDecodeError as e:
+    #     print("Error decoding JSON:", str(e))
+    #     data = None
 
-    if data is not None:
+    # if data is not None:
 
-        sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
+    #     sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
 
-        top_symbols_lowest = sorted_data[:10]
+    #     top_symbols_lowest = sorted_data[:10]
 
-        symbols_lowest = [symbol_data['symbol']
-                          for symbol_data in top_symbols_lowest]
-        avgInOI_values_lowest = [symbol_data['avgInOI']
-                                 for symbol_data in top_symbols_lowest]
+    #     symbols_lowest = [symbol_data['symbol']
+    #                       for symbol_data in top_symbols_lowest]
+    #     avgInOI_values_lowest = [symbol_data['avgInOI']
+    #                              for symbol_data in top_symbols_lowest]
 
-        sorted_data = sorted(
-            data['data'], key=lambda x: x['avgInOI'], reverse=True)
+    #     sorted_data = sorted(
+    #         data['data'], key=lambda x: x['avgInOI'], reverse=True)
 
-        top_symbols_highest_positive = [
-            symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
+    #     top_symbols_highest_positive = [
+    #         symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
 
-        symbols_highest_positive = [symbol_data['symbol']
-                                    for symbol_data in top_symbols_highest_positive]
-        avgInOI_values_highest_positive = [
-            symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
+    #     symbols_highest_positive = [symbol_data['symbol']
+    #                                 for symbol_data in top_symbols_highest_positive]
+    #     avgInOI_values_highest_positive = [
+    #         symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
 
-        chart_data = ChartData(data_json=json.dumps(data))
-        chart_data.save()
+    #     chart_data = ChartData(data_json=json.dumps(data))
+    #     chart_data.save()
 
-        context = {
-            'symbols_lowest': symbols_lowest,
-            'avgInOI_values_lowest': avgInOI_values_lowest,
-            'symbols_highest_positive': symbols_highest_positive,
-            'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
-            # 'symbols': symbols,
-            # 'gain_percentages': gain_percentages,
-            # 'symbols_losers': symbols,
-            # 'loss_percentages': loss_percentages,
-            'symbols_volume': symbols_volume,
-            'traded_volumes': traded_volumes,
-        }
+    #     context = {
+    #         'symbols_lowest': symbols_lowest,
+    #         'avgInOI_values_lowest': avgInOI_values_lowest,
+    #         'symbols_highest_positive': symbols_highest_positive,
+    #         'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
+    #         # 'symbols': symbols,
+    #         # 'gain_percentages': gain_percentages,
+    #         # 'symbols_losers': symbols,
+    #         # 'loss_percentages': loss_percentages,
+    #         'symbols_volume': symbols_volume,
+    #         'traded_volumes': traded_volumes,
+    #     }
 
-        return render(request, 'dashboard.html', context)
-    else:
+    #     return render(request, 'dashboard.html', context)
+    # else:
 
-        chart_data = ChartData.objects.last()
-        if chart_data:
-            data = json.loads(chart_data.data_json)
+    #     chart_data = ChartData.objects.last()
+    #     if chart_data:
+    #         data = json.loads(chart_data.data_json)
 
-            sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
+    #         sorted_data = sorted(data['data'], key=lambda x: x['avgInOI'])
 
-            top_symbols_lowest = sorted_data[:10]
+    #         top_symbols_lowest = sorted_data[:10]
 
-            symbols_lowest = [symbol_data['symbol']
-                              for symbol_data in top_symbols_lowest]
-            avgInOI_values_lowest = [symbol_data['avgInOI']
-                                     for symbol_data in top_symbols_lowest]
+    #         symbols_lowest = [symbol_data['symbol']
+    #                           for symbol_data in top_symbols_lowest]
+    #         avgInOI_values_lowest = [symbol_data['avgInOI']
+    #                                  for symbol_data in top_symbols_lowest]
 
-            sorted_data = sorted(
-                data['data'], key=lambda x: x['avgInOI'], reverse=True)
+    #         sorted_data = sorted(
+    #             data['data'], key=lambda x: x['avgInOI'], reverse=True)
 
-            top_symbols_highest_positive = [
-                symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
+    #         top_symbols_highest_positive = [
+    #             symbol_data for symbol_data in sorted_data if symbol_data['avgInOI'] > 0][:10]
 
-            symbols_highest_positive = [symbol_data['symbol']
-                                        for symbol_data in top_symbols_highest_positive]
-            avgInOI_values_highest_positive = [
-                symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
+    #         symbols_highest_positive = [symbol_data['symbol']
+    #                                     for symbol_data in top_symbols_highest_positive]
+    #         avgInOI_values_highest_positive = [
+    #             symbol_data['avgInOI'] for symbol_data in top_symbols_highest_positive]
 
-            context = {
-                'symbols_lowest': symbols_lowest,
-                'avgInOI_values_lowest': avgInOI_values_lowest,
-                'symbols_highest_positive': symbols_highest_positive,
-                'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
-                # 'symbols': symbols,
-                # 'gain_percentages': gain_percentages,
-                # 'symbols_losers': symbols,
-                # 'loss_percentages': loss_percentages,
-                'symbols_volume': symbols_volume,
-                'traded_volumes': traded_volumes,
-            }
-            return render(request, 'dashboard.html', context)
-        else:
-            return HttpResponse("No data available.")
+    #         context = {
+    #             'symbols_lowest': symbols_lowest,
+    #             'avgInOI_values_lowest': avgInOI_values_lowest,
+    #             'symbols_highest_positive': symbols_highest_positive,
+    #             'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
+    #             # 'symbols': symbols,
+    #             # 'gain_percentages': gain_percentages,
+    #             # 'symbols_losers': symbols,
+    #             # 'loss_percentages': loss_percentages,
+    #             'symbols_volume': symbols_volume,
+    #             'traded_volumes': traded_volumes,
+    #         }
+    #         return render(request, 'dashboard.html', context)
+    #     else:
+    #         return HttpResponse("No data available.")
 
 
 def help_support(request):
@@ -888,9 +898,8 @@ def dii_fii(request):
 
     return render(request, 'dii_fii.html', context)
 
-import random
-def chart_topgainer(request):
 
+def chart_topgainer(request):
 
     url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
     headers = {
@@ -916,14 +925,12 @@ def chart_topgainer(request):
 
     df = pd.DataFrame(random_symbols)
     symbols = df.to_dict(orient='records')
-
-
 
     return render(request, 'chart_topgainer.html', {'symbols': symbols})
 
 
 def base(request):
-    
+
     url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -949,16 +956,12 @@ def base(request):
     df = pd.DataFrame(random_symbols)
     symbols = df.to_dict(orient='records')
 
-
-
-    return render(request,'base.html', {'symbols': symbols})
-
-
-
+    return render(request, 'base.html', {'symbols': symbols})
 
 
 def option_strategies(request):
-    return render(request,'option_strategies.html')
-def strategy_builder(request):
-    return render(request,'strategy_builder.html')
+    return render(request, 'option_strategies.html')
 
+
+def strategy_builder(request):
+    return render(request, 'strategy_builder.html')
