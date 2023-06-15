@@ -7,10 +7,11 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.112.5">
     <title>Dashboard | Algo Trading</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-    
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"  crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" 
+    href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" 
+    src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
   
     
@@ -42,12 +43,30 @@
   <link rel="stylesheet" href=" {% static 'css/v1/dashboard.css' %} ">
   <link rel="stylesheet" href=" {% static 'css/v1/market_place.css' %} ">
   <link rel="stylesheet" href=" {% static 'css/v1/my_strategies.css' %} ">
+  <link rel="stylesheet" href=" {% static 'css/v1/strategies_builder.css' %} ">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
+rel="stylesheet"
+/>
+<script
+type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
+></script>
   <meta name="theme-color" content="#712cf9">
   
   
@@ -439,7 +458,7 @@
               <i class="bi bi-activity"></i><p>Vix @ Index  </p>
             </a>
             <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/dii_fii"  %} active_dash {% endif %}" href="{% url 'dii_fii' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>FII and DII Activity  </p>
             </a>
             <a
@@ -447,38 +466,21 @@
               <i class="bi bi-shop-window"></i><p>Pre-open market  </p>
             </a>
             <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/market_wide_position"  %} active_dash {% endif %}" href="{% url 'market_wide_position' %} " style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-shop-window"></i><p> Market-Wide Position </p>
+            </a>
+            <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-people-fill"></i><p>Community  </p>
             </a>
 
-
-
             <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 nav-link collapsed    {% if request.path == "/Strategy_builder_straddle"  %} active_dash {% endif %}" style="   padding: 10px 0 0px 23px;" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">    
-              <div class="finance_collapse d-flex" style="align-items: baseline !important;">    
-                <div class="first_finance_collapse d-flex gap-2" >
-                  <i class="bi bi-lock"></i><p>Strategy Builder  </p>
-                </div>
-     
-            <div class="second_finance_collapse">
-             <i class="bi bi-caret-right-fill"></i>
-            </div>
-               </div>      
+            class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/strategy_builder"  %} active_dash {% endif %} " href={% url 'strategy_builder' %} style="   padding: 10px 0 0px 23px;">          
+            <i class="bi bi-lock"></i><p>Strategy Builder  </p>
+          </a>
+
+
             
-            </a>
-            <div class="collapse " id="ui-basic" >
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item
-                  {% if request.path == "/Strategy_builder_straddle"  %} active_dash {% endif %}">
-                   <a class="nav-link" href="{% url 'Strategy_builder_straddle' %}">Straddle</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Strangle</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Iron Fly</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Bear Call Spread </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Bull Call Spread </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Iron Condor </a></li>
-                  <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Jade Lizard  </a></li>
-                </ul>
-              </div>
     
 
 
@@ -519,6 +521,7 @@
             class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 nav-link collapsed  
             {% if request.path == "/blog"  %} active_dash
             {% elif request.path == "/learning_center" %} active_dash
+            {% elif request.path == "/option_strategies" %} active_dash
             {% elif request.path == "/courses_details" %} active_dash
             {% endif %}
             
@@ -539,6 +542,7 @@
         
                  
                 <li class="nav-item"> <a class="nav-link  {% if request.path == "/learning_center"  %} active_dash {% endif %}" href="{% url 'learning_center' %}">Learning Center</a></li>
+                <li class="nav-item"> <a class="nav-link {% if request.path == "/option_strategies"  %} active_dash {% endif %}" href="{% url 'option_strategies' %}">Option Strategies </a></li>
                 <li class="nav-item"> <a class="nav-link {% if request.path == "/blog"  %} active_dash {% endif %}" href="{% url 'blog' %}">Blogs </a></li>
               
               </ul>
@@ -592,9 +596,7 @@
  {% block dashboard_body %}{% endblock dashboard_body %}
 
     </main>
-    {% block js %}
- 
-{% endblock js %}
+
   </div>
   </div>
   <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

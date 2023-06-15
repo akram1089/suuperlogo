@@ -197,6 +197,9 @@ button{
     .swiper-container-features .swiper-slide-active{
         width: 300px !important;
     }
+    #mac_features{
+        display: none !important;
+    }
     }
 
 

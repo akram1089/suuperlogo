@@ -1,3 +1,10 @@
+from datetime import datetime
+from collections import defaultdict
+from decimal import Decimal
+from .models import Entrance
+from .models import SecurityBan
+from .models import TradedVolume
+from .models import Top_Loser
 from .models import Top_Gainer
 from bs4 import BeautifulSoup
 from django.shortcuts import render
@@ -9,7 +16,7 @@ import pandas as pd
 import requests
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-# Create your views here.
+
 from django.contrib import messages  #
 from django.contrib.auth import get_user_model
 from .models import ChartData
@@ -19,6 +26,10 @@ User = get_user_model()
 
 def home(request):
     return render(request, "home.html")
+
+
+def contact_us(request):
+    return render(request, "contact_us.html")
 
 
 def features(request):
@@ -132,9 +143,6 @@ def fetch_top_gainers():
     top_gainers.sort(key=lambda x: x['gain_percentage'], reverse=True)
     return top_gainers[:10]
 
-import requests
-from django.shortcuts import render
-from .models import Top_Loser
 
 def fetch_top_losers():
     url = "https://www.nseindia.com/api/live-analysis-variations?index=loosers"
@@ -159,7 +167,8 @@ def fetch_top_losers():
             current_price = stock['ltp']
 
             if symbol and previous_close and current_price:
-                loss_percentage = round(((previous_close - current_price) / previous_close) * 100, 2)
+                loss_percentage = round(
+                    ((previous_close - current_price) / previous_close) * 100, 2)
                 loss_percentage_with_sign = f"-{loss_percentage}"
                 top_losers.append({
                     "symbol": symbol,
@@ -170,52 +179,64 @@ def fetch_top_losers():
     return top_losers[:10]
 
 
-
-
-
-def chart_topgainer(request):
-
+def get_chart_data():
     try:
-        top_losers = fetch_top_losers()
-        symbols = [loser['symbol'] for loser in top_losers]
-        loss_percentages = [loser['loss_percentage'] for loser in top_losers]
+        url = "https://www.nseindia.com/api/equity-stockIndices?index=SECURITIES%20IN%20F%26O"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive"
+        }
 
-        # Replace existing data in the database with new data
-        Top_Loser.objects.all().delete()  # Clear existing data
-        Top_Loser.objects.create(top_losers=", ".join(symbols))
+        response = requests.get(url, headers=headers)
+        data = response.json()
 
-    except Exception as e:
-        # Retrieve the data from the database
-        top_loser_data = Top_Loser.objects.first()
-        if top_loser_data:
-            symbols = top_loser_data.top_losers.split(", ")
-            loss_percentages = []
-        else:
-            symbols = []
-            loss_percentages = []
+        # Create a DataFrame from the data
+        df = pd.DataFrame(data['data'])
 
-    context = {
-        'symbols': symbols,
-        'loss_percentages': loss_percentages,
-    }
+        # Convert totalTradedVolume column to numeric
+        df['totalTradedVolume'] = pd.to_numeric(df['totalTradedVolume'])
 
+        # Sort DataFrame by totalTradedVolume in descending order
+        df_sorted = df.sort_values(by='totalTradedVolume', ascending=False)
 
+        # Filter the top 10 rows
+        top_10 = df_sorted.head(10)
 
-    return render(request, 'chart_topgainer.html', context)
+        # Get the symbol and total traded volume as lists
+        symbols_volume = top_10['symbol'].tolist()
+        traded_volumes = top_10['totalTradedVolume'].tolist()
+
+        # Save the data into the database
+        TradedVolume.objects.all().delete()
+        for volume in traded_volumes:
+            traded_volume = TradedVolume(trade_volume=str(volume))
+            traded_volume.save()
+
+        return symbols_volume, traded_volumes
+    except requests.exceptions.RequestException:
+        # Fetch data from the database if unable to fetch from the API
+        traded_volumes = TradedVolume.objects.all().order_by(
+            '-trade_volume')[:10]
+        symbols_volume = [str(volume) for volume in traded_volumes]
+
+        return symbols_volume, [float(volume.trade_volume) for volume in traded_volumes]
 
 
 def dashboard(request):
+    symbols_volume, traded_volumes = get_chart_data()
+
     try:
         top_losers = fetch_top_losers()
         symbols = [loser['symbol'] for loser in top_losers]
         loss_percentages = [loser['loss_percentage'] for loser in top_losers]
 
-        # Replace existing data in the database with new data
-        Top_Loser.objects.all().delete()  # Clear existing data
+        Top_Loser.objects.all().delete()
         Top_Loser.objects.create(top_losers=", ".join(symbols))
 
     except Exception as e:
-        # Retrieve the data from the database
+
         top_loser_data = Top_Loser.objects.first()
         if top_loser_data:
             symbols = top_loser_data.top_losers.split(", ")
@@ -234,12 +255,11 @@ def dashboard(request):
         gain_percentages = [gainer['gain_percentage']
                             for gainer in top_gainers]
 
-        # Replace existing data in the database with new data
-        Top_Gainer.objects.all().delete()  # Clear existing data
+        Top_Gainer.objects.all().delete()
         Top_Gainer.objects.create(top_gainers=", ".join(symbols))
 
     except Exception as e:
-        # Retrieve the data from the database
+
         top_gainer_data = Top_Gainer.objects.first()
         if top_gainer_data:
             symbols = top_gainer_data.top_gainers.split(", ")
@@ -301,11 +321,12 @@ def dashboard(request):
             'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
             'symbols': symbols,
             'gain_percentages': gain_percentages,
-               'symbols_losers': symbols,
-        'loss_percentages': loss_percentages,
+            'symbols_losers': symbols,
+            'loss_percentages': loss_percentages,
+            'symbols_volume': symbols_volume,
+            'traded_volumes': traded_volumes,
         }
 
-        # Render the template
         return render(request, 'dashboard.html', context)
     else:
 
@@ -340,8 +361,10 @@ def dashboard(request):
                 'avgInOI_values_highest_positive': avgInOI_values_highest_positive,
                 'symbols': symbols,
                 'gain_percentages': gain_percentages,
-                   'symbols_losers': symbols,
-        'loss_percentages': loss_percentages,
+                'symbols_losers': symbols,
+                'loss_percentages': loss_percentages,
+                'symbols_volume': symbols_volume,
+                'traded_volumes': traded_volumes,
             }
             return render(request, 'dashboard.html', context)
         else:
@@ -482,7 +505,7 @@ def signUp(request):
         password = request.POST["password"]
         Cofirm_password = request.POST["Cofirm_password"]
         if User.objects.filter(email=email):
-            messages.warning(request, 'Email already being taken')
+            messages.error(request, 'Email already being taken')
             return redirect('/')
         else:
             Mysignup = User.objects.create_user(
@@ -678,3 +701,264 @@ def tests(request):
 
 def Algo_market_place(request):
     return render(request, "Algo_market_place.html")
+
+
+def market_wide_position(request):
+    url = "https://webapi.niftytrader.in/webapi/Resource/ban-list"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    date = []
+    for d in data['resultData']['date']:
+        date.append(d)
+
+    date_str = ''.join(date)
+
+    securities_ban_result = data['resultData']['securities_ban_result']
+    possible_entrants_result = data['resultData']['possible_entrants_result']
+
+    SecurityBan.objects.all().delete()
+    Entrance.objects.all().delete()
+
+    securityban_df = pd.DataFrame(securities_ban_result)
+    entrance_df = pd.DataFrame(possible_entrants_result)
+
+    for _, row in securityban_df.iterrows():
+        SecurityBan.objects.create(
+            symbol_name=row['symbol_name'],
+            current_percent=row['current_percent']
+        )
+
+    for _, row in entrance_df.iterrows():
+        Entrance.objects.create(
+            Entrance_symbol_name=row['symbol_name'],
+            Entrance_precent=row['current_percent']
+        )
+
+    securityban_data = SecurityBan.objects.all()
+    entrance_data = Entrance.objects.all()
+
+    if not securityban_data:
+
+        securityban_data = SecurityBan.objects.all()
+
+    if not entrance_data:
+
+        entrance_data = Entrance.objects.all()
+
+    labels = []
+    chart_data = []
+
+    entrance_labels = []
+    entrance_chart_data = []
+
+    for data in securityban_data:
+        labels.append(data.symbol_name)
+        chart_data.append(data.current_percent)
+
+    decimal_places = 2
+    normalized_list = [round(float(d), decimal_places) for d in chart_data]
+
+    for data in entrance_data:
+        entrance_labels.append(data.Entrance_symbol_name)
+        entrance_chart_data.append(data.Entrance_precent)
+
+    normalized_list_entrance = [
+        round(float(d), decimal_places) for d in entrance_chart_data]
+    url = "https://webapi.niftytrader.in/webapi/Resource/ban-list"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    all_list = []
+    for d in data["resultData"]["all_list_result"]:
+        all_list.append(d)
+
+    df = pd.DataFrame(all_list).head(50)
+    # Select only "symbol_name" and "current_percent" columns
+    df = df[["symbol_name", "current_percent"]]
+
+    # Prepare the data for Chart.js
+    all_labels = df["symbol_name"].tolist()
+    all_values = df["current_percent"].tolist()
+
+    context = {
+        'labels': labels,
+        'Entrance_labels': entrance_labels,
+        'chart_data': normalized_list,
+        'normalized_list_entrance': normalized_list_entrance,
+        'date_str': date_str,
+        "all_labels": all_labels,
+        "all_values": all_values,
+    }
+
+    return render(request, "market_wide_position.html", context)
+
+
+def dii_fii(request):
+    url = "https://webapi.niftytrader.in/webapi/Resource/fii-cash-month"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    # Create a list to store merged data
+    merged_data = defaultdict(float)
+
+    # Merge records with the same created_at value and perform arithmetic addition on net_value
+    for d in data["resultData"]["data"]:
+        created_at = d["created_at"]
+        net_value = float(d["net_value"])
+        merged_data[created_at] += net_value
+
+    # Convert the merged data to a DataFrame
+    df = pd.DataFrame(merged_data.items(), columns=["created_at", "net_value"])
+
+    # Sort the DataFrame by created_at in descending order
+    df.sort_values("created_at", ascending=False, inplace=True)
+
+    # Format the created_at column
+    df["created_at"] = pd.to_datetime(df["created_at"]).dt.strftime("%Y-%m-%d")
+
+    # Prepare the data for Chart.js
+    labels = df["created_at"].tolist()
+    values = df["net_value"].tolist()
+    print(labels, values)
+
+    filtered_data = [
+        (datetime.strptime(
+            item["created_at"], "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d"), item["net_value"])
+        for item in data["resultData"]["data"]
+        if item["category"] == "FII/FPI"
+    ]
+
+    # Convert the filtered data to a DataFrame
+    dfii = pd.DataFrame(filtered_data, columns=["created_at", "net_value"])
+
+    # Sort the DataFrame by created_at in descending order
+    dfii.sort_values("created_at", ascending=False, inplace=True)
+
+    # Prepare the data for Chart.js
+    labels_fii = dfii["created_at"].tolist()
+    values_fii = dfii["net_value"].tolist()
+    filtered_data_fii = [
+        (datetime.strptime(
+            item["created_at"], "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d"), item["net_value"])
+        for item in data["resultData"]["data"]
+        if item["category"] == "DII"  # Filter for "DII" category
+    ]
+
+    # Convert the filtered data to a DataFrame
+    dii_df = pd.DataFrame(filtered_data_fii, columns=[
+                          "created_at", "net_value"])
+
+    # Sort the DataFrame by created_at in descending order
+    dii_df.sort_values("created_at", ascending=False, inplace=True)
+
+    # Prepare the data for Chart.js
+    labels_dii = dii_df["created_at"].tolist()
+    values_dii = dii_df["net_value"].tolist()
+
+    context = {
+        'labels': labels,
+        'labels_fii': labels_fii,
+        'values': values,
+        'values_fii': values_fii,
+        "labels_dii": labels_dii,
+        "values_dii": values_dii
+
+    }
+
+    return render(request, 'dii_fii.html', context)
+
+import random
+def chart_topgainer(request):
+
+
+    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    all_list = []
+    for d in data['data']:
+        if d['symbol'] != 'NIFTY 50':
+            all_list.append({
+                'symbol': d['symbol'],
+                'pChange': d['pChange']
+            })
+
+    # Randomly select 10 symbols from the top 50
+    random_symbols = random.sample(all_list, 10)
+
+    df = pd.DataFrame(random_symbols)
+    symbols = df.to_dict(orient='records')
+
+
+
+    return render(request, 'chart_topgainer.html', {'symbols': symbols})
+
+
+def base(request):
+    
+    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    all_list = []
+    for d in data['data']:
+        if d['symbol'] != 'NIFTY 50':
+            all_list.append({
+                'symbol': d['symbol'],
+                'pChange': d['pChange']
+            })
+
+    # Randomly select 10 symbols from the top 50
+    random_symbols = random.sample(all_list, 10)
+
+    df = pd.DataFrame(random_symbols)
+    symbols = df.to_dict(orient='records')
+
+
+
+    return render(request,'base.html', {'symbols': symbols})
+
+
+
+
+
+def option_strategies(request):
+    return render(request,'option_strategies.html')
+def strategy_builder(request):
+    return render(request,'strategy_builder.html')
+

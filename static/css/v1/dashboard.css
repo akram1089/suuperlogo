@@ -1,7 +1,7 @@
 
 .list-group-item-action:focus, .list-group-item-action:hover{
     all: unset;
-      color: rgba(34, 164, 250, 0.921) !important;
+      color: rgb(0, 7, 12) !important;
     }
     body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
       margin-left: 0;
@@ -79,7 +79,7 @@
     all: unset;
     transform: translateX(0 0 0 0);
     background: WHITE ;
-    color: #0c6dffb8 ;
+    color: #000000b8 ;
     cursor: pointer !important;
     transition: 0.3s;
     align-items: baseline;
@@ -91,7 +91,7 @@
     }
     .active_dash{
     
-    color: rgb(49, 159, 255) !important;
+    color: rgb(49, 148, 255) !important;
 
     background-color: rgba(0, 0, 0, 0.093) !important;
     border-left: 4px solid rgb(49, 148, 255) !important;
@@ -216,7 +216,7 @@
     }
       
       .sidebar .nav-link.active {
-        color: rgb(0, 132, 255) !important;
+        color: rgb(0, 0, 0) !important;
         border-left: 4px solid #00f1ff;
     }
       
@@ -253,7 +253,7 @@
 
     a.list-group-item:focus{
       background-color: rgba(0, 0, 0, 0.093) !important;
-      color: rgb(59, 147, 255) !important;
+      color: rgb(0, 0, 0) !important;
 
     }
 
@@ -262,13 +262,13 @@
         border: none !important;
     }
     .sub-menu.nav-item:hover{
-      color: rgb(15, 122, 228) !important;
+      color: rgb(0, 0, 0) !important;
 
         
     }
     .sidebar .nav-link:hover {
 
-      color: rgb(0, 136, 240) !important;
+      color: rgb(0, 0, 0) !important;
     }
 
 
@@ -528,5 +528,12 @@
 }
 a.list-group-item,.sidebar .nav-link{
   background: transparent ;
-  color: rgba(0, 123, 255, 0.748) ;
+  color: rgba(0, 0, 0, 0.664) ;
+}
+
+.dropdown-menu[data-bs-popper] {
+  top: 100%;
+  left: -51px !important;
+  width: fit-content !important;
+  margin-top: var(--bs-dropdown-spacer);
 }

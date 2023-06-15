@@ -56,7 +56,7 @@
 
   <div
     class="top_gainer_loser_graph d-flex mt-5"
-    style="flex-wrap: wrap; gap: 2rem"
+    style="flex-wrap: wrap; gap: 2rem; justify-content: center;"
   >
     <div
       class="chart-container"
@@ -118,6 +118,21 @@
     >
       <h5>Top OI Loosers</h5>
       <canvas id="symbolChart_looser"></canvas>
+    </div>
+    <div
+      class="chart-container"
+      style="
+        position: relative;
+        border-radius: 10px;
+        text-align: center;
+        width: 23rem;
+        height: 24rem;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 19px 31px 45px 33px;
+      "
+    >
+      <h5>Top Volume Buzzers </h5>
+      <canvas id="symbol_volume_buzzers"></canvas>
     </div>
   </div>
 
@@ -450,8 +465,50 @@
               datasets: [{
                   label: '% OI Change',
                   data: avgInOI_values_lowest,
-                  backgroundColor: 'rgba(255, 192, 203, 0.2)', // Set the bar color to pink
-                  borderColor: 'rgba(255, 192, 203, 1)',
+                  backgroundColor: 'rgba(255, 192, 203, 0.4)', // Set the bar color to pink
+                  borderColor: 'rgba(255, 60, 105, 0.8)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      position: 'left'
+                  },
+                  xAxes: [{
+                      barPercentage: 0.4
+                  }]
+              },
+              legend: {
+
+                  align: "start"
+              },
+
+          },
+
+          title: {
+              display: true,
+              text: 'Chart.js Horizontal Bar Chart'
+            }
+      });
+
+   var symbols_volume = {{ symbols_volume|safe }};
+      var traded_volumes = {{ traded_volumes|safe }};
+
+      var ctx = document.getElementById('symbol_volume_buzzers').getContext('2d');
+      var chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: symbols_volume,
+              datasets: [{
+                  label: 'Volume Unit',
+                  data: traded_volumes,
+                  backgroundColor:'rgba(128, 0, 128, 0.2)', 
+                  borderColor:'rgba(255, 0, 218, 1)',
                   borderWidth: 1
               }]
           },

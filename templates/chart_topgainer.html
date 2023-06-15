@@ -1,46 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chart Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Swiper Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        .swiper-container {
+            width: 100%;
+            height: 1rem;
+            overflow:hidden;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 15px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:fit-content;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            transform: translateY(-50%);
+            background: #333;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .swiper-button-next {
+            right: 10px;
+        }
+
+        .swiper-button-prev {
+            left: 10px;
+        }
+
+        .swiper-button-play-pause {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: #333;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div id="chartContainer" style='    width: 400px;
-    height: 800px;'>
-     
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        {% for symbol in symbols %}
+        <div class="swiper-slide">
+            <p>{{ symbol.symbol }}</p>
+            {% if symbol.pChange > 0 %}
+            <p class="text-danger">{{ symbol.pChange }}</p>
+            
+            {% else %}
+            <p class="text-success">{{ symbol.pChange }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+ 
+    <div class="swiper-button-play-pause"></div>
+</div>
 
-
-            <canvas id="chart"></canvas>
-            <script>
-                var symbols = {{ symbols | safe }};
-                var loss_percentages = {{ loss_percentages | safe }};
-        
-                var chartData = {
-                    labels: symbols,
-                    datasets: [{
-                        label: 'Gain Percentage',
-                        data: loss_percentages,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                };
-        
-                var chartOptions = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        slidesPerView: 8,
+        spaceBetween: 1,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        on: {
+            init: function () {
+                var playPauseButton = document.querySelector('.swiper-button-play-pause');
+                playPauseButton.addEventListener('click', function () {
+                    if (swiper.autoplay.running) {
+                        swiper.autoplay.stop();
+                        playPauseButton.innerHTML = 'Play';
+                    } else {
+                        swiper.autoplay.start();
+                        playPauseButton.innerHTML = 'Pause';
                     }
-                };
-        
-                var chart = new Chart(document.getElementById('chart'), {
-                    type: 'bar',
-                    data: chartData,
-                    options: chartOptions
                 });
-            </script>
+            },
+        },
+    });
+</script>
 </body>
 </html>

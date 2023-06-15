@@ -42,7 +42,7 @@ Features | Algo Trading
                 {% comment %} <div class="main__bg-col main__bg-col-2 d-flex align-items-start justify-content-end position-absolute"> {% endcomment %}
                     {% comment %} <img class="main__bg-img main__bg-img-3 img-fluid d-block position-absolute" src="{% static '/img/img-main-bg-2.png' %}" 
                     srcset="/img/img-main-bg-2@2x.png 2x, /img/img-main-bg-2@3x.png 3x" alt="Background Image" title="Background Image"> {% endcomment %}
-                    <img class="main__bg-img main__bg-img-2 img-fluid d-block position-absolute" src="{% static '/img/img-main-macbook-1.png' %}"
+                    <img class="main__bg-img main__bg-img-2 img-fluid d-block position-absolute" id="mac_features" src="{% static '/img/img-main-macbook-1.png' %}"
                    alt="Background Image" title="Background Image">
                      <img class="main__bg-img main__bg-img-4 img-fluid position-absolute" src="{% static '/img/img-main-macbook-1-mobile.png' %}" 
                   
@@ -53,7 +53,7 @@ Features | Algo Trading
     <!-- SECTION main :: END-->
     <!-- SECTION broker :: START-->
     <section class="broker position-relative" id="broker">
-        <div class="broker__bg position-absolute w-100 h-100"><img src="{% static '/img/img-do-bg.png' %}" srcset="/img/img-do-bg@2x.png 2x, /img/img-do-bg@3x.png 3x" alt="Background Image" title="Background Image"></div>
+        <div class="broker__bg position-absolute w-100 h-100"><img src="{% static '/img/img-do-bg.png' %}"  alt="Background Image" title="Background Image"></div>
         <div class="broker__bg position-absolute w-100 h-100"></div>
         <div class="broker__wrapper">
             <div class="container">
@@ -66,7 +66,7 @@ Features | Algo Trading
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col"><img class="d-block img-fluid ml-auto mr-auto" src="{% static '/img/3-bot-scheme.png' %}" srcset="/img/3-bot-scheme@2x.png 2x, /img/3-bot-scheme@3x.png 3x" alt="Bot" title="Bot"></div>
+                    <div class="col"><img class="d-block img-fluid ml-auto mr-auto" src="{% static '/img/3-bot-scheme.png' %}" alt="Bot" title="Bot"></div>
                 </div>
             </div>
             <div class="container">
@@ -103,7 +103,8 @@ Features | Algo Trading
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col"><img class="d-none d-md-block img-fluid ml-auto mr-auto" src="{% static '/img/infographic-2.png' %}" srcset="/img/infographic-2@2x.png, /img/infographic-2@3x.png" alt="Graphics" title="Graphics"><img class="d-block d-md-none img-fluid ml-auto mr-auto" src="/img/infographic-2-mobile.png" srcset="/img/infographic-2-mobile@2x.png, /img/infographic-2-mobile@3x.png" alt="Graphics" title="Graphics"></div>
+                    <div class="col"><img class="d-none d-md-block img-fluid ml-auto mr-auto" src="{% static '/img/infographic-2@2x.png' %}"  alt="Graphics" title="Graphics">
+                        <img class="d-block d-md-none img-fluid ml-auto mr-auto" src="{% static '/img/infographic-2-mobile@2x.png' %}"   alt="Graphics" title="Graphics"></div>
                 </div>
             </div>
         </div>
@@ -210,11 +211,12 @@ Features | Algo Trading
     <!-- SECTION disposal :: END-->
     <!-- SECTION power :: START-->
     <section class="power" id="power">
-        <div class="power__bg position-absolute w-100 h-100">
+        <div class="power__bg position-absolute w-100 h-100" style="    background-color: #f5f9fe;
+        z-index: -1;">
             <div class="power__bg-img power__bg-img--top position-absolute w-100"></div>
             <div class="power__bg-img power__bg-img--bottom position-absolute w-100"></div>
         </div>
-        <div class="power__wrapper">
+        <div class="power__wrapper" style="    background-color: none !important;">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-lg-6">
@@ -376,9 +378,9 @@ Features | Algo Trading
                 </div>
                 <div class="row">
                     <div class="col"><img class="d-none d-md-block img-fluid ml-auto mr-auto" src="{% static '/img/infographic-3.png' %}"
-                         srcset="/img/infographic-3@2x.png, /img/infographic-3@3x.png" alt="Graphics" title="Graphics">
+                         alt="Graphics" title="Graphics">
                          <img class="d-block d-md-none img-fluid ml-auto mr-auto" src="{% static '/img/infographic-3-mobile.png' %}"
-                          srcset="/img/infographic-3-mobile@2x.png, /img/infographic-3-mobile@3x.png" alt="Graphics" title="Graphics"></div>
+                           alt="Graphics" title="Graphics"></div>
                 </div>
                 <div class="row">
                     <div class="col">
@@ -785,7 +787,7 @@ Features | Algo Trading
     <!-- SECTION strategies :: END-->
     <!-- SECTION types :: START-->
     <section class="types" id="types">
-        <div class="types__bg position-absolute w-100 h-100"><img class="d-block img-fluid" src="{% static '/img/img-types-bg.png' %}" srcset="/img/img-types-bg@2x.png 2x, /img/img-types-bg@3x.png 3x" alt="Background Image" title="Background Image"></div>
+        <div class="types__bg position-absolute w-100 h-100"><img class="d-block img-fluid" src="{% static '/img/img-types-bg.png' %}" alt="Background Image" title="Background Image"></div>
         <div class="types__wrapper types__wrapper-0">
             <div class="container">
                 <div class="row">
@@ -861,7 +863,7 @@ Features | Algo Trading
             <div class="container">
                 <div class="row">
                     <div class="col"><img class="d-block img-fluid ml-auto mr-auto" src="{% static '/img/infographic-1.png' %}"
-                         srcset="/img/infographic-1@2x.png 2x, /img/infographic-1@3x.png 3x" alt="Graphics" title="Graphics"></div>
+                         alt="Graphics" title="Graphics"></div>
                 </div>
             </div>
         </div>

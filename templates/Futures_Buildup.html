@@ -1,8 +1,5 @@
 {% extends "base_dashboard.html" %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 {% block dashboard_body %}
 
 <style>
@@ -102,14 +99,7 @@
     </div>
 
 
-    <table id="table_db" class="display">
-        <thead>
-            <tr>
-                <th>Ticker</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        {% comment %} "Unnamed: 0": 3,
+<!-- "Unnamed: 0": 3,
         "fivedayoichange": -0.07,
         "fivedaypricechange": 2.89,
         "futuresPrice": 4138.05,
@@ -120,8 +110,14 @@
         "shorttermoutlook": "-",
         "ticker": "ABB",
         "volper": 0.0,
-        "volumechange": 78.52 {% endcomment %}
-        <tbody>
+        "volumechange": 78.52  -->
+        <table id="table_db">
+            <tr>
+
+                <td>Hii there</td>
+            </tr>
+<tbody>
+
             {% for item in data1 %}
             <tr>
                 <td>{{item.ticker}}</td>
@@ -134,50 +130,37 @@
         </tbody>
     </table>
 
-    <script>
-        $(document).ready( function () {
-            $('#myTable').DataTable();
-        } );
-        
-        </script>
+
 </body>
 
 
-
-    {% endblock dashboard_body %}
-
-
-    {% block js %} 
+<script src="https://code.jquery.com/jquery-3.5.1.js"  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" 
+href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" 
+src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
  
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-     
-    <script>
-        $(document).ready(function () {
-        $('#table_db').DataTable( {
-            "paging": true,
-            "searching": true,
-            "autoWidth": false,
-            "ordering": true,
-            "columnDefs": [
-                {"width": "50px", "targets": 0},
-                {"width": "250px", "targets": 1},
-            ],
-        }
-        );
-    } );
-    </script>
-     
-    <!-- Added this script to see if the page would recognize the items within block -->
-    <script>
-    window.onload = function() {
-        if (window.jQuery) { 
-            // jQuery is loaded 
-            alert("Yeah!");
-        } else {
-            // jQuery is not loaded
-            alert("Doesn't Work");
-        }
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+    $('#table_db').DataTable( {
+        "paging": true,
+        "searching": true,
+        "autoWidth": false,
+        "ordering": true,
+        "columnDefs": [
+            {"width": "50px", "targets": 0},
+            {"width": "250px", "targets": 1},
+        ],
     }
-     </script>
-    {% endblock js %}
+    );
+} );
+</script>
+ 
+<!-- Added this script to see if the page would recognize the items within block -->
+
+
+
+{% endblock dashboard_body %}

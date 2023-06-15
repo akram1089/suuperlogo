@@ -50,6 +50,60 @@
 
 </head>
 <style>
+    .swiper-container {
+        width: 100%;
+        height: 1rem;
+        overflow:hidden;
+    }
+
+    .swiper-slide {
+        text-align: center;
+        font-size: 15px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:fit-content;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        position: absolute;
+        top: 50%;
+        width: 40px;
+        height: 40px;
+        transform: translateY(-50%);
+        background: #333;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .swiper-button-next {
+        right: 10px;
+    }
+
+    .swiper-button-prev {
+        left: 10px;
+    }
+
+    .swiper-button-play-pause {
+        position: absolute;
+        bottom: 20px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        background: #333;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+</style>
+<style>
     #spinner {
         opacity: 0;
         visibility: hidden;
@@ -75,6 +129,12 @@
     <div id="spinner"
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    </div>
+    {% comment %} top swipper {% endcomment %}
+    {% block swiper %}
+    {% endblock %}
+     
+        <div class="swiper-button-play-pause"></div>
     </div>
     <!-- HEADER :: START-->
     <header class="header" id="header" style="top: 0px; height: 100px;">
@@ -498,7 +558,7 @@
                             </div>
 
                             <div class="header__nav">
-                                <a class="" href="./contact.html" title="">Contact</a>
+                                <a class="" href="{% url 'contact_us' %}" title="">Contact</a>
                             </div>
                         </div>
                     </div>
@@ -551,7 +611,7 @@
     transform: translate(-50%, -50%);
     display: flex;
 ">
-        <strong>Msg:</strong> {{ message }}
+        <strong> {{ message }} </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
@@ -1339,6 +1399,36 @@
 
                                                         <script typ src=" {% static './js/main.js' %} "></script>
                                                         <script src=" {% static './js/data.js' %} "></script>
+                                                        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        slidesPerView: 8,
+        spaceBetween: 1,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        on: {
+            init: function () {
+                var playPauseButton = document.querySelector('.swiper-button-play-pause');
+                playPauseButton.addEventListener('click', function () {
+                    if (swiper.autoplay.running) {
+                        swiper.autoplay.stop();
+                        playPauseButton.innerHTML = 'Play';
+                    } else {
+                        swiper.autoplay.start();
+                        playPauseButton.innerHTML = 'Pause';
+                    }
+                });
+            },
+        },
+    });
+</script>
 
                                                         <script>
                                                             var swiper1 = new Swiper(".mySwiper", {

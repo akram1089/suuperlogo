@@ -41,3 +41,31 @@ class Top_Loser(models.Model):
 
 
 
+class TradedVolume(models.Model):
+    trade_volume = models.TextField()
+    def __str__(self):
+        return self.trade_volume
+
+
+
+
+class Traded_Volume(models.Model):
+    symbol = models.CharField(max_length=50)
+    trade_volume = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.symbol
+
+
+class SecurityBan(models.Model):
+    symbol_name = models.CharField(max_length=255)
+    current_percent = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.symbol_name
+class Entrance(models.Model):
+    Entrance_symbol_name = models.CharField(max_length=255)
+    Entrance_precent = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.Entrance_symbol_name
