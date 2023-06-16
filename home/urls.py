@@ -32,6 +32,8 @@ urlpatterns = [
     path('base',views.base,name='base'),
     path('option_strategies',views.option_strategies,name='option_strategies'),
     path('strategy_builder',views.strategy_builder,name='strategy_builder'),
+    path('market_glance',views.market_glance,name='market_glance'),
+    path('financial_result',views.financial_result,name='financial_result'),
     
  
     path('courses_details',views.courses_details,name='courses_details'),

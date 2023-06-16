@@ -249,6 +249,9 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
     class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
 </div>
+
+
+
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
@@ -443,8 +446,8 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
               <i class="bi bi-hdd-stack"></i><p>My Strategies</p>
             </a>
             <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
-              <i class="bi bi-shop"></i><p>Market Movers </p>
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/market_glance"  %} active_dash {% endif %}"  href="{% url 'market_glance' %}" style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-shop"></i><p>Markets Glance</p>
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/my_portfolio"  %} active_dash {% endif %}" href="{% url 'my_portfolio' %}" style="   padding: 10px 0 0px 23px;">          
@@ -506,14 +509,12 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
               <i class="bi bi-map"></i><p>Algo Market Place   </p>
             </a>
             <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex  " href="https://www.screener.in/"  style="   padding: 10px 0 0px 23px;">      
+              class="list-group-item list-group-item-action list-group-item-light  d-flex  {% if request.path == "/financial_result"  %} active_dash {% endif %}  "   href="{% url 'financial_result' %}"    style="   padding: 10px 0 0px 23px;">      
               <div class="finance_collapse d-flex">    
              <div class="first_finance_collapse d-flex gap-2">
               <i class="bi bi-bank"></i><p>Financial Result </p>
              </div>
-         <div class="second_finance_collapse">
-          <i class="bi bi-caret-right-fill"></i>
-         </div>
+      
             </div>
             </a>
   
@@ -600,6 +601,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
 
   </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script><script src="dashboard.js"></script>

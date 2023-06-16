@@ -26,7 +26,33 @@ User = get_user_model()
 
 
 def home(request):
-    return render(request, "home.html")
+    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+    headers = {
+         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    all_list = []
+    for d in data['data']:
+        if d['symbol'] != 'NIFTY 50':
+            all_list.append({
+                'symbol': d['symbol'],
+                'pChange': d['pChange']
+            })
+
+    # Randomly select 10 symbols from the top 50
+    random_symbols = random.sample(all_list, 10)
+
+    df = pd.DataFrame(random_symbols)
+    symbols = df.to_dict(orient='records')
+
+    return render(request, 'home.html', {'symbols': symbols})
+ 
 
 
 def contact_us(request):
@@ -34,7 +60,33 @@ def contact_us(request):
 
 
 def features(request):
-    return render(request, "features.html")
+    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+    headers = {
+         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    all_list = []
+    for d in data['data']:
+        if d['symbol'] != 'NIFTY 50':
+            all_list.append({
+                'symbol': d['symbol'],
+                'pChange': d['pChange']
+            })
+
+    # Randomly select 10 symbols from the top 50
+    random_symbols = random.sample(all_list, 10)
+
+    df = pd.DataFrame(random_symbols)
+    symbols = df.to_dict(orient='records')
+
+    return render(request, 'features.html', {'symbols': symbols})
+    
 
 
 def use_cases_strategy(request):
@@ -51,6 +103,8 @@ def Strategy_builder_straddle(request):
 
 def Futures_Buildup(request):
     return render(request, "Futures_Buildup.html")
+def financial_result(request):
+    return render(request, "financial_result.html")
 
 
 # def fetch_top_gainers():
@@ -892,34 +946,7 @@ def dii_fii(request):
     return render(request, 'dii_fii.html', context)
 
 
-# def chart_topgainer(request):
 
-#     url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-#     headers = {
-#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-#         "Accept-Language": "en-US,en;q=0.9",
-#         "Accept-Encoding": "gzip, deflate, br",
-#         "Connection": "keep-alive"
-#     }
-
-#     response = requests.get(url, headers=headers)
-#     data = response.json()
-
-#     all_list = []
-#     for d in data['data']:
-#         if d['symbol'] != 'NIFTY 50':
-#             all_list.append({
-#                 'symbol': d['symbol'],
-#                 'pChange': d['pChange']
-#             })
-
-#     # Randomly select 10 symbols from the top 50
-#     random_symbols = random.sample(all_list, 10)
-
-#     df = pd.DataFrame(random_symbols)
-#     symbols = df.to_dict(orient='records')
-
-#     return render(request, 'chart_topgainer.html', {'symbols': symbols})
 
 
 def base(request):
@@ -960,39 +987,39 @@ def strategy_builder(request):
     return render(request, 'strategy_builder.html')
 
 
-def chart_topgainer(request):
+# def chart_topgainer(request):
 
-    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+#     url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
 
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
 
-    response_oi_loser = requests.get(url, headers=headers)
-    data_oi_loser = response_oi_loser.json()
+#     response_oi_loser = requests.get(url, headers=headers)
+#     data_oi_loser = response_oi_loser.json()
 
-    # Extract the name and value data_oi_loser
-    name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
+#     # Extract the name and value data_oi_loser
+#     name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
 
-    # Create a pandas DataFrame
-    df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
+#     # Create a pandas DataFrame
+#     df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
 
-    # Select the top 10 rows
-    top_10_df_oi_loser = df_oi_loser.head(10)
+#     # Select the top 10 rows
+#     top_10_df_oi_loser = df_oi_loser.head(10)
 
-    # Prepare data for Chart.js
-    labels_oi_loser = top_10_df_oi_loser["name"].tolist()
-    values_oi_loser = top_10_df_oi_loser["value"].tolist()
+#     # Prepare data for Chart.js
+#     labels_oi_loser = top_10_df_oi_loser["name"].tolist()
+#     values_oi_loser = top_10_df_oi_loser["value"].tolist()
 
-    context = {
-        "labels_oi_loser": labels_oi_loser,
-        "values_oi_loser": values_oi_loser,
-    }
+#     context = {
+#         "labels_oi_loser": labels_oi_loser,
+#         "values_oi_loser": values_oi_loser,
+#     }
 
-    return render(request, 'chart_topgainer.html',context)
+#     return render(request, 'chart_topgainer.html',context)
 
 
 def dashboard(request):
@@ -1096,13 +1123,6 @@ def dashboard(request):
     values_oi_loser = top_10_df_oi_loser["value"].tolist()
 
 
-       
-    
-
-    
-        
-    
- 
 
     context = {
         "looser_labels": looser_labels,
@@ -1117,3 +1137,39 @@ def dashboard(request):
     print(context)
 
     return render(request, 'dashboard.html',context)
+
+
+
+
+def market_glance(request):
+    return render(request, "market_glance.html")
+
+
+def chart_topgainer(request):
+
+    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+    headers = {
+         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    all_list = []
+    for d in data['data']:
+        if d['symbol'] != 'NIFTY 50':
+            all_list.append({
+                'symbol': d['symbol'],
+                'pChange': d['pChange']
+            })
+
+    # Randomly select 10 symbols from the top 50
+    random_symbols = random.sample(all_list, 10)
+
+    df = pd.DataFrame(random_symbols)
+    symbols = df.to_dict(orient='records')
+
+    return render(request, 'chart_topgainer.html', {'symbols': symbols})

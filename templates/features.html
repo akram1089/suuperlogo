@@ -9,7 +9,20 @@ Features | Algo Trading
  
 
 <div class="body body--start p-home">
-
+    <div class="carousel-container">
+        <div class="slick-carousel">
+            {% for symbol in symbols %}
+            <div class="carousel-slide">
+                <p>{{ symbol.symbol }}</p>
+                {% if symbol.pChange > 0 %}
+                <p class="text-success">{{ symbol.pChange }}</p>
+                {% else %}
+                <p class="text-danger">{{ symbol.pChange }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     <!-- SECTION main :: START-->
     <section class="main main--features position-relative" id="trading-engine">
         {% comment %} <div class="main__bg main__bg-0 position-absolute w-100 h-100"><img class="main__bg-img main__bg-img-1 position-absolute" src="{% static '/img/img-main-bg-1.png' %}" srcset="/img/img-main-bg-1@2x.png 2x, /img/img-main-bg-1@3x.png 3x" alt="Background Image" title="Background Image"></div> {% endcomment %}

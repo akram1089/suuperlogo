@@ -9,6 +9,7 @@ Home | Algo trading
 {% endblock %}
 
 {% block body %}
+
 <script>
 
 
@@ -36,8 +37,27 @@ Home | Algo trading
 
 
     </script>
+
+   
 <div class="body body--start p-home">
 
+    <div class="carousel-container">
+        <div class="slick-carousel">
+            {% for symbol in symbols %}
+            <div class="carousel-slide">
+                <p>{{ symbol.symbol }}</p>
+                {% if symbol.pChange > 0 %}
+                <p class="text-success">{{ symbol.pChange }}</p>
+                {% else %}
+                <p class="text-danger">{{ symbol.pChange }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+  
 <section class="main position-relative" id="main">
     {% comment %} <div class="main__bg main__bg-0 position-absolute w-100 h-100"><img
             class="main__bg-img main__bg-img-1 position-absolute" src="{% static 'img/img-main-bg-1.png' %}"
@@ -2182,6 +2202,7 @@ aria-labelledby="pricingBasic" aria-hidden="true">
  <!-- MODAL sign in :: START-->
 
 <!-- MODAL sign in :: END-->
+
 <script>
 
     controlVideoVolume.addEventListener('click', function() {

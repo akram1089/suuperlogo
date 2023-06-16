@@ -1,153 +1,95 @@
-{% comment %} <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Swiper Example</title>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <style>
-        .swiper-container {
-            width: 100%;
-            height: 1rem;
-            overflow:hidden;
-        }
-
-        .swiper-slide {
-            text-align: center;
-            font-size: 15px;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width:fit-content;
-        }
-
-        .swiper-button-prev,
-        .swiper-button-next {
-            position: absolute;
-            top: 50%;
-            width: 40px;
-            height: 40px;
-            transform: translateY(-50%);
-            background: #333;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .swiper-button-next {
-            right: 10px;
-        }
-
-        .swiper-button-prev {
-            left: 10px;
-        }
-
-        .swiper-button-play-pause {
-            position: absolute;
-            bottom: 20px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            background: #333;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-<div class="swiper-container">
-    <div class="swiper-wrapper">
-        {% for symbol in symbols %}
-        <div class="swiper-slide">
-            <p>{{ symbol.symbol }}</p>
-            {% if symbol.pChange > 0 %}
-            <p class="text-danger">{{ symbol.pChange }}</p>
-            
-            {% else %}
-            <p class="text-success">{{ symbol.pChange }}</p>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
- 
-    <div class="swiper-button-play-pause"></div>
-</div>
-
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script>
-    var swiper = new Swiper('.swiper-container', {
-        loop: true,
-        slidesPerView: 8,
-        spaceBetween: 1,
-        autoplay: {
-            delay: 2000,
-            disableOnInteraction: false,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        on: {
-            init: function () {
-                var playPauseButton = document.querySelector('.swiper-button-play-pause');
-                playPauseButton.addEventListener('click', function () {
-                    if (swiper.autoplay.running) {
-                        swiper.autoplay.stop();
-                        playPauseButton.innerHTML = 'Play';
-                    } else {
-                        swiper.autoplay.start();
-                        playPauseButton.innerHTML = 'Pause';
-                    }
-                });
-            },
-        },
-    });
-</script>
-</body>
-</html> {% endcomment %}
-
-
-{% comment %} 
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Slick Carousel Example</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <style>
+        .carousel-container {
+            height: 0.5rem;
+        }
+
+        .slick-initialized .slick-slide {
+            display: flex !important;
+        }
+
+        .slick-slide > div {
+            margin-right: 0.2rem !important;
+        }
+
+        .slick-next.slick-arrow,
+        .slick-prev.slick-arrow {
+            display: none !important;
+        }
+
+        .carousel-slide {
+            color: white;
+            background: black;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide p {
+            margin: 0;
+        }
+
+        .text-danger {
+            color: green;
+        }
+
+        .text-success {
+            color: red;
+        }
+    </style>
 </head>
-<body>
-    <canvas id="myChart"></canvas>
+<body style="margin: 0px;">
+    <div class="carousel-container">
+        <div class="slick-carousel">
+            {% for symbol in symbols %}
+            <div class="carousel-slide">
+                <p>{{ symbol.symbol }}</p>
+                {% if symbol.pChange > 0 %}
+                <p class="text-danger">{{ symbol.pChange }}</p>
+                {% else %}
+                <p class="text-success">{{ symbol.pChange }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
 
     <script>
-        var labels = {{ labels|safe }};
-        var values = {{ values|safe }};
-
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Value',
-                    data: values,
-                    backgroundColor: 'rgba(101, 67, 33, 0.2)', // Dark brown background color
-                    borderColor: 'rgba(101, 67, 33, 1)', // Dark brown border color
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+        $(document).ready(function() {
+            $('.slick-carousel').slick({
+                slidesToShow: 8,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                infinite: true
+            });
         });
     </script>
+
+<!-- Include Slick Carousel script here -->
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.slick-carousel').slick({
+            slidesToShow: 8,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            infinite: true
+        });
+    });
+</script>
+{% endblock %}
+
 </body>
-</html> {% endcomment %}
+</html>
