@@ -49,24 +49,8 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-rel="stylesheet"
-/>
-<!-- Google Fonts -->
-<link
-href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-rel="stylesheet"
-/>
-<!-- MDB -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
-rel="stylesheet"
-/>
-<script
-type="text/javascript"
-src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
-></script>
+<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+<script src="assets/plugins/global/plugins.bundle.js"></script>
   <meta name="theme-color" content="#712cf9">
   
   
@@ -340,11 +324,13 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="#">Account Details</a></li>
       <li><a class="dropdown-item" href="#">Support</a></li>
+      <li><a class="dropdown-item" href="#">Notifications</a></li>
       <li><a class="dropdown-item" href="#">About Us</a></li>
       <li><a class="dropdown-item" href="#">What's New</a></li>
       <li><a class="dropdown-item" href="#">Help & FAQ</a></li>
+      <li><a class="dropdown-item" href="#">Settings</a></li>
       
-      
+      <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item" href="{% url 'logout_user' %}">Logout </a></li>
      
     </ul>
@@ -482,6 +468,14 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
             class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/strategy_builder"  %} active_dash {% endif %} " href={% url 'strategy_builder' %} style="   padding: 10px 0 0px 23px;">          
             <i class="bi bi-lock"></i><p>Strategy Builder  </p>
           </a>
+            <a
+            class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/stock_scanner"  %} active_dash {% endif %} " href={% url 'stock_scanner' %} style="   padding: 10px 0 0px 23px;">          
+            <i class="bi bi-search"></i><p>Stock Scanner  </p>
+          </a>
+            <a
+            class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/rocket_call"  %} active_dash {% endif %} " href={% url 'rocket_call' %} style="   padding: 10px 0 0px 23px;">          
+            <i class="bi bi-lock"></i><p>Rocket call</p>
+          </a>
 
 
             
@@ -564,13 +558,17 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
 
 
             <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/reports"  %} active_dash {% endif %}" href=" {% url 'reports' %} "  style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-flag"></i><p>Profit & Loss </p>
+            </a>
+            <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/help_support"  %} active_dash {% endif %}" href=" {% url 'help_support' %} "  style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-info-circle"></i><p>Help & Support</p>
             </a>
-            <a
+            {% comment %} <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-gear"></i><p>Settings</p>
-            </a>
+            </a> {% endcomment %}
   
   
 
@@ -610,6 +608,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"
     <script
     src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script>
+      
   
   /*!
    * Color mode toggler for Bootstrap's docs (https://getbootstrap.com/)

@@ -110,6 +110,13 @@ def Futures_Buildup(request):
     return render(request, "Futures_Buildup.html")
 def financial_result(request):
     return render(request, "financial_result.html")
+def reports(request):
+    return render(request, "reports.html")
+
+def stock_scanner(request):
+    return render(request, "stock_scanner.html")
+def rocket_call(request):
+    return render(request, "rocket_call.html")
 
 
 # def fetch_top_gainers():
