@@ -25,33 +25,33 @@ from home.helper import send_forget_password_mail
 User = get_user_model()
 
 
-def home(request):
-    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-    headers = {
-         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
+# def home(request):
+#     url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+#     headers = {
+#          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
 
-    response = requests.get(url, headers=headers)
-    data = response.json()
+#     response = requests.get(url, headers=headers)
+#     data = response.json()
 
-    all_list = []
-    for d in data['data']:
-        if d['symbol'] != 'NIFTY 50':
-            all_list.append({
-                'symbol': d['symbol'],
-                'pChange': d['pChange']
-            })
+#     all_list = []
+#     for d in data['data']:
+#         if d['symbol'] != 'NIFTY 50':
+#             all_list.append({
+#                 'symbol': d['symbol'],
+#                 'pChange': d['pChange']
+#             })
 
-    # Randomly select 10 symbols from the top 50
-    random_symbols = random.sample(all_list, 10)
+#     # Randomly select 10 symbols from the top 50
+#     random_symbols = random.sample(all_list, 10)
 
-    df = pd.DataFrame(random_symbols)
-    symbols = df.to_dict(orient='records')
+#     df = pd.DataFrame(random_symbols)
+#     symbols = df.to_dict(orient='records')
 
-    return render(request, 'home.html', {'symbols': symbols})
+#     return render(request, 'home.html', {'symbols': symbols})
  
 
 
@@ -59,33 +59,38 @@ def contact_us(request):
     return render(request, "contact_us.html")
 
 
+# def features(request):
+#     url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
+#     headers = {
+#          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
+
+#     response = requests.get(url, headers=headers)
+#     data = response.json()
+
+#     all_list = []
+#     for d in data['data']:
+#         if d['symbol'] != 'NIFTY 50':
+#             all_list.append({
+#                 'symbol': d['symbol'],
+#                 'pChange': d['pChange']
+#             })
+
+#     # Randomly select 10 symbols from the top 50
+#     random_symbols = random.sample(all_list, 10)
+
+#     df = pd.DataFrame(random_symbols)
+#     symbols = df.to_dict(orient='records')
+
+#     return render(request, 'features.html', {'symbols': symbols})
+
+def home(request):
+    return render(request,'home.html')
 def features(request):
-    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-    headers = {
-         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
-
-    response = requests.get(url, headers=headers)
-    data = response.json()
-
-    all_list = []
-    for d in data['data']:
-        if d['symbol'] != 'NIFTY 50':
-            all_list.append({
-                'symbol': d['symbol'],
-                'pChange': d['pChange']
-            })
-
-    # Randomly select 10 symbols from the top 50
-    random_symbols = random.sample(all_list, 10)
-
-    df = pd.DataFrame(random_symbols)
-    symbols = df.to_dict(orient='records')
-
-    return render(request, 'features.html', {'symbols': symbols})
+    return render(request,'features.html')
     
 
 
