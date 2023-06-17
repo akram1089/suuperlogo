@@ -1,7 +1,7 @@
 
 .list-group-item-action:focus, .list-group-item-action:hover{
     all: unset;
-      color: rgb(0, 7, 12) !important;
+      color: rgb(49, 148, 255) !important;
     }
     body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
       margin-left: 0;
@@ -93,17 +93,14 @@
     
     color: rgb(49, 148, 255) !important;
 
-    background-color: rgba(0, 0, 0, 0.093) !important;
+
     border-left: 4px solid rgb(49, 148, 255) !important;
     font-weight: 500 !important;
     }
     
     
     
-    #dashboard_nav{
-      /* background: linear-gradient(178deg, rgb(0 102 255) 0%, rgb(0 158 255) 0%, rgb(48 131 208) 50%)  !important; */
-    }
-    
+
     
     
     
@@ -216,7 +213,7 @@
     }
       
       .sidebar .nav-link.active {
-        color: rgb(0, 0, 0) !important;
+        color: rgb(49, 148, 255) !important;
         border-left: 4px solid #00f1ff;
     }
       
@@ -252,8 +249,8 @@
     }
 
     a.list-group-item:focus{
-      background-color: rgba(0, 0, 0, 0.093) !important;
-      color: rgb(0, 0, 0) !important;
+     
+      color: rgb(49, 148, 255) !important;
 
     }
 
@@ -262,13 +259,13 @@
         border: none !important;
     }
     .sub-menu.nav-item:hover{
-      color: rgb(0, 0, 0) !important;
+      color: rgb(49, 148, 255) !important;
 
         
     }
     .sidebar .nav-link:hover {
 
-      color: rgb(0, 0, 0) !important;
+      color: rgb(49, 148, 255) !important;
     }
 
 
