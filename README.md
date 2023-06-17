@@ -1,1 +1,1 @@
-# SuperAldo is an Algo Trading plateform
+# SuperAlgo is an Algo Trading plateform
