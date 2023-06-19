@@ -1,95 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Slick Carousel Example</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <style>
-        .carousel-container {
-            height: 0.5rem;
-        }
-
-        .slick-initialized .slick-slide {
-            display: flex !important;
-        }
-
-        .slick-slide > div {
-            margin-right: 0.2rem !important;
-        }
-
-        .slick-next.slick-arrow,
-        .slick-prev.slick-arrow {
-            display: none !important;
-        }
-
-        .carousel-slide {
-            color: white;
-            background: black;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-slide p {
-            margin: 0;
-        }
-
-        .text-danger {
-            color: green;
-        }
-
-        .text-success {
-            color: red;
-        }
-    </style>
+  <title>Calendar Heatmap Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    canvas {
+      max-width: 800px;
+    }
+  </style>
 </head>
-<body style="margin: 0px;">
-    <div class="carousel-container">
-        <div class="slick-carousel">
-            {% for symbol in symbols %}
-            <div class="carousel-slide">
-                <p>{{ symbol.symbol }}</p>
-                {% if symbol.pChange > 0 %}
-                <p class="text-danger">{{ symbol.pChange }}</p>
-                {% else %}
-                <p class="text-success">{{ symbol.pChange }}</p>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+<body>
+  <canvas id="myChart"></canvas>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('myChart').getContext('2d');
 
-    <script>
-        $(document).ready(function() {
-            $('.slick-carousel').slick({
-                slidesToShow: 8,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                infinite: true
-            });
-        });
-    </script>
+      // Fetch the data from your Django view or pass it as a variable
+      const data = [
+        [3, 1, 0, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5],
+        [0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4],
+        [7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0],
+        [4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5],
+        [5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1],
+        [6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2],
+        [1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6],
+        [2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3],
+        [7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0],
+        [4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5],
+        [5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1],
+        [6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2]
+      ];
 
-<!-- Include Slick Carousel script here -->
-<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+      // Prepare the labels for the chart
+      const labels = [
+        'July', 'August', 'September', 'October', 'November', 'December',
+        'January', 'February', 'March', 'April', 'May', 'June'
+      ];
 
-<script>
-    $(document).ready(function() {
-        $('.slick-carousel').slick({
-            slidesToShow: 8,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 2000,
-            infinite: true
-        });
+      new Chart(ctx, {
+        type: 'heatmap',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            borderWidth: 1,
+            borderColor: 'white',
+            backgroundColor: function(context) {
+              const value = context.dataset.data[context.dataIndex];
+              const max = Math.max(...context.dataset.data.flat());
+              const min = Math.min(...context.dataset.data.flat());
+              const normalizedValue = (value - min) / (max - min);
+              const color = Math.round(255 * normalizedValue);
+              return `rgba(${color}, ${color}, ${color}, 1)`;
+            }
+          }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'Calendar Heatmap'
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
     });
-</script>
-{% endblock %}
-
+  </script>
 </body>
 </html>

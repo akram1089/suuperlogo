@@ -37,6 +37,9 @@ urlpatterns = [
     path('reports',views.reports,name='reports'),
     path('stock_scanner',views.stock_scanner,name='stock_scanner'),
     path('rocket_call',views.rocket_call,name='rocket_call'),
+    path('holiday',views.holiday,name='holiday'),
+    path('lot_size',views.lot_size,name='lot_size'),
+    path('market_heavy',views.market_heavy,name='market_heavy'),
     
  
     path('courses_details',views.courses_details,name='courses_details'),

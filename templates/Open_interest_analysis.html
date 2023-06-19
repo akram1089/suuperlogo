@@ -66,10 +66,11 @@ border-top: 1px solid beige; '>Page will referesh after every 15 minutes</h5>
 
 
 
-  <div class="table-responsive small">
-    <table class="table table-striped table-sm">
-      <thead>
-        <tr class="text-center">
+  <div class="">
+    <table class="display py-3  " id="Open_interest"  >
+      <thead style='    background: #002771;
+      color: white;'>
+        <tr class="">
           <th scope="col">#</th>
           <th scope="col">Underlying</th>
           <th scope="col">Strike Price</th>
@@ -81,7 +82,7 @@ border-top: 1px solid beige; '>Page will referesh after every 15 minutes</h5>
       </thead>
       <tbody class="table-group-divider">
         {% for df in dataframe %}
-        <tr class="text-center">
+        <tr class="">
           <th>{{forloop.counter}}</th>
           <td>{{df.underlying}}</td>
           <td>{{df.strikePrice}}</td>

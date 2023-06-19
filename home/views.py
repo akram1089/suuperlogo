@@ -1185,3 +1185,70 @@ def chart_topgainer(request):
     symbols = df.to_dict(orient='records')
 
     return render(request, 'chart_topgainer.html', {'symbols': symbols})
+
+
+def holiday(request):
+    url = "https://webapi.niftytrader.in/webapi/Resource/bse-nse-holiday"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    filtered_data = []
+
+    for d in data["resultData"]["holiday1"]:
+        filtered_data.append({
+            "srno": d["srno"],
+            "date": d["date"],
+            "day": d["day"],
+            "description": d["description"]
+        })
+
+    df = pd.DataFrame(filtered_data)
+    table_data = df.to_dict(orient='records')
+
+    context = {
+        'table_data': table_data
+    }
+    return render(request ,"holiday.html",context)
+
+def lot_size(request):
+    url = "https://webapi.niftytrader.in/webapi/Resource/fno-lot-size"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    table_data = []
+    for d in data["resultData"]["data"]:
+        underlying = d["underlying"]
+        symbol = d["symbol"]
+        month_data_str = d["month_data"]
+        month_data = eval(month_data_str)
+        row_data = [underlying,symbol] + list(month_data.values())
+        table_data.append(row_data)
+
+    headers = ["Underlying","Symbol"] + list(month_data.keys())
+
+    context = {
+        "headers": headers,
+        "table_data": table_data,
+    }
+
+    return render(request,"lot_size.html",context)
+
+
+def market_heavy(request):
+    return  render(request,"market_heavy.html")
