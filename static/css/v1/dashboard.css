@@ -311,7 +311,7 @@
     .chart_child{
       box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
       border-radius: 10px;
-      padding: 2rem;
+      padding: 1rem;
     }
 
 
@@ -533,4 +533,19 @@ a.list-group-item,.sidebar .nav-link{
   left: -51px !important;
   width: fit-content !important;
   margin-top: var(--bs-dropdown-spacer);
+}
+
+
+
+
+
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0; /* remove the gap so it doesn't close */
+}
+
+.dropdown-center:hover .dropdown-menu{
+display: block;
+margin-top: 0;   
 }
