@@ -40,6 +40,8 @@ urlpatterns = [
     path('holiday',views.holiday,name='holiday'),
     path('lot_size',views.lot_size,name='lot_size'),
     path('market_heavy',views.market_heavy,name='market_heavy'),
+    path('bulk_deal_data',views.bulk_deal_data,name='bulk_deal_data'),
+    path('bulk_deal_data_page',views.bulk_deal_data_page,name='bulk_deal_data_page'),
     
  
     path('courses_details',views.courses_details,name='courses_details'),

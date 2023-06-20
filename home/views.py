@@ -1252,3 +1252,64 @@ def lot_size(request):
 
 def market_heavy(request):
     return  render(request,"market_heavy.html")
+
+
+import requests
+import pandas as pd
+from django.shortcuts import render
+
+import json
+from django.http import JsonResponse
+
+
+
+
+import requests
+from django.http import JsonResponse
+from datetime import datetime
+import pandas as pd
+import datetime
+
+def bulk_deal_data(request):
+    if request.method == 'GET':
+        selected_date = request.GET.get('date')
+
+        url = "https://webapi.niftytrader.in/webapi/Resource/bulk-deal-data"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate, br",
+        }
+
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        # Format deal_dates using pandas
+        deal_dates = pd.to_datetime(data["resultData"]['deal_dates']).strftime('%Y-%m-%d').tolist()
+
+        # Create a DataFrame from deal_data
+        deal_data = pd.DataFrame(data["resultData"]['deal_data'])
+
+        # Convert created_at to datetime format and format it as YYYY-MM-DD
+        deal_data['created_at'] = pd.to_datetime(deal_data['created_at']).dt.strftime('%Y-%m-%d')
+
+        if selected_date:
+            # Filter the deal_data based on the selected date
+            selected_date = datetime.datetime.strptime(selected_date, '%Y-%m-%d')
+            deal_data = deal_data[deal_data['created_at'] == selected_date.date().strftime('%Y-%m-%d')]
+
+        # Convert deal_data back to a list of dictionaries
+        deal_data = deal_data.to_dict(orient='records')
+
+        return JsonResponse({'deal_dates': deal_dates, 'deal_data': deal_data}, json_dumps_params={'indent': 2})
+
+
+
+
+        
+
+def bulk_deal_data_page(request):
+    return render(request, 'bulk_deal_data.html')
+
+
+

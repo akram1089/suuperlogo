@@ -9,7 +9,8 @@
     <title>Dashboard | Algo Trading</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"  crossorigin="anonymous"></script>
-  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
  
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
   
@@ -347,7 +348,7 @@
   <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
   <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
   <li><a  class="dropdown-item" href="">Rocket Call</a></li>
-  <li> <a  class="dropdown-item" href="">NSE Bulk Deals Data</a> </li>
+  <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
 
 </div>        
     
@@ -699,6 +700,7 @@
         $('#Open_interest').DataTable({
           "pageLength": 50
         });
+    
     });
     
     
