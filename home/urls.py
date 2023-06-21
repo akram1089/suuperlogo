@@ -42,7 +42,11 @@ urlpatterns = [
     path('market_heavy',views.market_heavy,name='market_heavy'),
     path('bulk_deal_data',views.bulk_deal_data,name='bulk_deal_data'),
     path('bulk_deal_data_page',views.bulk_deal_data_page,name='bulk_deal_data_page'),
-    
+    path('dashboard1',views.dashboard1,name='dashboard1'),
+    path('base_dashboard1',views.base_dashboard1,name='base_dashboard1'),
+    path('global_market', views.global_market, name='global_market'),
+    path('market_actions', views.market_actions, name='market_actions'),
+    path('ban_list_dashboard', views.ban_list_dashboard, name='ban_list_dashboard'),
  
     path('courses_details',views.courses_details,name='courses_details'),
     path('market_wide_position',views.market_wide_position,name='market_wide_position'),

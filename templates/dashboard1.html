@@ -1,0 +1,957 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% block dashboard_body %}
+<style>
+    .traded_icons {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .middle_nifty {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .high_low_nifty {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+
+    }
+
+    #market_top {
+        text-decoration: none;
+        font-size: 12px;
+        padding: 4px;
+        transition: 0.3s;
+        position: relative;
+    }
+
+    #market_top:hover {
+        background-color: dodgerblue;
+        color: white;
+        border-radius: 10px;
+
+    }
+
+    #market_top::after {
+        content: " ";
+        position: absolute;
+        border-left: 1px #6c757d solid;
+        top: 35%;
+        right: 0;
+        height: 30%;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .nifty_main {
+        width: 23rem;
+        height: 10rem;
+        outline-color: gray;
+        border-radius: 10px;
+        padding: 11px;
+
+    }
+
+    .nitfy_fin_bank_main {
+        gap: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+
+
+    }
+
+    .text-success, .border-success {
+        color: rgb(6, 197, 98) !important;
+    }
+
+    child_global {
+        row-gap: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    i.bi.bi-arrow-clockwise{
+        all:unset;
+        font-size: 13px;
+        margin-top: 5px;
+        transition: 0.3s;
+    }
+    i.bi.bi-arrow-clockwise:hover{
+        all:unset
+    }
+    #refresh_global:hover{
+        background-color: dodgerblue;
+        color: white;
+        border-radius: 10px;
+        padding: 4px;
+cursor: pointer;
+    }
+    .desc_usage_active {
+    color: #011490;
+    text-align: center;
+    border-bottom: 2px solid #011490;
+    font-size: 21px;
+    font-weight: 600;
+  }
+.chart-header:hover{
+    cursor: pointer;
+}
+
+.bi-graph-up{
+    border: 0.5px solid gray;
+    padding: 7px;
+    height: 28px;
+    width: 28px;
+    border-radius: 7px;
+    transition: 0.3s;
+}
+.bi-graph-up:hover{
+    background-color: dodgerblue;
+    color: white;
+    border:none;
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document)
+            .ajaxStart(function () {
+                $("#spinner").show();
+            })
+            .ajaxStop(function () {
+                $("#spinner").hide();
+            });
+        function updateData() {
+            $.ajax({
+                url: '/base_dashboard1',
+                type: 'GET',
+                success: function (data) {
+                    console.log("HII");
+
+                    $('#nifty_50_symbol').text(data.nifty50_data.symbol_name);
+                    $('#nifty_50_high').text(data.nifty50_data.high);
+                    $('#nifty_50_low').text(data.nifty50_data.low);
+                    $('#nifty_50_trade_value').text(data.nifty50_data.last_trade_price);
+
+                    if (data.nifty50_value > 0) {
+                        $('#nifty_50_value').addClass("text-success");
+                        $('#nifty_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
+                    } else {
+                        $('#nifty_50_value').addClass("text-danger");
+                        $('#nifty_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
+                    }
+
+                    $('#nifty_50_value').text(`${data.nifty50_value.toFixed(2)} (${data.nifty50_percentage.toFixed(2)})%`);
+
+                    // banknifty
+                    $('#niftybank_symbol').text(data.niftybank_data.symbol_name);
+                    $('#niftybank_high').text(data.niftybank_data.high);
+                    $('#niftybank_low').text(data.niftybank_data.low);
+                    $('#niftybank_trade_value').text(data.niftybank_data.last_trade_price);
+
+                    if (data.niftybank_value > 0) {
+                        $('#niftybank_value').addClass("text-success");
+                        $('#niftybank_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
+                    } else {
+                        $('#niftybank_value').addClass("text-danger");
+                        $('#niftybank_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
+                    }
+
+                    $('#niftybank_value').text(`${data.niftybank_value.toFixed(2)} (${data.niftybank_percentage.toFixed(2)})%`);
+
+                    // finnity
+                    $('#finnity_symbol').text(data.finnity_data.symbol_name);
+                    $('#finnity_high').text(data.finnity_data.high);
+                    $('#finnity_low').text(data.finnity_data.low);
+                    $('#finnity_trade_value').text(data.finnity_data.last_trade_price);
+
+                    if (data.finnity_value > 0) {
+                        $('#finnity_value').addClass("text-success");
+                        $('#finnity_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
+                    } else {
+                        $('#finnity_value').addClass("text-danger");
+                        $('#finnity_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
+                    }
+
+                    $('#finnity_value').text(`${data.finnity_value.toFixed(2)} (${data.finnity_percentage.toFixed(2)})%`);
+                },
+                complete: function () {
+                    // Schedule the next update after 5 seconds
+
+                    setTimeout(updateData, 5000);
+                }
+            });
+        }
+
+        // Initial call to start the update loop
+        updateData();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        function update_global_indicies() {
+            
+        
+            $.ajax({
+            url: "/global_market",
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.tables.length; i++) {
+                    console.log(data.tables[i].country)
+                    var countryTable = "";
+                    countryTable += "<child_global>";
+                    countryTable += `<div class="country_indices_refresh d-flex  justify-content-between" style="">
+                        <h5>${data.tables[i].country}</h5>
+                        <div class="d-flex fs-5" id="refresh_global" >
+                            <i class="bi bi-arrow-clockwise hello"></i>
+                            <p style="margin-bottom:auto;     font-size: 13px;">refresh</p>
+                            </div>
+                        </div>`;
+    
+                    for (var j = 0; j < data.tables[i].items.length; j++) {
+                        var item = data.tables[i].items[j];
+                        var priceClass = item.change_value > 0 ? "text-success" : "text-danger";
+                        var borderClass = item.change_value > 0 ? "border-start  border-4 border-success" : " border-start  border-4 border-danger";
+                        var progress_caret = item.change_value > 0 ? "up" : "down";
+                        countryTable += `
+                        <div class="child_table">
+                            
+                            <div class="inner_global shadow ${borderClass}" style="width: 20rem; height: 5rem; padding: 12px;">
+                                <h5 style="font-size: 1rem;">${item.symbol}</h5>
+                                <div class="price_global d-flex justify-content-between">
+                                    <h5>${item.current_price}</h5>
+                                    <div class="precent_icon_Global d-flex align-items-center ${priceClass}">
+                                        <h5>${item.change_value}(${item.change_per})</h5>
+                                        <i class="bi bi-caret-${progress_caret}-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+    
+                    countryTable += "</child_global>";
+                    $("#tables-container").append(countryTable);
+                }
+            },
+            complete: function () {
+                    // Schedule the next update after 5 seconds
+
+                    setTimeout(updateData, 5000);
+                }
+        });
+      
+    }
+    update_global_indicies()
+});
+    </script>
+    <script>
+        // AJAX call to fetch data for the category and populate the table
+        function market_data() {
+            
+        
+        $.ajax({
+          url: "/market_actions",
+          method: "GET",
+          success: function (response) {
+            console.log(response.tables);
+
+            // top_start
+            topgainers = response.tables.filter((x) => {
+              return x.category == "topGainers";
+            });
+            console.log(topgainers);
+            var top_gainers = "";
+            final_top = topgainers.map((y) => {
+              y.data.forEach((z) => {
+                var progress_market_color = z.change_value > 0 ? "text-success" : "text-danger";
+                var progress_market = z.change_value > 0 ? "up" : "down";
+                console.log(z.symbol_name);
+                $("#top_gainers_table").append(
+                  `<tr>
+                      <td><i class="bi bi-graph-up"></i></td>
+                      <td>${z.symbol_name}</td>
+                      <td>${z.prev_high}</td>
+                      <td class="text-danger">${z.today_low}</td>
+                      <td class="text-success">${z.today_high}</td>
+                      <td id="top_down_icon_market"><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${z.change_value}(${z.change_percent}%)</td>
+                      <td>${z.prev_close}</td>
+                      <td>${z.today_volume}</td>
+                  </tr>`
+                );
+              });
+            });
+            //end_top_start
+
+        // top_loser_start
+        topLosers = response.tables.filter((loser_1) => {
+              return loser_1.category == "topLosers";
+            });
+            console.log(topLosers);
+            var top_gainers = "";
+            final_top = topLosers.map((loser_2) => {
+                loser_2.data.forEach((loser_3) => {
+                    var progress_market_color = loser_3.change_value > 0 ? "text-success" : "text-danger";
+                var progress_market = loser_3.change_value > 0 ? "up" : "down";
+                console.log(loser_3.symbol_name);
+                $("#top_losers_table").append(
+                  `<tr>
+                      <td><i class="bi bi-graph-up"></i></td>
+                      <td>${loser_3.symbol_name}</td>
+                      <td>${loser_3.prev_high}</td>
+                      <td class="text-danger">${loser_3.today_low}</td>
+                      <td class="text-success">${loser_3.today_high}</td>
+                      <td><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${loser_3.change_value}(${loser_3.change_percent}%)</td>
+                      <td>${loser_3.prev_close}</td>
+                      <td>${loser_3.today_volume}</td>
+                  </tr>`
+                );
+              });
+            });
+            //end_top_loser_start
+        // top_sameopenandlow_start
+        sameOpenAndLow = response.tables.filter((sameOpenAndLow_1) => {
+              return sameOpenAndLow_1.category == "sameOpenAndLow";
+            });
+            console.log(sameOpenAndLow);
+            var top_gainers = "";
+            final_top = sameOpenAndLow.map((sameOpenAndLow_2) => {
+                sameOpenAndLow_2.data.forEach((sameOpenAndLow_3) => {
+                    var progress_market_color = sameOpenAndLow_3.change_value > 0 ? "text-success" : "text-danger";
+                var progress_market = sameOpenAndLow_3.change_value > 0 ? "up" : "down";
+                console.log(sameOpenAndLow_3.symbol_name);
+                $("#same_open_and_low").append(
+                  `<tr>
+                      <td><i class="bi bi-graph-up"></i></td>
+                      <td>${sameOpenAndLow_3.symbol_name}</td>
+                      <td>${sameOpenAndLow_3.prev_high}</td>
+                      <td class="text-danger">${sameOpenAndLow_3.today_low}</td>
+                      <td class="text-success">${sameOpenAndLow_3.today_high}</td>
+                      <td><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${sameOpenAndLow_3.change_value}(${sameOpenAndLow_3.change_percent}%)</td>
+                      <td>${sameOpenAndLow_3.prev_close}</td>
+                      <td>${sameOpenAndLow_3.today_volume}</td>
+                  </tr>`
+                );
+              });
+            });
+            //end_sameopenandlow_start
+        // top_sameOpenAndHigh_start
+        sameOpenAndHigh = response.tables.filter((sameOpenAndHigh_1) => {
+              return sameOpenAndHigh_1.category == "sameOpenAndHigh";
+            });
+            console.log(sameOpenAndHigh);
+            var top_gainers = "";
+            final_top = sameOpenAndHigh.map((sameOpenAndHigh_2) => {
+                sameOpenAndHigh_2.data.forEach((sameOpenAndHigh_3) => {
+                    var progress_market_color = sameOpenAndHigh_3.change_value > 0 ? "text-success" : "text-danger";
+                var progress_market = sameOpenAndHigh_3.change_value > 0 ? "up" : "down";
+                console.log(sameOpenAndHigh_3.symbol_name);
+                $("#same_Open_And_High").append(
+                  `<tr>
+                      <td><i class="bi bi-graph-up"></i></td>
+                      <td>${sameOpenAndHigh_3.symbol_name}</td>
+                      <td>${sameOpenAndHigh_3.prev_high}</td>
+                      <td class="text-danger">${sameOpenAndHigh_3.today_low}</td>
+                      <td class="text-success">${sameOpenAndHigh_3.today_high}</td>
+                      <td><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${sameOpenAndHigh_3.change_value}(${sameOpenAndHigh_3.change_percent}%)</td>
+                      <td>${sameOpenAndHigh_3.prev_close}</td>
+                      <td>${sameOpenAndHigh_3.today_volume}</td>
+                  </tr>`
+                );
+              });
+            });
+            //end_same_Open_And_High_start
+        // top_gapUp_start
+        gapUp = response.tables.filter((gapUp_1) => {
+              return gapUp_1.category == "gapUp";
+            });
+            console.log(gapUp);
+            var top_gainers = "";
+            final_top = gapUp.map((gapUp_2) => {
+                gapUp_2.data.forEach((gapUp_3) => {
+                    var progress_market_color = gapUp_3.change_value > 0 ? "text-success" : "text-danger";
+                var progress_market = gapUp_3.change_value > 0 ? "up" : "down";
+                console.log(gapUp_3.symbol_name);
+                $("#gap_Up").append(
+                  `<tr>
+                      <td><i class="bi bi-graph-up"></i></td>
+                      <td>${gapUp_3.symbol_name}</td>
+                      <td>${gapUp_3.prev_high}</td>
+                      <td class="text-danger">${gapUp_3.today_low}</td>
+                      <td class="text-success">${gapUp_3.today_high}</td>
+                      <td><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${gapUp_3.change_value}(${gapUp_3.change_percent}%)</td>
+                      <td>${gapUp_3.prev_close}</td>
+                      <td>${gapUp_3.today_volume}</td>
+                  </tr>`
+                );
+              });
+            });
+            //end_gapUp_start
+        // top_gapDown_start
+        gapDown = response.tables.filter((gapDown_1) => {
+              return gapDown_1.category == "gapDown";
+            });
+            console.log(gapDown);
+            var top_gainers = "";
+            final_top = gapDown.map((gapDown_2) => {
+                gapDown_2.data.forEach((gapDown_3) => {
+                    var progress_market_color = gapDown_3.change_value > 0 ? "text-success" : "text-danger";
+                var progress_market = gapDown_3.change_value > 0 ? "up" : "down";
+                console.log(gapDown_3.symbol_name);
+                $("#gap_Down").append(
+                  `<tr>
+                      <td><i class="bi bi-graph-up"></i></td>
+                      <td>${gapDown_3.symbol_name}</td>
+                      <td>${gapDown_3.prev_high}</td>
+                      <td class="text-danger">${gapDown_3.today_low}</td>
+                      <td class="text-success">${gapDown_3.today_high}</td>
+                      <td><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${gapDown_3.change_value}(${gapDown_3.change_percent}%)</td>
+                      <td>${gapDown_3.prev_close}</td>
+                      <td>${gapDown_3.today_volume}</td>
+                  </tr>`
+                );
+              });
+            });
+            //end_gapDown_start
+
+          },
+          error: function () {
+            console.log("Error occurred while fetching data for category: " + category.name);
+          },
+          complete: function () {
+                    // Schedule the next update after 5 seconds
+
+                    setTimeout(updateData, 5000);
+                }
+        });
+    }
+        // Process the categories and create tables
+        market_data()
+        $(document).ready(function () {
+          var categories = JSON.parse(your_json_data).categories;
+          $.each(categories, function (index, category) {
+            createCategoryTable(category);
+          });
+        });
+      </script>
+    
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "{% url 'ban_list_dashboard' %}",
+                method: "GET",
+                success: function(response) {
+                    console.log(response)
+                    populateTable(response.securities_ban_result, "#securities_ban_table");
+                    populateTable(response.possible_entrants_result, "#possible_entrants_table");
+                    populateTable(response.possible_exits_result, "#possible_exits_table");
+                },
+                error: function() {
+                    console.log("Error occurred while fetching data.");
+                }
+            });
+
+            function populateTable(data, tableId) {
+                var tableBody = $(tableId + " tbody");
+                tableBody.empty();
+
+                data.forEach(function(item) {
+                    console.log(item)
+                    var row = $("<tr></tr>");
+                    row.append($("<td></td>").text(item.symbol_name));
+                    row.append($("<td></td>").text(item.previous_percent));
+                    row.append($("<td></td>").text(item.current_percent));
+                    // Add more columns as needed
+
+                    tableBody.append(row);
+                });
+            }
+        });
+    </script>
+<div class="container mt-5">
+
+
+
+    <h4 class="my-3">Markets</h4>
+    <div class="nitfy_fin_bank_main">
+        <div class="nifty_main shadow"
+            style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+
+            <div class="title_nifty  " style="display: flex;gap: 1rem;">
+                <h5 style="    font-size: 1rem;" id="nifty_50_symbol"></h5>
+                <h5 style="    font-size: 1rem;" class="" id="nifty_50_value"></h5>
+            </div>
+
+
+            <div class="middle_nifty">
+                <div class="traded_icons" id="traded_icons">
+                    <div id="nifty_icons"></div>
+                    <h4 style="    font-size: 2rem;color: darkslategray;" id="nifty_50_trade_value"></h4>
+                </div>
+                <div class="high_low_nifty" style="    font-size: 13px;
+            font-weight: 700;
+            color: darkslategray;">
+                    <div class="high">
+                        <p style="margin-bottom: auto;">High</p>
+                        <p style="margin-bottom: auto;" class="text-success" id="nifty_50_high"></p>
+                    </div>
+                    <div class="low">
+                        <p style="margin-bottom: auto;">Low</p>
+                        <p style="margin-bottom: auto;" class="text-danger" id="nifty_50_low"></p>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+
+            <div class="bottom_card">
+                <a href="" id="market_top">Analytics</a>
+                <a href="" id="market_top">Options</a>
+                <a href="" id="market_top">PCR</a>
+                <a href="" id="market_top">Chain</a>
+                <a href="" id="market_top">Max pain</a>
+                <a href="" id="market_top">Contributors</a>
+            </div>
+        </div>
+        <div class="nifty_main shadow"
+            style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+
+            <div class="title_nifty  " style="display: flex;gap: 1rem;">
+                <h5 style="    font-size: 1rem;" id="niftybank_symbol"></h5>
+                <h5 style="    font-size: 1rem;" class="" id="niftybank_value"></h5>
+            </div>
+
+
+            <div class="middle_nifty">
+                <div class="traded_icons" id="traded_icons">
+                    <div id="niftybank_icons"></div>
+                    <h4 style="    font-size: 2rem;color: darkslategray;" id="niftybank_trade_value"></h4>
+                </div>
+                <div class="high_low_nifty" style="    font-size: 13px;
+            font-weight: 700;
+            color: darkslategray;">
+                    <div class="high">
+                        <p style="margin-bottom: auto;">High</p>
+                        <p style="margin-bottom: auto;" class="text-success" id="niftybank_high"></p>
+                    </div>
+                    <div class="low">
+                        <p style="margin-bottom: auto;">Low</p>
+                        <p style="margin-bottom: auto;" class="text-danger" id="niftybank_low"></p>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+
+            <div class="bottom_card">
+                <a href="" id="market_top">Analytics</a>
+                <a href="" id="market_top">Options</a>
+                <a href="" id="market_top">PCR</a>
+                <a href="" id="market_top">Chain</a>
+                <a href="" id="market_top">Max pain</a>
+                <a href="" id="market_top">Contributors</a>
+            </div>
+        </div>
+        <div class="nifty_main shadow"
+            style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+
+            <div class="title_nifty  " style="display: flex;gap: 1rem;">
+                <h5 style="    font-size: 1rem;" id="finnity_symbol"></h5>
+                <h5 style="    font-size: 1rem;" class="" id="finnity_value"></h5>
+            </div>
+
+
+            <div class="middle_nifty">
+                <div class="traded_icons" id="traded_icons">
+                    <div id="finnity_icons"></div>
+                    <h4 style="    font-size: 2rem;color: darkslategray;" id="finnity_trade_value"></h4>
+                </div>
+                <div class="high_low_nifty" style="    font-size: 13px;
+            font-weight: 700;
+            color: darkslategray;">
+                    <div class="high">
+                        <p style="margin-bottom: auto;">High</p>
+                        <p style="margin-bottom: auto;" class="text-success" id="finnity_high"></p>
+                    </div>
+                    <div class="low">
+                        <p style="margin-bottom: auto;">Low</p>
+                        <p style="margin-bottom: auto;" class="text-danger" id="finnity_low"></p>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+
+            <div class="bottom_card">
+                <a href="" id="market_top">Analytics</a>
+                <a href="" id="market_top">Options</a>
+                <a href="" id="market_top">PCR</a>
+                <a href="" id="market_top">Chain</a>
+                <a href="" id="market_top">Max pain</a>
+                <a href="" id="market_top">Contributors</a>
+            </div>
+        </div>
+
+    </div>
+
+    <h4 class="my-3">Global Markets</h4>
+
+
+    <div id="tables-container" class="d-flex" style="    row-gap: 1rem;justify-content: space-around;     flex-wrap: wrap;"></div>
+
+
+<h4 class="my-3">Market Action</h4>
+<div class="description_usage my-4 container">
+    <div class="head_desc_usage">
+      <div class="row border-bottom">
+        <div
+          class="chart-header col-2 text-center"
+          onclick="filterChart('topgainers')"
+          data-btn-id="1"
+          style="font-size: 21px"
+        >
+         Top Gainers
+        </div>
+        <div
+          class="chart-header col-2 text-center"
+          onclick="filterChart('toplosers')"
+          data-btn-id="2"
+          style="font-size: 21px"
+        >
+          Top Losers
+        </div>
+
+        <div
+          class="chart-header col-2  text-center"
+          onclick="filterChart('sameopenandlow')"
+          data-btn-id="3"
+          style="font-size: 21px"
+        >
+        sameOpenAndLow
+        </div>
+
+        <div
+          class="chart-header col-2  text-center"
+          onclick="filterChart('sameOpenAndHigh')"
+          data-btn-id="4"
+          style="font-size: 21px"
+        >
+        sameOpenAndHigh
+        </div>
+
+        <div
+          class="chart-header col-2  text-center"
+          onclick="filterChart('gapUp')"
+          data-btn-id="4"
+          style="font-size: 21px"
+        >
+        gapUp
+        </div>
+
+        <div
+          class="chart-header col-2  text-center"
+          onclick="filterChart('gapDown')"
+          data-btn-id="4"
+          style="font-size: 21px"
+        >
+        gapDown
+        </div>
+
+
+
+      </div>
+      <div class="main_desc_usage mt-4" id="main_desc_usage"></div>
+    </div>
+    <div id="chartContainer " style="    height: fit-content;">
+        <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">chart</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Today Low</th>
+                    <th scope="col">Today High</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Prev Close</th>
+                    <th scope="col">Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="top_gainers_table"></tbody>
+              </table>
+        </div>
+        <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
+      <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">chart</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Today Low</th>
+                    <th scope="col">Today High</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Prev Close</th>
+                    <th scope="col">Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="top_losers_table"></tbody>
+              </table>
+        </div>
+    
+        <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">chart</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Today Low</th>
+                    <th scope="col">Today High</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Prev Close</th>
+                    <th scope="col">Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="same_open_and_low"></tbody>
+              </table>
+        </div>
+        <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">chart</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Today Low</th>
+                    <th scope="col">Today High</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Prev Close</th>
+                    <th scope="col">Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="same_Open_And_High"></tbody>
+              </table>
+        </div>
+        <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">chart</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Today Low</th>
+                    <th scope="col">Today High</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Prev Close</th>
+                    <th scope="col">Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="gap_Up"></tbody>
+              </table>
+        </div>
+        <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">chart</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Today Low</th>
+                    <th scope="col">Today High</th>
+                    <th scope="col">Change %</th>
+                    <th scope="col">Prev Close</th>
+                    <th scope="col">Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="gap_Down"></tbody>
+              </table>
+        </div>
+
+
+      </div>
+      <h5 class="text-primary d-flex justify-content-end">View more</h5>
+      <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
+        <button class=" btn btn-primary">Get a Lifetime Free Demat Account</button>
+        <button class=" btn btn-danger">Intraday & Options Tradings @ Zero Brockrage</button>
+        <button class="btn btn-primary">Search Stocks</button>
+      </div>
+  </div>
+
+  <h4 class="my-3">Ban List </h4>
+  <div class="main_ban" style="    display: flex;
+    justify-content: center;
+    gap: 2rem;">
+<div class="ban_security">
+    <h5>Securities In Ban </h5>
+    <table class="table  table-hover" id="securities_ban_table">
+        <thead class="table-info">
+            <tr>
+                <th>SYMBOL</th>
+                <th>PREVIOUS MWPL %</th>
+                <th>CURRENT MWPL %</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="ban_entry">
+    <h5>Possible Entrants </h5>
+    <table class="table  table-hover" id="possible_entrants_table">
+        <thead class="table-info">
+            <tr>
+                <th>SYMBOL</th>
+                <th>PREVIOUS MWPL %</th>
+                <th>CURRENT MWPL %</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="ban_exits">
+    <h5>Possible Exits </h5>
+    <table class="table  table-hover" id="possible_exits_table">
+        <thead class="table-info">
+            <tr>
+                <th>SYMBOL</th>
+                <th>PREVIOUS MWPL %</th>
+                <th>CURRENT MWPL %</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="spinner"
+    class="position-fixed top-50 start-50 translate-middle d-flex align-items-center justify-content-center">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+</div>
+
+<script>
+    // Function to show or hide charts based on filter selection
+    var topgainers = document.getElementById("topgainers");
+    var toplosers = document.getElementById("toplosers");
+    var sameopenandlow = document.getElementById("sameopenandlow");
+    var sameOpenAndHigh = document.getElementById("sameOpenAndHigh");
+    var gapUp = document.getElementById("gapUp");
+    var gapDown = document.getElementById("gapDown");
+    topgainers.style.display = "block";
+    
+
+    toplosers.style.display = "none";
+    sameopenandlow.style.display = "none";
+    sameOpenAndHigh.style.display = "none";
+    gapUp.style.display = "none";
+    gapDown.style.display = "none";
+    function filterChart(filter) {
+
+      var topgainers = document.getElementById("topgainers");
+      var toplosers = document.getElementById("toplosers");
+      var sameopenandlow = document.getElementById("sameopenandlow");
+      var sameOpenAndHigh = document.getElementById("sameOpenAndHigh");
+    var gapUp = document.getElementById("gapUp");
+    var gapDown = document.getElementById("gapDown");
+      var chartContainer = document.getElementById("chartContainer");
+
+      if (filter === "topgainers") {
+        topgainers.style.display = "block";
+    
+
+        toplosers.style.display = "none";
+        sameopenandlow.style.display = "none";
+        sameOpenAndHigh.style.display = "none";
+        gapUp.style.display = "none";
+        gapDown.style.display = "none";
+      } else if (filter === "toplosers") {
+        topgainers.style.display = "none";
+        toplosers.style.display = "block";
+        sameopenandlow.style.display = "none";
+        sameOpenAndHigh.style.display = "none";
+        gapUp.style.display = "none";
+        gapDown.style.display = "none";
+      } else if (filter === "sameopenandlow") {
+        topgainers.style.display = "none";
+        toplosers.style.display = "none";
+        sameopenandlow.style.display = "block";
+        sameOpenAndHigh.style.display = "none";
+        gapUp.style.display = "none";
+        gapDown.style.display = "none";
+      }else if (filter=="sameOpenAndHigh") {
+        topgainers.style.display = "none";
+        toplosers.style.display = "none";
+        sameopenandlow.style.display = "none";
+        sameOpenAndHigh.style.display = "block";
+        gapUp.style.display = "none";
+        gapDown.style.display = "none";
+      }
+      else if (filter=="gapUp") {
+        topgainers.style.display = "none";
+        toplosers.style.display = "none";
+        sameopenandlow.style.display = "none";
+        sameOpenAndHigh.style.display = "none";
+        gapUp.style.display = "block";
+        gapDown.style.display = "none";
+      }
+      
+      else if (filter=="gapDown") {
+        topgainers.style.display = "none";
+        toplosers.style.display = "none";
+        sameopenandlow.style.display = "none";
+        sameOpenAndHigh.style.display = "none";
+        gapUp.style.display = "none";
+        gapDown.style.display = "block";
+      }
+      
+       
+      
+    }
+    $(document).ready(function () {
+      $("[data-btn-id]:first-child").addClass("desc_usage_active");
+      // Filter button click event
+      $("[data-btn-id]").click(function () {
+        var btnId = $(this).attr("data-btn-id");
+        filterResults(btnId);
+        changeButtonColor($(this));
+      });
+
+      // Initial filtering (optional)
+      filterResults(1);
+      // Function to filter results
+      function filterResults(btnId) {
+        // Clear previous results
+        // Filter elements based on btnId
+      }
+
+      // Function to change button color
+      function changeButtonColor(button) {
+        // Reset color of all buttons
+        $("[data-btn-id]").removeClass("desc_usage_active");
+
+        // Add color to the clicked button
+        button.addClass("desc_usage_active");
+      }
+    });
+  </script>
+{% endblock dashboard_body %}

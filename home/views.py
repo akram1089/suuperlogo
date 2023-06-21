@@ -523,10 +523,10 @@ def Open_interest_analysis(request):
                         info['instrumentType'] = j
                         ocdata.append(info)
             dataopt = pd.DataFrame(ocdata)
-            filtered_data = dataopt[dataopt['expiryDate'] == str(expiry_dates)]
-            if not filtered_data.empty:
-                print(filtered_data)
-                filtered_datas = filtered_data.head(100)
+            filtered_data_open = dataopt[dataopt['expiryDate'] == str(expiry_dates)]
+            if not filtered_data_open.empty:
+                print(filtered_data_open)
+                filtered_datas = filtered_data_open.head(100)
                 print(filtered_datas)
                 json_records = filtered_datas.reset_index().to_json(orient='records')
                 data_filter = []
@@ -876,6 +876,11 @@ def market_wide_position(request):
 
     return render(request, "market_wide_position.html", context)
 
+import datetime
+import requests
+import pandas as pd
+from collections import defaultdict
+from django.shortcuts import render
 
 def dii_fii(request):
     url = "https://webapi.niftytrader.in/webapi/Resource/fii-cash-month"
@@ -911,15 +916,15 @@ def dii_fii(request):
     values = df["net_value"].tolist()
     print(labels, values)
 
-    filtered_data = [
-        (datetime.strptime(
+    filtered_data_fpi = [
+        (datetime.datetime.strptime(
             item["created_at"], "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d"), item["net_value"])
         for item in data["resultData"]["data"]
         if item["category"] == "FII/FPI"
     ]
 
     # Convert the filtered data to a DataFrame
-    dfii = pd.DataFrame(filtered_data, columns=["created_at", "net_value"])
+    dfii = pd.DataFrame(filtered_data_fpi, columns=["created_at", "net_value"])
 
     # Sort the DataFrame by created_at in descending order
     dfii.sort_values("created_at", ascending=False, inplace=True)
@@ -927,8 +932,9 @@ def dii_fii(request):
     # Prepare the data for Chart.js
     labels_fii = dfii["created_at"].tolist()
     values_fii = dfii["net_value"].tolist()
+    
     filtered_data_fii = [
-        (datetime.strptime(
+        (datetime.datetime.strptime(
             item["created_at"], "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d"), item["net_value"])
         for item in data["resultData"]["data"]
         if item["category"] == "DII"  # Filter for "DII" category
@@ -1200,17 +1206,17 @@ def holiday(request):
     response = requests.get(url, headers=headers)
     data = response.json()
 
-    filtered_data = []
+    filtered_data_holiday = []
 
     for d in data["resultData"]["holiday1"]:
-        filtered_data.append({
+        filtered_data_holiday.append({
             "srno": d["srno"],
             "date": d["date"],
             "day": d["day"],
             "description": d["description"]
         })
 
-    df = pd.DataFrame(filtered_data)
+    df = pd.DataFrame(filtered_data_holiday)
     table_data = df.to_dict(orient='records')
 
     context = {
@@ -1254,12 +1260,6 @@ def market_heavy(request):
     return  render(request,"market_heavy.html")
 
 
-import requests
-import pandas as pd
-from django.shortcuts import render
-
-import json
-from django.http import JsonResponse
 
 
 
@@ -1284,21 +1284,21 @@ def bulk_deal_data(request):
         response = requests.get(url, headers=headers)
         data = response.json()
 
-        # Format deal_dates using pandas
+   
         deal_dates = pd.to_datetime(data["resultData"]['deal_dates']).strftime('%Y-%m-%d').tolist()
 
-        # Create a DataFrame from deal_data
+        
         deal_data = pd.DataFrame(data["resultData"]['deal_data'])
 
-        # Convert created_at to datetime format and format it as YYYY-MM-DD
+        
         deal_data['created_at'] = pd.to_datetime(deal_data['created_at']).dt.strftime('%Y-%m-%d')
 
         if selected_date:
-            # Filter the deal_data based on the selected date
+           
             selected_date = datetime.datetime.strptime(selected_date, '%Y-%m-%d')
             deal_data = deal_data[deal_data['created_at'] == selected_date.date().strftime('%Y-%m-%d')]
 
-        # Convert deal_data back to a list of dictionaries
+        
         deal_data = deal_data.to_dict(orient='records')
 
         return JsonResponse({'deal_dates': deal_dates, 'deal_data': deal_data}, json_dumps_params={'indent': 2})
@@ -1310,6 +1310,162 @@ def bulk_deal_data(request):
 
 def bulk_deal_data_page(request):
     return render(request, 'bulk_deal_data.html')
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+
+def base_dashboard1(request):
+    url = "https://webapi.niftytrader.in/webapi/symbol/stock-index-data"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    nifty50_data = data['resultData'].get('nifty50', '')
+    niftybank_data = data['resultData'].get('niftybank', '')
+    finnity_data = data['resultData'].get('finnity', '')
+
+    nifty50_difference = nifty50_data.get('last_trade_price', 0) - nifty50_data.get('prev_price', 0)
+    niftybank_difference = niftybank_data.get('last_trade_price', 0) - niftybank_data.get('prev_price', 0)
+    finnity_difference = finnity_data.get('last_trade_price', 0) - finnity_data.get('prev_price', 0)
+
+    nifty50_percentage = (nifty50_difference / nifty50_data.get('prev_price', 1)) * 100
+    niftybank_percentage = (niftybank_difference / niftybank_data.get('prev_price', 1)) * 100
+    finnity_percentage = (finnity_difference / finnity_data.get('prev_price', 1)) * 100
+
+    stock_data = {
+        'nifty50_data': nifty50_data,
+        'nifty50_value': nifty50_difference,
+        'nifty50_percentage': nifty50_percentage,
+        'niftybank_data': niftybank_data,
+        'niftybank_value': niftybank_difference,
+        'niftybank_percentage': niftybank_percentage,
+        'finnity_data': finnity_data,
+        'finnity_value': finnity_difference,
+        'finnity_percentage': finnity_percentage,
+    }
+    return JsonResponse(stock_data)
+
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+
+from django.http import JsonResponse
+import requests
+
+def global_market(request):
+    url = "https://webapi.niftytrader.in/webapi/usstock/global-market"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    country_data = {}
+
+    for item in data['resultData']:
+        country = item['country']
+        if country in country_data:
+            country_data[country].append(item)
+        else:
+            country_data[country] = [item]
+
+    tables_data = []
+    for country, items in country_data.items():
+        table_data = {
+            'country': country,
+            'items': items
+        }
+        tables_data.append(table_data)
+
+    return JsonResponse({'tables': tables_data})
 
 
+
+def dashboard1(request):
+    return render(request, 'dashboard1.html')
+
+
+
+import pandas as pd
+import requests
+from django.http import JsonResponse
+
+def market_actions(request):
+    url = "https://webapi.niftytrader.in/webapi/symbol/top-gainers-data"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    if "resultData" in data:
+        result_data = data["resultData"]
+        tables = []
+
+        for category, items in result_data.items():
+            if category == "topWatchList":
+                continue  # Skip the "topWatchList" category
+
+            df = pd.DataFrame(items)
+            table = {
+                "category": category,
+                "data": df.to_dict(orient="records")
+            }
+            tables.append(table)
+
+        return JsonResponse({"tables": tables})
+    else:
+        return JsonResponse({"error": "No data found in the response."})
+
+from django.http import JsonResponse
+import requests
+
+import pandas as pd
+
+def ban_list_dashboard(request):
+    url = "https://webapi.niftytrader.in/webapi/Resource/ban-list"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    securities_ban_result = data['resultData']['securities_ban_result']
+    possible_entrants_result = data['resultData']['possible_entrants_result']
+    possible_exits_result = data['resultData']['possible_exits_result']
+
+    # Convert data to pandas DataFrames for optimization
+    securities_ban_df = pd.DataFrame(securities_ban_result)
+    possible_entrants_df = pd.DataFrame(possible_entrants_result)
+    possible_exits_df = pd.DataFrame(possible_exits_result)
+
+    # Convert DataFrames back to JSON format
+    securities_ban_result = securities_ban_df.to_dict(orient='records')
+    possible_entrants_result = possible_entrants_df.to_dict(orient='records')
+    possible_exits_result = possible_exits_df.to_dict(orient='records')
+
+    result = {
+        'securities_ban_result': securities_ban_result,
+        'possible_entrants_result': possible_entrants_result,
+        'possible_exits_result': possible_exits_result
+    }
+
+    return JsonResponse(result)
 

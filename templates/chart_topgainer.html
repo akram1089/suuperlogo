@@ -1,86 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Calendar Heatmap Example</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    canvas {
-      max-width: 800px;
-    }
-  </style>
+    <title>Ban List Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-  <canvas id="myChart"></canvas>
+    <div class="main_ban">
+<div class="ban_security">
+    <h2>Securities Ban Result</h2>
+    <table id="securities_ban_table">
+        <thead>
+            <tr>
+                <th>SYMBOL</th>
+                <th>Prev</th>
+                <th>Curr</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="ban_entry">
+    <h2>Possible Entrants Result</h2>
+    <table id="possible_entrants_table">
+        <thead>
+            <tr>
+                <th>SYMBOL</th>
+                <th>Prev</th>
+                <th>Curr</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="ban_exits">
+    <h2>Possible Exits Result</h2>
+    <table id="possible_exits_table">
+        <thead>
+            <tr>
+                <th>SYMBOL</th>
+                <th>Prev</th>
+                <th>Curr</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+</div>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "{% url 'ban_list_dashboard' %}",
+                method: "GET",
+                success: function(response) {
+                    console.log(response)
+                    populateTable(response.securities_ban_result, "#securities_ban_table");
+                    populateTable(response.possible_entrants_result, "#possible_entrants_table");
+                    populateTable(response.possible_exits_result, "#possible_exits_table");
+                },
+                error: function() {
+                    console.log("Error occurred while fetching data.");
+                }
+            });
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('myChart').getContext('2d');
+            function populateTable(data, tableId) {
+                var tableBody = $(tableId + " tbody");
+                tableBody.empty();
 
-      // Fetch the data from your Django view or pass it as a variable
-      const data = [
-        [3, 1, 0, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5],
-        [0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4],
-        [7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0],
-        [4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5],
-        [5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1],
-        [6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2],
-        [1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6],
-        [2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3],
-        [7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0],
-        [4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5],
-        [5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1],
-        [6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2, 5, 7, 6, 4, 3, 1, 0, 2]
-      ];
+                data.forEach(function(item) {
+                    console.log(item)
+                    var row = $("<tr></tr>");
+                    row.append($("<td></td>").text(item.symbol_name));
+                    row.append($("<td></td>").text(item.previous_percent));
+                    row.append($("<td></td>").text(item.current_percent));
+                    // Add more columns as needed
 
-      // Prepare the labels for the chart
-      const labels = [
-        'July', 'August', 'September', 'October', 'November', 'December',
-        'January', 'February', 'March', 'April', 'May', 'June'
-      ];
-
-      new Chart(ctx, {
-        type: 'heatmap',
-        data: {
-          labels: labels,
-          datasets: [{
-            data: data,
-            borderWidth: 1,
-            borderColor: 'white',
-            backgroundColor: function(context) {
-              const value = context.dataset.data[context.dataIndex];
-              const max = Math.max(...context.dataset.data.flat());
-              const min = Math.min(...context.dataset.data.flat());
-              const normalizedValue = (value - min) / (max - min);
-              const color = Math.round(255 * normalizedValue);
-              return `rgba(${color}, ${color}, ${color}, 1)`;
+                    tableBody.append(row);
+                });
             }
-          }]
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: false
-            },
-            title: {
-              display: true,
-              text: 'Calendar Heatmap'
-            }
-          },
-          scales: {
-            x: {
-              grid: {
-                display: false
-              }
-            },
-            y: {
-              grid: {
-                display: false
-              }
-            }
-          }
-        }
-      });
-    });
-  </script>
+        });
+    </script>
 </body>
 </html>
