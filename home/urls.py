@@ -47,7 +47,7 @@ urlpatterns = [
     path('global_market', views.global_market, name='global_market'),
     path('market_actions', views.market_actions, name='market_actions'),
     path('ban_list_dashboard', views.ban_list_dashboard, name='ban_list_dashboard'),
-    path('stock-listing/', views.stock_listing, name='stock_listing'),
+    # path('stock-listing/', views.stock_listing, name='stock_listing'),
 
     path('courses_details',views.courses_details,name='courses_details'),
     path('market_wide_position',views.market_wide_position,name='market_wide_position'),

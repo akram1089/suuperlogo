@@ -1473,39 +1473,39 @@ from django.http import JsonResponse
 import requests
 from .models import StockListing
 
-def stock_listing(request):
-    url = "https://www.nseindia.com/api/new-listing-today?index=RecentListing"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
+# def stock_listing(request):
+#     url = "https://www.nseindia.com/api/new-listing-today?index=RecentListing"
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
 
-    try:
-        response = requests.get(url, headers=headers)
-        data = response.json()
+#     try:
+#         response = requests.get(url, headers=headers)
+#         data = response.json()
 
-        sme_records = [record for record in data["data"] if record["instrument"] == "SME"]
+#         sme_records = [record for record in data["data"] if record["instrument"] == "SME"]
       
-        equity_records = [record for record in data["data"] if record["instrument"] == "Equity"]
+#         equity_records = [record for record in data["data"] if record["instrument"] == "Equity"]
 
-        # Update the StockListing model with new data
-        stock_listing, _ = StockListing.objects.get_or_create(pk=1)
-        stock_listing.sme_records = sme_records
-        stock_listing.equity_records = equity_records
-        stock_listing.save()
+#         # Update the StockListing model with new data
+#         stock_listing, _ = StockListing.objects.get_or_create(pk=1)
+#         stock_listing.sme_records = sme_records
+#         stock_listing.equity_records = equity_records
+#         stock_listing.save()
 
-    except requests.exceptions.RequestException:
-        # If the API does not respond, fetch the data from the StockListing model
-        try:
-            stock_listing = StockListing.objects.get(pk=1)
-            sme_records = stock_listing.sme_records if stock_listing else []
-            print(sme_records)
-            equity_records = stock_listing.equity_records if stock_listing else []
-        except StockListing.DoesNotExist:
-            sme_records = []
-            equity_records = []
+#     except requests.exceptions.RequestException:
+#         # If the API does not respond, fetch the data from the StockListing model
+#         try:
+#             stock_listing = StockListing.objects.get(pk=1)
+#             sme_records = stock_listing.sme_records if stock_listing else []
+#             print(sme_records)
+#             equity_records = stock_listing.equity_records if stock_listing else []
+#         except StockListing.DoesNotExist:
+#             sme_records = []
+#             equity_records = []
 
-    return JsonResponse({"sme_records": sme_records, "equity_records": equity_records})
+#     return JsonResponse({"sme_records": sme_records, "equity_records": equity_records})
 
