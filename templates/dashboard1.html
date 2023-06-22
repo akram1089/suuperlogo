@@ -60,6 +60,7 @@
         gap: 2rem;
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
 
 
     }
@@ -123,7 +124,38 @@ cursor: pointer;
     width: 22rem;
 }
 </style>
+<style>
+  .filter_ipo_active {
+    color: #011490;
+    text-align: center;
+    border-bottom: 2px solid #011490;
+    font-size: 21px;
+    font-weight: 600;
+  }
 
+  .col-4 {
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .head_image {
+      width: fit-content !important;
+    }
+
+  }
+  .equity_sme{
+  cursor: pointer;
+}
+.filter_child_active {
+    color: #011490;
+    text-align: center;
+    border-bottom: 2px solid #011490;
+    font-size: 21px;
+    font-weight: 600;
+  }
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -480,6 +512,30 @@ cursor: pointer;
             }
         });
     </script>
+        <script>
+          $(document).ready(function() {
+              $.ajax({
+                  url: '/stock-listing/',
+                  type: 'GET',
+                  dataType: 'json',
+                  success: function(response) {
+                      populateTable(response.sme_records, '#sme-table');
+                      populateTable(response.equity_records, '#equity-table');
+                  }
+              });
+          });
+  
+          function populateTable(records, tableId) {
+              var tableBody = $(tableId + ' tbody');
+              $.each(records, function(index, record) {
+                  var row = $('<tr></tr>');
+                  row.append('<td>' + record.symbol + '</td>');
+                  row.append('<td>' + record.name + '</td>');
+                  row.append('<td>' + record.instrument + '</td>');
+                  tableBody.append(row);
+              });
+          }
+      </script>
 <div class="container mt-5">
 
 
@@ -783,17 +839,19 @@ cursor: pointer;
 
       </div>
       <h5 class="text-primary d-flex justify-content-end">View more</h5>
-      <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
+      {% comment %} <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
         <button class=" btn btn-primary">Get a Lifetime Free Demat Account</button>
         <button class=" btn btn-danger">Intraday & Options Tradings @ Zero Brockrage</button>
         <button class="btn btn-primary">Search Stocks</button>
-      </div>
+      </div> {% endcomment %}
   </div>
 
   <h4 class="my-3">Ban List </h4>
   <div class="main_ban" style="    display: flex;
     justify-content: center; 
-    gap: 2rem;">
+    gap: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    padding: 25px;">
 <div class="ban_security">
     <h5>Securities In Ban </h5>
     <table class="table  table-hover" id="securities_ban_table">
@@ -839,6 +897,94 @@ cursor: pointer;
 </div>
 
 
+
+
+
+
+
+
+<h4 class="my-3">IPO List </h4>
+<div class="ipo container" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+padding: 25px;">
+
+  <div class="description_usage my-4">
+    <div class="head_desc_usage">
+      <div class="row border-bottom">
+        <div class="chart-header col-4" onclick="filter_ipoIpo('r_list')" id="r_btn" style="font-size: 21px">
+          Recent List
+        </div>
+        <div class="chart-header col-4" onclick="filter_ipoIpo('a_list')" id="a_btn" style="font-size: 21px">
+          Active List
+        </div>
+        <div class="chart-header col-4" onclick="filter_ipoIpo('f_list')" id="f_btn" style="font-size: 21px">
+          Forthcoming List
+        </div>
+      </div>
+      <div class="main_desc_usage mt-4" id="main_desc_usage"></div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div id="chartContainer container " style="">
+    <div class="equity_sme" id="equity_sme" style="width: 100%; ">
+
+      <div class="row border-bottom text-center">
+        <div class="equity_btn col-6" id="equity_btn" onclick="filter_Equity_Sme('1st')" style="font-size: 21px">
+          Equity
+        </div>
+        <div class="sme_btn col-6" id="sme_btn" onclick="filter_Equity_Sme('2nd')" style="font-size: 21px">
+          SME
+        </div>
+    
+      </div>
+      <div class="equity_sme">
+
+        <div class="equity" id="equity">
+          <table id="equity-table" class="table">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                    <th>Instrument</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        </div>
+        <div class="sme" id="sme">
+          <table id="sme-table" class="table">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                    <th>Instrument</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+    <div class="r_list" id="r_list" style="width: 100%; ">
+      
+    
+    </div>
+
+    <div class="f_list" id="f_list" style="width: 100%; ">
+      <div class="col-4" id="Bulleye">
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
 </div>
 
 
@@ -858,6 +1004,76 @@ cursor: pointer;
     class="position-fixed top-50 start-50 translate-middle d-flex align-items-center justify-content-center">
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
 </div>
+<script>
+  var equity = document.getElementById("equity");
+var sme = document.getElementById("sme");
+
+equity.style.display = "block";
+
+sme.style.display = "none";
+var equity_btn =document.getElementById("equity_btn")
+
+equity_btn.classList.add("filter_child_active")
+function filter_Equity_Sme(filter_e_s) {
+if (filter_e_s=="1st") {
+  equity.style.display = "block";
+
+sme.style.display = "none";
+equity_btn.classList.add("filter_child_active")
+sme_btn.classList.remove("filter_child_active")
+}
+else if (filter_e_s=="2nd") {
+  equity.style.display = "none";
+
+sme.style.display = "block";
+sme_btn.classList.add("filter_child_active")
+equity_btn.classList.remove("filter_child_active")
+}
+}
+</script>
+
+<script>
+// Function to show or hide charts based on filter_ipo selection
+var equity_sme = document.getElementById("equity_sme");
+var r_list = document.getElementById("r_list");
+var f_list = document.getElementById("f_list");
+equity_sme.style.display = "block";
+document.getElementById("r_btn").classList.add("filter_ipo_active")
+r_list.style.display = "none";
+f_list.style.display = "none";
+function filter_ipoIpo(filter_ipo) {
+  var equity_sme = document.getElementById("equity_sme");
+  var r_list = document.getElementById("r_list");
+  var f_list = document.getElementById("f_list");
+  var chartContainer = document.getElementById("chartContainer");
+
+  if (filter_ipo === "r_list") {
+    equity_sme.style.display = "block";
+
+    r_list.style.display = "none";
+    f_list.style.display = "none";
+    document.getElementById("r_btn").classList.add("filter_ipo_active")
+    document.getElementById("a_btn").classList.remove("filter_ipo_active")
+    document.getElementById("f_btn").classList.remove("filter_ipo_active")
+  } else if (filter_ipo === "a_list") {
+    equity_sme.style.display = "none";
+    r_list.style.display = "block";
+    f_list.style.display = "none";
+    document.getElementById("a_btn").classList.add("filter_ipo_active")
+    document.getElementById("r_btn").classList.remove("filter_ipo_active")
+    document.getElementById("f_btn").classList.remove("filter_ipo_active")
+  } else if (filter_ipo === "f_list") {
+    equity_sme.style.display = "none";
+    r_list.style.display = "none";
+    f_list.style.display = "block";
+    document.getElementById("f_btn").classList.add("filter_ipo_active")
+    document.getElementById("a_btn").classList.remove("filter_ipo_active")
+    document.getElementById("r_btn").classList.remove("filter_ipo_active")
+  }
+}
+
+
+</script>
 
 <script>
     // Function to show or hide charts based on filter selection
