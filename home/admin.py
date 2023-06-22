@@ -8,6 +8,7 @@ from.models import Top_Gainer
 from.models import Top_Loser
 from.models import TradedVolume
 from.models import SecurityBan
+# from.models import StockListing
 
 
 
@@ -19,6 +20,7 @@ admin.site.register(Top_Gainer)
 admin.site.register(Top_Loser)
 admin.site.register(TradedVolume)
 admin.site.register(SecurityBan)
+# admin.site.register(StockListing)
 
 
 

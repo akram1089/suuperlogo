@@ -69,3 +69,12 @@ class Entrance(models.Model):
 
     def __str__(self):
         return self.Entrance_symbol_name
+
+from django.db import models
+
+class StockListing(models.Model):
+    sme_records = models.TextField()
+    equity_records = models.TextField()
+
+    def __str__(self):
+        return f"Stock Listing {self.pk}"
