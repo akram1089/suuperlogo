@@ -220,7 +220,7 @@
     }
     .dropdown-menu.show {
     display: block;
-    right: 0 !important;
+    right: 1 !important;
 }
 
   #spinner {
@@ -334,6 +334,14 @@
 
 
  <div class="dashboard_left_nav d-flex">
+  {% if request.user.is_superuser %}
+          
+  <h5 style='    margin-top: 0.5rem;'>Welcome to Admin Panel</h5>
+ 
+{% else %}
+
+{% endif %}
+ 
   <div class="resourses">
     <div class="dropdown">
       <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
@@ -439,7 +447,7 @@
                     <i class="bi bi-person-circle fs-3" style="margin-right: 1rem;"></i>{{user.full_name}}
                   </a>
                 
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu" style="right:1">
                     <li><a class="dropdown-item" href="#">Account Details</a></li>
                     <li><a class="dropdown-item" href="{% url 'holiday' %}">Holiday</a></li>
                     <li><a class="dropdown-item" href="#">Support</a></li>
@@ -460,7 +468,7 @@
                      Resources
                     </a>
                   
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="right:1px">
                       <li><a class="dropdown-item" href="#">Account Details</a></li>
                       <li><a class="dropdown-item" href="{% url 'holiday' %}">Holiday</a></li>
                       <li><a class="dropdown-item" href="#">Support</a></li>
@@ -500,6 +508,18 @@
                 <i class="bi bi-house-door"></i><p>Dashboard</p>
               </a>
 
+              {% if request.user.is_superuser %}
+          
+              <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/manage_user"  %} active_dash {% endif %} " href={% url 'manage_user' %} style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-lock"></i><p>Manage User</p>
+            </a>
+    
+             
+          {% else %}
+          
+          {% endif %}
+        
 
 
               <a
@@ -561,8 +581,6 @@
           </a>
 
 
-            
-    
 
 
 
@@ -586,7 +604,7 @@
               <i class="bi bi-map"></i><p>Algo Market Place   </p>
             </a>
             <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex  {% if request.path == "/financial_result"  %} active_dash {% endif %}  "   href= 'https://www.screener.in/'    style="   padding: 10px 0 0px 23px;">      
+              class="list-group-item list-group-item-action list-group-item-light  d-flex  {% if request.path == "/financial_result"  %} active_dash {% endif %}  "   href= 'https://www.screener.in/' target="_blank"   style="   padding: 10px 0 0px 23px;">      
               <div class="finance_collapse d-flex">    
              <div class="first_finance_collapse d-flex gap-2">
               <i class="bi bi-bank"></i><p>Financial Result </p>
@@ -674,7 +692,21 @@
         </div>
       </div>
     </div>
-  
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="   z-index: 99999999999 !important;
+    position: fixed;
+    top: 3rem;
+    width: fit-content;
+    margin: auto;
+    white-space: nowrap;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+">
+        <strong> {{ message }} </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
  {% block dashboard_body %}{% endblock dashboard_body %}
 
@@ -700,6 +732,25 @@
         $('#Open_interest').DataTable({
           "pageLength": 50
         });
+    
+        $('#most_recommended_stock_table').DataTable({
+          "pageLength": 10
+        });
+    
+    
+        $('#nifty_stock').DataTable({
+          "pageLength": 10
+        });
+    
+    
+        $('#nifty_ban_nifty').DataTable({
+          "pageLength": 10
+        });
+    
+        $('#Oi_loser_data_table_data_table').DataTable({
+          "pageLength": 10
+        });
+    
     
    
     

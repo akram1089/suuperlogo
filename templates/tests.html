@@ -1,440 +1,68 @@
-  
-  
-
-
-def base(request):
-
-url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-all_list = []
-for d in data['data']:
-    if d['symbol'] != 'NIFTY 50':
-        all_list.append({
-            'symbol': d['symbol'],
-            'pChange': d['pChange']
-        })
-
-# Randomly select 10 symbols from the top 50
-random_symbols = random.sample(all_list, 10)
-
-df = pd.DataFrame(random_symbols)
-symbols = df.to_dict(orient='records')
-
-return render(request, 'base.html', {'symbols': symbols})
-
-
-def option_strategies(request):
-return render(request, 'option_strategies.html')
-
-
-def strategy_builder(request):
-return render(request, 'strategy_builder.html')
-
-
-# def chart_topgainer(request):
-
-#     url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
-
-#     headers = {
-#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-#         "Accept-Language": "en-US,en;q=0.9",
-#         "Accept-Encoding": "gzip, deflate, br",
-#         "Connection": "keep-alive"
-#     }
-
-#     response_oi_loser = requests.get(url, headers=headers)
-#     data_oi_loser = response_oi_loser.json()
-
-#     # Extract the name and value data_oi_loser
-#     name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
-
-#     # Create a pandas DataFrame
-#     df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
-
-#     # Select the top 10 rows
-#     top_10_df_oi_loser = df_oi_loser.head(10)
-
-#     # Prepare data for Chart.js
-#     labels_oi_loser = top_10_df_oi_loser["name"].tolist()
-#     values_oi_loser = top_10_df_oi_loser["value"].tolist()
-
-#     context = {
-#         "labels_oi_loser": labels_oi_loser,
-#         "values_oi_loser": values_oi_loser,
-#     }
-
-#     return render(request, 'chart_topgainer.html',context)
-
-
-def dashboard(request):
-
-url = "https://etmarketsapis.indiatimes.com/ET_Stats/gainers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=desc&marketcap=largecap&duration=1d"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-# Create a pandas DataFrame
-df = pd.DataFrame(data["searchresult"])
-
-# Select the desired columns
-df = df[["companyShortName", "percentChange"]]
-
-top_10 = df.head(10)
-
-# Prepare data for Chart.js
-top_gainer_labels = top_10["companyShortName"].tolist()
-top_gainer_values = top_10["percentChange"].tolist()
-
-
-url = "https://etmarketsapis.indiatimes.com/ET_Stats/losers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=asc&marketcap=largecap&duration=1d"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response_losers = requests.get(url, headers=headers)
-data_losers = response_losers.json()
-
-# Create a pandas DataFrame
-df_losers = pd.DataFrame(data_losers["searchresult"])
-
-# Select the desired columns
-df_losers = df_losers[["companyShortName", "percentChange"]]
-
-# Get the top 10 losers
-top_10_losers = df_losers.head(10)
-
-# Prepare data for Chart.js
-looser_labels = top_10_losers["companyShortName"].tolist()
-looser_values = top_10_losers["percentChange"].tolist()
-url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_gainers/"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response_oi = requests.get(url, headers=headers)
-data_oi = response_oi.json()
-
-# Extract the name and value data_oi
-name_value_list = [(item[0]["name"], item[7]) for item in data_oi["tableData"]]
-
-# Create a pandas DataFrame
-df_oi = pd.DataFrame(name_value_list, columns=["name", "value"])
-
-# Get the top 10 rows
-top_10_df_oi = df_oi.head(10)
-
-# Prepare data for Chart.js
-labels_oi_gainer = top_10_df_oi["name"].tolist()
-values_oi_losers = top_10_df_oi["value"].tolist()
-url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response_oi_loser = requests.get(url, headers=headers)
-data_oi_loser = response_oi_loser.json()
-
-# Extract the name and value data_oi_loser
-name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
-
-# Create a pandas DataFrame
-df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
-
-# Select the top 10 rows
-top_10_df_oi_loser = df_oi_loser.head(10)
-
-# Prepare data for Chart.js
-labels_oi_loser = top_10_df_oi_loser["name"].tolist()
-values_oi_loser = top_10_df_oi_loser["value"].tolist()
-
-
-
-context = {
-    "looser_labels": looser_labels,
-    "looser_values": looser_values,
-    "top_gainer_labels": top_gainer_labels,
-    "top_gainer_values": top_gainer_values,
-    "labels_oi_gainer": labels_oi_gainer,
-    "values_oi_losers": values_oi_losers,
-     "labels_oi_loser": labels_oi_loser,
-    "values_oi_loser": values_oi_loser,
-}
-print(context)
-
-return render(request, 'dashboard.html',context)
-
-
-
-
-def market_glance(request):
-return render(request, "market_glance.html")
-
-
-def chart_topgainer(request):
-
-url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-headers = {
-     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-all_list = []
-for d in data['data']:
-    if d['symbol'] != 'NIFTY 50':
-        all_list.append({
-            'symbol': d['symbol'],
-            'pChange': d['pChange']
-        })
-
-# Randomly select 10 symbols from the top 50
-random_symbols = random.sample(all_list, 10)
-
-df = pd.DataFrame(random_symbols)
-symbols = df.to_dict(orient='records')
-
-return render(request, 'chart_topgainer.html', {'symbols': symbols})
-
-
-def holiday(request):
-url = "https://webapi.niftytrader.in/webapi/Resource/bse-nse-holiday"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-filtered_data_holiday = []
-
-for d in data["resultData"]["holiday1"]:
-    filtered_data_holiday.append({
-        "srno": d["srno"],
-        "date": d["date"],
-        "day": d["day"],
-        "description": d["description"]
-    })
-
-df = pd.DataFrame(filtered_data_holiday)
-table_data = df.to_dict(orient='records')
-
-context = {
-    'table_data': table_data
-}
-return render(request ,"holiday.html",context)
-
-def lot_size(request):
-url = "https://webapi.niftytrader.in/webapi/Resource/fno-lot-size"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-table_data = []
-for d in data["resultData"]["data"]:
-    underlying = d["underlying"]
-    symbol = d["symbol"]
-    month_data_str = d["month_data"]
-    month_data = eval(month_data_str)
-    row_data = [underlying,symbol] + list(month_data.values())
-    table_data.append(row_data)
-
-headers = ["Underlying","Symbol"] + list(month_data.keys())
-
-context = {
-    "headers": headers,
-    "table_data": table_data,
-}
-
-return render(request,"lot_size.html",context)
-
-
-def market_heavy(request):
-return  render(request,"market_heavy.html")
-
-
-import requests
-import pandas as pd
-from django.shortcuts import render
-
-import json
-from django.http import JsonResponse
-
-
-
-
-import requests
-from django.http import JsonResponse
-from datetime import datetime
-import pandas as pd
-import datetime
-
-def bulk_deal_data(request):
-if request.method == 'GET':
-    selected_date = request.GET.get('date')
-
-    url = "https://webapi.niftytrader.in/webapi/Resource/bulk-deal-data"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-    }
-
-    response = requests.get(url, headers=headers)
-    data = response.json()
-
-
-    deal_dates = pd.to_datetime(data["resultData"]['deal_dates']).strftime('%Y-%m-%d').tolist()
-
-    
-    deal_data = pd.DataFrame(data["resultData"]['deal_data'])
-
-    
-    deal_data['created_at'] = pd.to_datetime(deal_data['created_at']).dt.strftime('%Y-%m-%d')
-
-    if selected_date:
-       
-        selected_date = datetime.datetime.strptime(selected_date, '%Y-%m-%d')
-        deal_data = deal_data[deal_data['created_at'] == selected_date.date().strftime('%Y-%m-%d')]
-
-    
-    deal_data = deal_data.to_dict(orient='records')
-
-    return JsonResponse({'deal_dates': deal_dates, 'deal_data': deal_data}, json_dumps_params={'indent': 2})
-
-
-
-
-    
-
-def bulk_deal_data_page(request):
-return render(request, 'bulk_deal_data.html')
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
-
-def base_dashboard1(request):
-url = "https://webapi.niftytrader.in/webapi/symbol/stock-index-data"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-nifty50_data = data['resultData'].get('nifty50', '')
-niftybank_data = data['resultData'].get('niftybank', '')
-finnity_data = data['resultData'].get('finnity', '')
-
-nifty50_difference = nifty50_data.get('last_trade_price', 0) - nifty50_data.get('prev_price', 0)
-niftybank_difference = niftybank_data.get('last_trade_price', 0) - niftybank_data.get('prev_price', 0)
-finnity_difference = finnity_data.get('last_trade_price', 0) - finnity_data.get('prev_price', 0)
-
-nifty50_percentage = (nifty50_difference / nifty50_data.get('prev_price', 1)) * 100
-niftybank_percentage = (niftybank_difference / niftybank_data.get('prev_price', 1)) * 100
-finnity_percentage = (finnity_difference / finnity_data.get('prev_price', 1)) * 100
-
-stock_data = {
-    'nifty50_data': nifty50_data,
-    'nifty50_value': nifty50_difference,
-    'nifty50_percentage': nifty50_percentage,
-    'niftybank_data': niftybank_data,
-    'niftybank_value': niftybank_difference,
-    'niftybank_percentage': niftybank_percentage,
-    'finnity_data': finnity_data,
-    'finnity_value': finnity_difference,
-    'finnity_percentage': finnity_percentage,
-}
-return JsonResponse(stock_data)
-
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
-
-from django.http import JsonResponse
-import requests
-
-def global_market(request):
-url = "https://webapi.niftytrader.in/webapi/usstock/global-market"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-}
-
-response = requests.get(url, headers=headers)
-data = response.json()
-
-country_data = {}
-
-for item in data['resultData']:
-    country = item['country']
-    if country in country_data:
-        country_data[country].append(item)
-    else:
-        country_data[country] = [item]
-
-tables_data = []
-for country, items in country_data.items():
-    table_data = {
-        'country': country,
-        'items': items
-    }
-    tables_data.append(table_data)
-
-return JsonResponse({'tables': tables_data})
-
-
-
-def dashboard1(request):
-return render(request, 'dashboard1.html')
-
-
-
-
+<!-- template.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Volume Shocker</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>OI gainer</h1>
+    <table id="Oi_gainer_data">
+        <thead>
+            <tr id="columnHeaders">
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'oi_gainers',
+                method: 'GET',
+                success: function(data) {
+                    createTable(data);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            function createTable(data) {
+                const tableBody = $('#Oi_gainer_data tbody');
+                const tableHeaders = $('#columnHeaders');
+
+                // Create table headers
+                const columnHeaders = data.columns.map(function(column) {
+                    return '<th>' + column + '</th>';
+                });
+                tableHeaders.html(columnHeaders.join(''));
+
+                // Create table rows
+                const tableRows = data.data.map(function(row) {
+                    return '<tr>' +
+                        '<td>' + row[0] + '</td>' +  // name
+                        '<td>' + row[1] + '</td>' +  // price
+                        '<td>' + row[2] + '</td>' +  // Date Chang
+                        '<td>' + row[3] + '</td>' +  // Volume Contracts
+                        '<td>' + row[4] + '</td>' +  // % Volume Contracts
+                        '<td>' + row[5] + '</td>' +  // TTV
+                        '<td>' + row[6] + '</td>' +  // OI
+                        '<td>' + row[7] + '</td>' +  // %OI
+                        '<td>' + row[8] + '</td>' +  // Basis
+                        '<td>' + row[9] + '</td>' +  // COC
+                        '<td>' + row[10] + '</td>' + // Spot
+                        '<td>' + row[11] + '</td>' + // Build Up
+                        '</tr>';
+                });
+                tableBody.html(tableRows.join(''));
+            }
+        });
+    </script>
+</body>
+
+</html>

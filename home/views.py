@@ -605,8 +605,12 @@ def login_user(request):
         user = authenticate(email=Email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'You are successfully logged in')
-            return redirect("/")
+            if request.user.is_superuser:
+                messages.success(request, 'You are successfully logged in as Admin')
+                return redirect("/dashboard")
+            else:
+             messages.success(request, 'You are successfully logged in')
+             return redirect("/")
         else:
             messages.error(request, 'Invalid credential')
             return redirect("/")
@@ -1163,35 +1167,6 @@ def market_glance(request):
     return render(request, "market_glance.html")
 
 
-def chart_topgainer(request):
-
-    url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050"
-    headers = {
-         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
-
-    response = requests.get(url, headers=headers)
-    data = response.json()
-
-    all_list = []
-    for d in data['data']:
-        if d['symbol'] != 'NIFTY 50':
-            all_list.append({
-                'symbol': d['symbol'],
-                'pChange': d['pChange']
-            })
-
-    # Randomly select 10 symbols from the top 50
-    random_symbols = random.sample(all_list, 10)
-
-    df = pd.DataFrame(random_symbols)
-    symbols = df.to_dict(orient='records')
-
-    return render(request, 'chart_topgainer.html', {'symbols': symbols})
-
 
 def holiday(request):
     url = "https://webapi.niftytrader.in/webapi/Resource/bse-nse-holiday"
@@ -1469,9 +1444,9 @@ def ban_list_dashboard(request):
 
     return JsonResponse(result)
 
-from django.http import JsonResponse
-import requests
-from .models import StockListing
+# from django.http import JsonResponse
+# import requests
+# from .models import StockListing
 
 # def stock_listing(request):
 #     url = "https://www.nseindia.com/api/new-listing-today?index=RecentListing"
@@ -1509,3 +1484,225 @@ from .models import StockListing
 
 #     return JsonResponse({"sme_records": sme_records, "equity_records": equity_records})
 
+def admin_login(request):
+    return render(request,"admin_login.html")
+def admin_signup(request):
+    if request.method == "POST":
+        fname = request.POST["name"]
+        email = request.POST["email"]
+        phone_code = request.POST["phone_code"]
+        mobile = request.POST["mobile"]
+        country_id = request.POST.get("country_id", "")
+        state_id = request.POST.get("state_id", "")
+        password = request.POST["password"]
+        Cofirm_password = request.POST["Cofirm_password"]
+        if User.objects.filter(email=email):
+            messages.error(request, 'Email already being taken')
+            return redirect('/')
+        else:
+            Mysignup = User.objects.create_superuser(
+                full_name=fname,
+                email=email,
+                Mobile_number=mobile,
+                password=password,
+                confirm_password=Cofirm_password,
+                Country=country_id,
+                State=state_id,
+                Phone_code=phone_code,
+            )
+            Mysignup.save()
+
+            # Picture=Display_picture(image=images)
+            # Picture.save()
+            messages.success(
+                request, 'You have successfully signed up as Admin , please login with Admin credential')
+            redirect('/admin_login')
+    return render(request,"admin_signup.html")
+
+
+
+def admin_reset(request):
+    return render(request,"admin_reset.html")
+def manage_user(request):
+    User_check = User.objects.all()
+    return render(request,"manage_user.html",{"User_check": User_check})
+
+def delete_user(request, id):
+    if request.method == "POST":
+        Del_user = User.objects.filter(id=id)
+        Del_user.delete()
+        messages.success(request, "A user has been deleted")
+        return redirect("manage_user")
+
+
+# import requests
+# from django.http import JsonResponse
+
+# def oi_gainers(request):
+#     url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_gainers/"
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
+#     response_oi = requests.get(url, headers=headers)
+#     data_oi = response_oi.json()
+
+#     return JsonResponse(data_oi)
+
+
+# def oi_losers(request):
+#     url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+#     headers = {
+#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+#         "Accept-Language": "en-US,en;q=0.9",
+#         "Accept-Encoding": "gzip, deflate, br",
+#         "Connection": "keep-alive"
+#     }
+#     response_oi_loser = requests.get(url, headers=headers)
+#     data_oi_loser = response_oi_loser.json()
+
+#     return JsonResponse(data_oi_loser)
+
+
+
+
+
+
+
+def chart_topgainer(request):
+
+
+
+    return render(request, 'chart_topgainer.html')
+
+
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+
+
+def volume_shocker(request):
+    url = "https://etmarketsapis.indiatimes.com/ET_Stats/volumeshocker?pagesize=25&exchange=nse&pageno=1&sortby=volume&sortorder=desc&avgvolumeover=DAY_3&marketcap=largecap"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    volume_data = data["searchresult"]
+    return JsonResponse(volume_data, safe=False)
+
+# views.py
+
+from django.http import JsonResponse
+import requests
+
+def oi_gainers(request):
+    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_gainers/"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response_oi = requests.get(url, headers=headers)
+    data_oi = response_oi.json()
+
+    # Extract the desired values from data_oi
+    name_values_list = [
+        (
+            item[0]["name"],  # name
+            item[1],  # price
+            item[2],  # Date Chang
+            item[3],  # Volume Contracts
+            item[4],  # % Volume Contracts
+            item[5],  # TTV
+            item[6],  # OI
+            item[7],  # %OI
+            item[8],  # Basis
+            item[9],  # COC
+            item[10],  # Spot
+            item[11]  # Build Up
+        )
+        for item in data_oi["tableData"]
+    ]
+
+    # Prepare the data as a dictionary
+    response_data = {
+        "data": name_values_list,
+        "columns": [
+            "name",
+            "price",
+            "Date Chang",
+            "Volume Contracts",
+            "% Volume Contracts",
+            "TTV",
+            "OI",
+            "%OI",
+            "Basis",
+            "COC",
+            "Spot",
+            "Build Up"
+        ]
+    }
+
+    return JsonResponse(response_data)
+def oi_losers(request):
+    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response_oi = requests.get(url, headers=headers)
+    data_oi = response_oi.json()
+
+    # Extract the desired values from data_oi
+    name_values_list = [
+        (
+            item[0]["name"],  # name
+            item[1],  # price
+            item[2],  # Date Chang
+            item[3],  # Volume Contracts
+            item[4],  # % Volume Contracts
+            item[5],  # TTV
+            item[6],  # OI
+            item[7],  # %OI
+            item[8],  # Basis
+            item[9],  # COC
+            item[10],  # Spot
+            item[11]  # Build Up
+        )
+        for item in data_oi["tableData"]
+    ]
+
+    # Prepare the data as a dictionary
+    response_data = {
+        "data": name_values_list,
+        "columns": [
+            "name",
+            "price",
+            "Date Chang",
+            "Volume Contracts",
+            "% Volume Contracts",
+            "TTV",
+            "OI",
+            "%OI",
+            "Basis",
+            "COC",
+            "Spot",
+            "Build Up"
+        ]
+    }
+
+    return JsonResponse(response_data)

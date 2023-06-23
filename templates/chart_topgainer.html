@@ -1,65 +1,322 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Stock Listing</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <title>Document</title>
 </head>
+<style>
+  #OI_gainer,
+  #OI_loser,
+  #OI_volume_buzzers,
+  #OI_volume_1,
+  #OI_volume_2 {
+    cursor: pointer;
+    background-color: aliceblue;
+
+  }
+
+  .future_active {
+    border-bottom: 2px solid;
+  }
+</style>
+
+
 
 <body>
-  <h1>SME Stocks</h1>
-  <table id="sme-table">
-    <thead>
-      <tr>
-        <th>Symbol</th>
-        <th>Name</th>
-        <th>Instrument</th>
-      </tr>
-    </thead>
-    <tbody id="sme_data"></tbody>
+  
+  <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
+
+  <div class="main_future_open d-flex gap-2">
+
+    <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
+    <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
+    <div id="OI_volume_buzzers" onclick="future_filter('OI_volume_buzzers')">Volume Buzzers</div>
+    <div id="OI_volume_1" onclick="future_filter('OI_volume_1')">Volume Buzzers 1</div>
+    <div id="OI_volume_2" onclick="future_filter('OI_volume_2')">Volume Buzzer 2</div>
+
+
+  </div>
+
+
+  <div id="OI_gainer_table">
+
+
+    <table id="Oi_gainer_data">
+      <thead>
+          <tr id="columnHeaders">
+          </tr>
+      </thead>
+      <tbody>
+      </tbody>
   </table>
 
-  <h1>Equity Stocks</h1>
-  <table id="equity-table">
-    <thead>
-      <tr>
-        <th>Symbol</th>
-        <th>Name</th>
-        <th>Instrument</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
+
+
+
+  </div>
+  <div id="OI_loser_table">
+   
+    <table id="Oi_loser_data">
+      <thead>
+          <tr id="columnHeaders_loser">
+          </tr>
+      </thead>
+      <tbody>
+      </tbody>
   </table>
 
+
+
+  </div>
+  <div id="OI_volume_buzzers_table">
+    <table id="volumeShockerTable">
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Company Name</th>
+          <th>Last Price</th>
+          <th>Volume</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <div id="OI_volume_1_table">
+    OI_volume_1
+  </div>
+
+  <div id="OI_volume_2_table">
+    OI_volume_2
+  </div>
   <script>
-    $(document).ready(function () {
-      $.ajax({
-        url: '/stock-listing/',
-        type: 'GET',
-        dataType: 'json',
-        success: function (response) {
-          console.log("Response:", response);
-          console.log("Response length:", response.length);
-          
-          var sme_all = response.replaceAll("'", '"');
-          console.log("Modified response:", sme_all);
-          
-          try {
-            var sme_data = JSON.parse(sme_all);
-            console.log(sme_data);
-            console.log(typeof sme_data);
-            
-            sme_data.forEach(function (rec) {
-              console.log(rec.symbol);
-              console.log(rec.name);
-            });
-          } catch (error) {
-            console.error('Error parsing JSON:', error);
+    var OI_gainer_table = document.getElementById("OI_gainer_table")
+    var OI_loser_table = document.getElementById("OI_loser_table")
+    var OI_volume_buzzers_table = document.getElementById("OI_volume_buzzers_table")
+    var OI_volume_1_table = document.getElementById("OI_volume_1_table")
+    var OI_volume_2_table = document.getElementById("OI_volume_2_table")
+
+    var OI_gainer = document.getElementById("OI_gainer")
+    var OI_loser = document.getElementById("OI_loser")
+    var OI_volume_buzzers = document.getElementById("OI_volume_buzzers")
+    var OI_volume_1 = document.getElementById("OI_volume_1")
+    var OI_volume_2 = document.getElementById("OI_volume_2")
+
+
+
+
+    OI_gainer_table.style.display = "block"
+    OI_loser_table.style.display = "none"
+    OI_volume_buzzers_table.style.display = "none"
+    OI_volume_1_table.style.display = "none"
+    OI_volume_2_table.style.display = "none"
+    OI_gainer.classList.add("future_active")
+
+
+    function future_filter(future) {
+      if (future == "OI_gainer") {
+        OI_gainer_table.style.display = "block"
+        OI_loser_table.style.display = "none"
+        OI_volume_buzzers_table.style.display = "none"
+        OI_volume_1_table.style.display = "none"
+        OI_volume_2_table.style.display = "none"
+
+        OI_gainer.classList.add("future_active")
+        OI_loser.classList.remove("future_active")
+        OI_volume_buzzers.classList.remove("future_active")
+        OI_volume_1.classList.remove("future_active")
+        OI_volume_2.classList.remove("future_active")
+
+      } else if (future == "OI_loser") {
+        OI_gainer_table.style.display = "none"
+        OI_loser_table.style.display = "block"
+        OI_volume_buzzers_table.style.display = "none"
+        OI_volume_1_table.style.display = "none"
+        OI_volume_2_table.style.display = "none"
+
+        OI_loser.classList.add("future_active")
+        OI_gainer.classList.remove("future_active")
+        OI_volume_buzzers.classList.remove("future_active")
+        OI_volume_1.classList.remove("future_active")
+        OI_volume_2.classList.remove("future_active")
+
+      }
+      else if (future == "OI_volume_buzzers") {
+        OI_gainer_table.style.display = "none"
+        OI_loser_table.style.display = "none"
+        OI_volume_buzzers_table.style.display = "block"
+        OI_volume_1_table.style.display = "none"
+        OI_volume_2_table.style.display = "none"
+
+        OI_loser.classList.remove("future_active")
+        OI_gainer.classList.remove("future_active")
+        OI_volume_buzzers.classList.add("future_active")
+        OI_volume_1.classList.remove("future_active")
+        OI_volume_2.classList.remove("future_active")
+      }
+      else if (future == "OI_volume_1") {
+        OI_gainer_table.style.display = "none"
+        OI_loser_table.style.display = "none"
+        OI_volume_buzzers_table.style.display = "none"
+        OI_volume_1_table.style.display = "block"
+        OI_volume_2_table.style.display = "none"
+
+        OI_loser.classList.remove("future_active")
+        OI_gainer.classList.remove("future_active")
+        OI_volume_buzzers.classList.remove("future_active")
+        OI_volume_1.classList.add("future_active")
+        OI_volume_2.classList.remove("future_active")
+      }
+
+      else if (future == "OI_volume_2") {
+        OI_gainer_table.style.display = "none"
+        OI_loser_table.style.display = "none"
+        OI_volume_buzzers_table.style.display = "none"
+        OI_volume_1_table.style.display = "none"
+        OI_volume_2_table.style.display = "block"
+
+        OI_loser.classList.remove("future_active")
+        OI_gainer.classList.remove("future_active")
+        OI_volume_buzzers.classList.remove("future_active")
+        OI_volume_1.classList.remove("future_active")
+        OI_volume_2.classList.add("future_active")
+      }
+    }
+  </script>
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: '/volume-shocker/',
+          method: 'GET',
+          success: function (data) {
+            createTable(data);
+          },
+          error: function (error) {
+            console.log(error);
           }
+        });
+    
+        function createTable(data) {
+          console.log(data);
+          const tableBody = $('#volumeShockerTable tbody');
+          
+          // Clear any existing rows in the table body
+          tableBody.empty();
+    
+          // Iterate over the data array using the map function
+          var rows = data.map(function (item) {
+            return '<tr>' +
+              '<td>' + item.symbol + '</td>' +
+              '<td>' + item.companyName + '</td>' +
+              '<td>' + item.lastPrice + '</td>' +
+              '<td>' + item.volume + '</td>' +
+              '</tr>';
+          });
+    
+          // Join the rows array and append it to the table body
+          tableBody.append(rows.join(''));
         }
       });
-    });
+    </script>
+    <script>
+      $(document).ready(function() {
+          $.ajax({
+              url: 'oi_gainers',
+              method: 'GET',
+              success: function(data) {
+                  createTable(data);
+              },
+              error: function(error) {
+                  console.log(error);
+              }
+          });
+
+          function createTable(data) {
+              const tableBody = $('#Oi_gainer_data tbody');
+              const tableHeaders = $('#columnHeaders');
+
+              // Create table headers
+              const columnHeaders = data.columns.map(function(column) {
+                  return '<th>' + column + '</th>';
+              });
+              tableHeaders.html(columnHeaders.join(''));
+
+              // Create table rows
+              const tableRows = data.data.map(function(row) {
+                  return '<tr>' +
+                      '<td>' + row[0] + '</td>' +  // name
+                      '<td>' + row[1] + '</td>' +  // price
+                      '<td>' + row[2] + '</td>' +  // Date Chang
+                      '<td>' + row[3] + '</td>' +  // Volume Contracts
+                      '<td>' + row[4] + '</td>' +  // % Volume Contracts
+                      '<td>' + row[5] + '</td>' +  // TTV
+                      '<td>' + row[6] + '</td>' +  // OI
+                      '<td>' + row[7] + '</td>' +  // %OI
+                      '<td>' + row[8] + '</td>' +  // Basis
+                      '<td>' + row[9] + '</td>' +  // COC
+                      '<td>' + row[10] + '</td>' + // Spot
+                      '<td>' + row[11] + '</td>' + // Build Up
+                      '</tr>';
+              });
+              tableBody.html(tableRows.join(''));
+          }
+      });
+  </script>
+    <script>
+      $(document).ready(function() {
+          $.ajax({
+              url: 'oi_losers',
+              method: 'GET',
+              success: function(data) {
+                  createTable(data);
+              },
+              error: function(error) {
+                  console.log(error);
+              }
+          });
+
+          function createTable(data) {
+              const tableBody = $('#Oi_loser_data tbody');
+              const tableHeaders = $('#columnHeaders_loser');
+
+              // Create table headers
+              const columnHeaders_loser = data.columns.map(function(column) {
+                  return '<th>' + column + '</th>';
+              });
+              tableHeaders.html(columnHeaders_loser.join(''));
+
+              // Create table rows
+              const tableRows = data.data.map(function(row) {
+                  return '<tr>' +
+                      '<td>' + row[0] + '</td>' +  // name
+                      '<td>' + row[1] + '</td>' +  // price
+                      '<td>' + row[2] + '</td>' +  // Date Chang
+                      '<td>' + row[3] + '</td>' +  // Volume Contracts
+                      '<td>' + row[4] + '</td>' +  // % Volume Contracts
+                      '<td>' + row[5] + '</td>' +  // TTV
+                      '<td>' + row[6] + '</td>' +  // OI
+                      '<td>' + row[7] + '</td>' +  // %OI
+                      '<td>' + row[8] + '</td>' +  // Basis
+                      '<td>' + row[9] + '</td>' +  // COC
+                      '<td>' + row[10] + '</td>' + // Spot
+                      '<td>' + row[11] + '</td>' + // Build Up
+                      '</tr>';
+              });
+              tableBody.html(tableRows.join(''));
+          }
+      });
   </script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+
+
 
 </html>

@@ -48,10 +48,24 @@ urlpatterns = [
     path('market_actions', views.market_actions, name='market_actions'),
     path('ban_list_dashboard', views.ban_list_dashboard, name='ban_list_dashboard'),
     # path('stock-listing/', views.stock_listing, name='stock_listing'),
-
+    path('delete_user/<str:id>',views.delete_user,name='delete_user'),
+    path('manage_user',views.manage_user,name='manage_user'),
+    path('admin_reset',views.admin_reset,name='admin_reset'),
+    path('admin_signup',views.admin_signup,name='admin_signup'),
+    path('admin_login',views.admin_login,name='admin_login'),
     path('courses_details',views.courses_details,name='courses_details'),
     path('market_wide_position',views.market_wide_position,name='market_wide_position'),
     path('dii_fii',views.dii_fii,name='dii_fii'),
+
+    path('volume-shocker/', views.volume_shocker, name='volume_shocker'),
+    
+    
+    path('oi_gainers',views.oi_gainers,name='oi_gainers'),
+    path('oi_losers',views.oi_losers,name='oi_losers'),
+    path('dii_fii',views.dii_fii,name='dii_fii'),
+
+
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 from django.conf import settings
@@ -59,3 +73,5 @@ from django.conf.urls.static import static
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

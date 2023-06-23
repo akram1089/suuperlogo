@@ -72,9 +72,9 @@ class Entrance(models.Model):
 
 from django.db import models
 
-class StockListing(models.Model):
-    sme_records = models.TextField()
-    equity_records = models.TextField()
+# class StockListing(models.Model):
+#     sme_records = models.TextField()
+#     equity_records = models.TextField()
 
-    def __str__(self):
-        return f"Stock Listing {self.pk}"
+#     def __str__(self):
+#         return f"Stock Listing {self.pk}"

@@ -303,24 +303,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    {% if user.is_authenticated %}
-                                    <a class="button btn btn-primary" href="{% url 'dashboard1' %}">Dashboard</a>
-                                    Welcome--{{user.full_name}}
-                                    {% else %}
-
-                                    <div class="header__btn-wrapper d-flex align-items-center justify-content-end">
-                                        <a class="header__btn header__btn--signup btn" id="headerSignUpLink"
-                                            href="javascript:void(0);" title="" data-bs-toggle="modal"
-                                            data-bs-target="#signupModal">
-                                            <span>Sign up</span>
-                                        </a>
-                                        <a class="header__btn header__btn--signin btn c-btn c-btn--bg" href="#"
-                                            title="signin" data-bs-toggle="modal" data-bs-target="#signinModal">
-                                            <i class="bi bi-person-fill "></i><span>Sign in</span>
-                                        </a>
-                                    </div>
-                                    {% endif %}
+                               <div>
+                                {% if user.is_authenticated %}
+                                <a class="button btn btn-outline-primary" type="button"
+                                    href="{% url 'dashboard' %}">Dashboard</a>
+                                {% else %}
+                                <div class="header__btn-wrapper d-flex align-items-center justify-content-end">
+                                    <a class="header__btn header__btn--signup btn" href="{% url 'admin_signup' %}" title="" 
+                                        ><span>Sign up</span>
+                                    </a>
+                                    <a class="header__btn header__btn--signin btn c-btn c-btn--bg" href="{% url 'admin_login' %}" title=""
+                                        >
+                                        <i class="bi bi-person-fill text-light"></i><span>Sign in</span>
+                                    </a>
+                                </div>
+                                {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -567,22 +564,22 @@
                         </div>
                     </div>
 
-                    <div class="col-3 d-none d-xl-block">
+                   <div class="col-3 d-none d-xl-block">
                         {% if user.is_authenticated %}
                         <a class="button btn btn-outline-primary" type="button"
-                            href="{% url 'dashboard1' %}">Dashboard</a>
+                            href="{% url 'dashboard' %}">Dashboard</a>
                         {% else %}
                         <div class="header__btn-wrapper d-flex align-items-center justify-content-end">
-                            <a class="header__btn header__btn--signup btn" href="#" title="" data-bs-toggle="modal"
-                                data-bs-target="#signupModal"><span>Sign up</span>
+                            <a class="header__btn header__btn--signup btn" href="{% url 'admin_signup' %}" title="" 
+                                ><span>Sign up</span>
                             </a>
-                            <a class="header__btn header__btn--signin btn c-btn c-btn--bg" href="#" title=""
-                                data-bs-toggle="modal" data-bs-target="#signinModal">
+                            <a class="header__btn header__btn--signin btn c-btn c-btn--bg" href="{% url 'admin_login' %}" title=""
+                                >
                                 <i class="bi bi-person-fill text-light"></i><span>Sign in</span>
                             </a>
                         </div>
                         {% endif %}
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -620,10 +617,10 @@
     </div>
     {% endfor %}
     <!-- SECTION main :: START-->
-    {% block body %}
+    {% block admin_body %}
 
 
-    {% endblock body %}
+    {% endblock admin_body %}
 
 
     <footer class="footer" id="footer">
