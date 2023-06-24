@@ -189,6 +189,10 @@
     font-size: 21px;
     font-weight: 600;
   }
+  .dataTables_length,.dataTables_filter{
+    margin: 9px 0 9px 0;
+
+  }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -574,7 +578,7 @@
 
 
 
-  <h4 class="my-3">Markets</h4>
+  <h4 class="my-3">MARKETS</h4>
   <div class="nitfy_fin_bank_main">
     <div class="nifty_main shadow"
       style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
@@ -696,14 +700,15 @@
 
   </div>
 
-  <h4 class="my-3">Global Markets</h4>
+  <h4 class="my-3">GLOBAL MARKETS</h4>
 
 
   <div id="tables-container" class="d-flex"
     style="    row-gap: 1rem;justify-content: space-around;     flex-wrap: wrap;"></div>
 
-
-  <h4 class="my-3">Market Action</h4>
+<div class="main_stocks_details my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+padding: 25px;">
+  <h4 class="my-3">MARKET ACTION</h4>
   <div class="description_usage my-4 container">
     <div class="head_desc_usage">
       <div class="row border-bottom" style="    justify-content: center;">
@@ -743,10 +748,10 @@
     </div>
     <div id="chartContainer " style=" overflow: auto;   height: fit-content;">
       <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
-        <table class="table table-hover">
-          <thead>
+        <table class="table table-hover table-striped ">
+          <thead class="table-info">
             <tr>
-              <th scope="col">chart</th>
+              <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
               <th scope="col">Current Price</th>
               <th scope="col">Today Low</th>
@@ -760,10 +765,10 @@
         </table>
       </div>
       <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
-        <table class="table table-hover">
-          <thead>
+        <table class="table table-hover table-striped">
+          <thead class="table-info">
             <tr>
-              <th scope="col">chart</th>
+              <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
               <th scope="col">Current Price</th>
               <th scope="col">Today Low</th>
@@ -778,10 +783,10 @@
       </div>
 
       <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
-        <table class="table table-hover">
-          <thead>
+        <table class="table table-hover table-striped">
+          <thead class="table-info">
             <tr>
-              <th scope="col">chart</th>
+              <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
               <th scope="col">Current Price</th>
               <th scope="col">Today Low</th>
@@ -795,10 +800,10 @@
         </table>
       </div>
       <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
-        <table class="table table-hover">
-          <thead>
+        <table class="table table-hover table-striped">
+          <thead class="table-info">
             <tr>
-              <th scope="col">chart</th>
+              <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
               <th scope="col">Current Price</th>
               <th scope="col">Today Low</th>
@@ -812,10 +817,10 @@
         </table>
       </div>
       <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
-        <table class="table table-hover">
-          <thead>
+        <table class="table table-hover table-striped">
+          <thead class="table-info">
             <tr>
-              <th scope="col">chart</th>
+              <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
               <th scope="col">Current Price</th>
               <th scope="col">Today Low</th>
@@ -829,10 +834,10 @@
         </table>
       </div>
       <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
-        <table class="table table-hover">
-          <thead>
+        <table class="table table-hover table-striped">
+          <thead class="table-info">
             <tr>
-              <th scope="col">chart</th>
+              <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
               <th scope="col">Current Price</th>
               <th scope="col">Today Low</th>
@@ -855,16 +860,17 @@
       <button class="btn btn-primary">Search Stocks</button>
     </div> {% endcomment %}
   </div>
-
-  <h4 class="my-3">Ban List </h4>
+</div>
+  <div class="ban_list_main" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  padding: 25px;">
+  <h4 class="my-3">BAN LIST </h4>
   <div class="main_ban" style="    display: flex;
     justify-content: center; 
     gap: 2rem;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-    padding: 25px;">
+    ">
     <div class="ban_security">
       <h5>Securities In Ban </h5>
-      <table class="table  table-hover" id="securities_ban_table">
+      <table class="table  table-hover table-striped" id="securities_ban_table">
         <thead class="table-info">
           <tr>
             <th>SYMBOL</th>
@@ -878,7 +884,7 @@
     </div>
     <div class="ban_entry">
       <h5>Possible Entrants </h5>
-      <table class="table  table-hover" id="possible_entrants_table">
+      <table class="table  table-hover table-striped" id="possible_entrants_table">
         <thead class="table-info">
           <tr>
             <th>SYMBOL</th>
@@ -892,7 +898,7 @@
     </div>
     <div class="ban_exits">
       <h5>Possible Exits </h5>
-      <table class="table  table-hover" id="possible_exits_table">
+      <table class="table  table-hover table-striped" id="possible_exits_table">
         <thead class="table-info">
           <tr>
             <th>SYMBOL</th>
@@ -905,13 +911,13 @@
       </table>
     </div>
   </div>
+</div>
 
-
-
+<div class="main_future_tables my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+padding: 25px;">
   <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
 
-  <div class="main_future_open d-flex gap-4 container" style="justify-content: center;
-border-bottom: 1px solid lightgray;">
+  <div class="main_future_open d-flex gap-4 container" style="justify-content: center;border-bottom: 1px solid lightgray;">
 
     <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
     <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
@@ -979,7 +985,7 @@ border-bottom: 1px solid lightgray;">
 
 
 
-
+</div>
 
   <!-- <h4 class="my-3">IPO List </h4>
 <div class="ipo container" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;

@@ -58,6 +58,8 @@ urlpatterns = [
     path('dii_fii',views.dii_fii,name='dii_fii'),
 
     path('volume-shocker/', views.volume_shocker, name='volume_shocker'),
+    path('admin_panel', views.admin_panel, name='admin_panel'),
+    path('put_call_ratio', views.put_call_ratio, name='put_call_ratio'),
     
     
     path('oi_gainers',views.oi_gainers,name='oi_gainers'),

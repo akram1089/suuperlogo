@@ -1571,12 +1571,6 @@ def delete_user(request, id):
 
 
 
-def chart_topgainer(request):
-
-
-
-    return render(request, 'chart_topgainer.html')
-
 
 import requests
 from django.http import JsonResponse
@@ -1706,3 +1700,68 @@ def oi_losers(request):
     }
 
     return JsonResponse(response_data)
+
+
+
+from django.shortcuts import render
+import requests
+# from datetime import datetime
+
+def chart_topgainer(request):
+    url = "https://webapi.niftytrader.in/webapi/option/oi-pcr-data?reqType=niftypcr&reqDate="
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    pcr_values = []
+    index_close_values = []
+    time_values = []
+    for result in data['resultData']["oiDatas"]:
+        pcr_values.append(result['pcr'])
+        index_close_values.append(result['index_close'])
+        time_value = datetime.datetime.strptime(result['time'], "%Y-%m-%dT%H:%M:%S")
+        time_values.append(time_value.strftime("%H:%M"))
+
+    context = {
+        'pcr_values': pcr_values,
+        'index_close_values': index_close_values,
+        'time_values': time_values,
+    }
+
+    return render(request, 'chart_topgainer.html', context)
+
+
+def admin_panel(request):
+    User_check = User.objects.all()
+    return render(request,"admin_panel.html",{"User_check": User_check})
+
+
+def put_call_ratio(request):
+    url = "https://webapi.niftytrader.in/webapi/option/oi-pcr-data?reqType=niftypcr&reqDate="
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    pcr_values = []
+    index_close_values = []
+    time_values = []
+    for result in data['resultData']["oiDatas"]:
+        pcr_values.append(result['pcr'])
+        index_close_values.append(result['index_close'])
+        time_value = datetime.datetime.strptime(result['time'], "%Y-%m-%dT%H:%M:%S")
+        time_values.append(time_value.strftime("%H:%M"))
+
+    context = {
+        'pcr_values': pcr_values,
+        'index_close_values': index_close_values,
+        'time_values': time_values,
+    }
+    return render(request,"put_call_ratio.html",context)
