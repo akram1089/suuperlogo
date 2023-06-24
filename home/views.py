@@ -1603,7 +1603,7 @@ from django.http import JsonResponse
 import requests
 
 def oi_gainers(request):
-    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_gainers/"
+    url = "https://trendlyne.com/futures-options/api-filter/futures/27-jul-2023-next/oi_gainers/"
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -1655,7 +1655,7 @@ def oi_gainers(request):
 
     return JsonResponse(response_data)
 def oi_losers(request):
-    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+    url = "https://trendlyne.com/futures-options/api-filter/futures/27-jul-2023-next/oi_losers/"
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
