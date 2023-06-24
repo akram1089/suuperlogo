@@ -2,127 +2,138 @@
 {% load static %}
 {% block dashboard_body %}
 <style>
-    .traded_icons {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
+  .traded_icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-    .middle_nifty {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+  .middle_nifty {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-    .high_low_nifty {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
+  .high_low_nifty {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
 
-    }
+  }
 
-    #market_top {
-        text-decoration: none;
-        font-size: 12px;
-        padding: 4px;
-        transition: 0.3s;
-        position: relative;
-    }
+  #market_top {
+    text-decoration: none;
+    font-size: 12px;
+    padding: 4px;
+    transition: 0.3s;
+    position: relative;
+  }
 
-    #market_top:hover {
-        background-color: dodgerblue;
-        color: white;
-        border-radius: 10px;
+  #market_top:hover {
+    background-color: dodgerblue;
+    color: white;
+    border-radius: 10px;
 
-    }
+  }
 
-    #market_top::after {
-        content: " ";
-        position: absolute;
-        border-left: 1px #6c757d solid;
-        top: 35%;
-        right: 0;
-        height: 30%;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
+  #market_top::after {
+    content: " ";
+    position: absolute;
+    border-left: 1px #6c757d solid;
+    top: 35%;
+    right: 0;
+    height: 30%;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 
-    .nifty_main {
-        width: 23rem;
-        height: 10rem;
-        outline-color: gray;
-        border-radius: 10px;
-        padding: 11px;
+  .nifty_main {
+    width: 23rem;
+    height: 10rem;
+    outline-color: gray;
+    border-radius: 10px;
+    padding: 11px;
 
-    }
+  }
 
-    .nitfy_fin_bank_main {
-        gap: 2rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+  .nitfy_fin_bank_main {
+    gap: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
 
-    }
+  }
 
-    .text-success, .border-success {
-        color: rgb(6, 197, 98) !important;
-    }
+  .text-success,
+  .border-success {
+    color: rgb(6, 197, 98) !important;
+  }
 
-    child_global {
-        row-gap: 1rem;
-        display: flex;
-        flex-direction: column;
-    }
-    i.bi.bi-arrow-clockwise{
-        all:unset;
-        font-size: 13px;
-        margin-top: 5px;
-        transition: 0.3s;
-    }
-    i.bi.bi-arrow-clockwise:hover{
-        all:unset
-    }
-    #refresh_global:hover{
-        background-color: dodgerblue;
-        color: white;
-        border-radius: 10px;
-        padding: 4px;
-cursor: pointer;
-    }
-    .desc_usage_active {
+  child_global {
+    row-gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  i.bi.bi-arrow-clockwise {
+    all: unset;
+    font-size: 13px;
+    margin-top: 5px;
+    transition: 0.3s;
+  }
+
+  i.bi.bi-arrow-clockwise:hover {
+    all: unset
+  }
+
+  #refresh_global:hover {
+    background-color: dodgerblue;
+    color: white;
+    border-radius: 10px;
+    padding: 4px;
+    cursor: pointer;
+  }
+
+  .desc_usage_active {
     color: #011490;
     text-align: center;
     border-bottom: 2px solid #011490;
     font-size: 21px;
     font-weight: 600;
   }
-.chart-header:hover{
-    cursor: pointer;
-}
 
-.bi-graph-up{
+  .chart-header:hover {
+    cursor: pointer;
+  }
+
+  .bi-graph-up {
     border: 0.5px solid gray;
     padding: 7px;
     height: 28px;
     width: 28px;
     border-radius: 7px;
     transition: 0.3s;
-}
-.bi-graph-up:hover{
+  }
+
+  .bi-graph-up:hover {
     background-color: dodgerblue;
     color: white;
-    border:none;
-}
-@media screen and (max-width: 760px) {
+    border: none;
+  }
 
-    .main_ban{
-        flex-wrap: wrap;
+  @media screen and (max-width: 760px) {
+
+    .main_ban {
+      flex-wrap: wrap;
     }
-}
-.ban_security,.ban_entry,.ban_exits{
+  }
+
+  .ban_security,
+  .ban_entry,
+  .ban_exits {
     width: 22rem;
-}
+  }
 </style>
 <style>
   #OI_gainer,
@@ -134,7 +145,7 @@ cursor: pointer;
     text-align: center;
     transition: 0.3s;
     font-size: 21px;
-   
+
   }
 
   .future_active {
@@ -166,10 +177,12 @@ cursor: pointer;
     }
 
   }
-  .equity_sme{
-  cursor: pointer;
-}
-.filter_child_active {
+
+  .equity_sme {
+    cursor: pointer;
+  }
+
+  .filter_child_active {
     color: #011490;
     text-align: center;
     border-bottom: 2px solid #011490;
@@ -179,107 +192,107 @@ cursor: pointer;
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $(document)
-            .ajaxStart(function () {
-                $("#spinner").show();
-            })
-            .ajaxStop(function () {
-                $("#spinner").hide();
-            });
-        function updateData() {
-            $.ajax({
-                url: '/base_dashboard1',
-                type: 'GET',
-                success: function (data) {
-                    console.log("HII");
+  $(document).ready(function () {
+    $(document)
+      .ajaxStart(function () {
+        $("#spinner").show();
+      })
+      .ajaxStop(function () {
+        $("#spinner").hide();
+      });
+    function updateData() {
+      $.ajax({
+        url: '/base_dashboard1',
+        type: 'GET',
+        success: function (data) {
+          console.log("HII");
 
-                    $('#nifty_50_symbol').text(data.nifty50_data.symbol_name);
-                    $('#nifty_50_high').text(data.nifty50_data.high);
-                    $('#nifty_50_low').text(data.nifty50_data.low);
-                    $('#nifty_50_trade_value').text(data.nifty50_data.last_trade_price);
+          $('#nifty_50_symbol').text(data.nifty50_data.symbol_name);
+          $('#nifty_50_high').text(data.nifty50_data.high);
+          $('#nifty_50_low').text(data.nifty50_data.low);
+          $('#nifty_50_trade_value').text(data.nifty50_data.last_trade_price);
 
-                    if (data.nifty50_value > 0) {
-                        $('#nifty_50_value').addClass("text-success");
-                        $('#nifty_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
-                    } else {
-                        $('#nifty_50_value').addClass("text-danger");
-                        $('#nifty_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
-                    }
+          if (data.nifty50_value > 0) {
+            $('#nifty_50_value').addClass("text-success");
+            $('#nifty_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
+          } else {
+            $('#nifty_50_value').addClass("text-danger");
+            $('#nifty_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
+          }
 
-                    $('#nifty_50_value').text(`${data.nifty50_value.toFixed(2)} (${data.nifty50_percentage.toFixed(2)})%`);
+          $('#nifty_50_value').text(`${data.nifty50_value.toFixed(2)} (${data.nifty50_percentage.toFixed(2)})%`);
 
-                    // banknifty
-                    $('#niftybank_symbol').text(data.niftybank_data.symbol_name);
-                    $('#niftybank_high').text(data.niftybank_data.high);
-                    $('#niftybank_low').text(data.niftybank_data.low);
-                    $('#niftybank_trade_value').text(data.niftybank_data.last_trade_price);
+          // banknifty
+          $('#niftybank_symbol').text(data.niftybank_data.symbol_name);
+          $('#niftybank_high').text(data.niftybank_data.high);
+          $('#niftybank_low').text(data.niftybank_data.low);
+          $('#niftybank_trade_value').text(data.niftybank_data.last_trade_price);
 
-                    if (data.niftybank_value > 0) {
-                        $('#niftybank_value').addClass("text-success");
-                        $('#niftybank_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
-                    } else {
-                        $('#niftybank_value').addClass("text-danger");
-                        $('#niftybank_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
-                    }
+          if (data.niftybank_value > 0) {
+            $('#niftybank_value').addClass("text-success");
+            $('#niftybank_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
+          } else {
+            $('#niftybank_value').addClass("text-danger");
+            $('#niftybank_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
+          }
 
-                    $('#niftybank_value').text(`${data.niftybank_value.toFixed(2)} (${data.niftybank_percentage.toFixed(2)})%`);
+          $('#niftybank_value').text(`${data.niftybank_value.toFixed(2)} (${data.niftybank_percentage.toFixed(2)})%`);
 
-                    // finnity
-                    $('#finnity_symbol').text(data.finnity_data.symbol_name);
-                    $('#finnity_high').text(data.finnity_data.high);
-                    $('#finnity_low').text(data.finnity_data.low);
-                    $('#finnity_trade_value').text(data.finnity_data.last_trade_price);
+          // finnity
+          $('#finnity_symbol').text(data.finnity_data.symbol_name);
+          $('#finnity_high').text(data.finnity_data.high);
+          $('#finnity_low').text(data.finnity_data.low);
+          $('#finnity_trade_value').text(data.finnity_data.last_trade_price);
 
-                    if (data.finnity_value > 0) {
-                        $('#finnity_value').addClass("text-success");
-                        $('#finnity_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
-                    } else {
-                        $('#finnity_value').addClass("text-danger");
-                        $('#finnity_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
-                    }
+          if (data.finnity_value > 0) {
+            $('#finnity_value').addClass("text-success");
+            $('#finnity_icons').html('<i class="bi bi-arrow-up text-success" style="font-size: 22px;"></i>');
+          } else {
+            $('#finnity_value').addClass("text-danger");
+            $('#finnity_icons').html('<i class="bi bi-arrow-down text-danger" style="font-size: 22px;"></i>');
+          }
 
-                    $('#finnity_value').text(`${data.finnity_value.toFixed(2)} (${data.finnity_percentage.toFixed(2)})%`);
-                },
-                complete: function () {
-                    // Schedule the next update after 5 seconds
+          $('#finnity_value').text(`${data.finnity_value.toFixed(2)} (${data.finnity_percentage.toFixed(2)})%`);
+        },
+        complete: function () {
+          // Schedule the next update after 5 seconds
 
-                    setTimeout(updateData, 5000);
-                }
-            });
+          setTimeout(updateData, 5000);
         }
+      });
+    }
 
-        // Initial call to start the update loop
-        updateData();
-    });
+    // Initial call to start the update loop
+    updateData();
+  });
 </script>
 <script>
-    $(document).ready(function () {
-        function update_global_indicies() {
-            
-        
-            $.ajax({
-            url: "/global_market",
-            dataType: "json",
-            success: function (data) {
-                for (var i = 0; i < data.tables.length; i++) {
-                    console.log(data.tables[i].country)
-                    var countryTable = "";
-                    countryTable += "<child_global>";
-                    countryTable += `<div class="country_indices_refresh d-flex  justify-content-between" style="">
+  $(document).ready(function () {
+    function update_global_indicies() {
+
+
+      $.ajax({
+        url: "/global_market",
+        dataType: "json",
+        success: function (data) {
+          for (var i = 0; i < data.tables.length; i++) {
+            console.log(data.tables[i].country)
+            var countryTable = "";
+            countryTable += "<child_global>";
+            countryTable += `<div class="country_indices_refresh d-flex  justify-content-between" style="">
                         <h5>${data.tables[i].country}</h5>
                         <div class="d-flex fs-5" id="refresh_global" >
                             <i class="bi bi-arrow-clockwise hello"></i>
                             <p style="margin-bottom:auto;     font-size: 13px;">refresh</p>
                             </div>
                         </div>`;
-    
-                    for (var j = 0; j < data.tables[i].items.length; j++) {
-                        var item = data.tables[i].items[j];
-                        var priceClass = item.change_value > 0 ? "text-success" : "text-danger";
-                        var borderClass = item.change_value > 0 ? "border-start  border-4 border-success" : " border-start  border-4 border-danger";
-                        var progress_caret = item.change_value > 0 ? "up" : "down";
-                        countryTable += `
+
+            for (var j = 0; j < data.tables[i].items.length; j++) {
+              var item = data.tables[i].items[j];
+              var priceClass = item.change_value > 0 ? "text-success" : "text-danger";
+              var borderClass = item.change_value > 0 ? "border-start  border-4 border-success" : " border-start  border-4 border-danger";
+              var progress_caret = item.change_value > 0 ? "up" : "down";
+              countryTable += `
                         <div class="child_table">
                             
                             <div class="inner_global shadow ${borderClass}" style="width: 20rem; height: 5rem; padding: 12px;">
@@ -293,47 +306,47 @@ cursor: pointer;
                                 </div>
                             </div>
                         </div>`;
-                    }
-    
-                    countryTable += "</child_global>";
-                    $("#tables-container").append(countryTable);
-                }
-            },
-            complete: function () {
-                    // Schedule the next update after 5 seconds
+            }
 
-                    setTimeout(updateData, 5000);
-                }
-        });
-      
+            countryTable += "</child_global>";
+            $("#tables-container").append(countryTable);
+          }
+        },
+        complete: function () {
+          // Schedule the next update after 5 seconds
+
+          setTimeout(updateData, 5000);
+        }
+      });
+
     }
     update_global_indicies()
-});
-    </script>
-    <script>
-        // AJAX call to fetch data for the category and populate the table
-        function market_data() {
-            
-        
-        $.ajax({
-          url: "/market_actions",
-          method: "GET",
-          success: function (response) {
-            console.log(response.tables);
+  });
+</script>
+<script>
+  // AJAX call to fetch data for the category and populate the table
+  function market_data() {
 
-            // top_start
-            topgainers = response.tables.filter((x) => {
-              return x.category == "topGainers";
-            });
-            console.log(topgainers);
-            var top_gainers = "";
-            final_top = topgainers.map((y) => {
-              y.data.forEach((z) => {
-                var progress_market_color = z.change_value > 0 ? "text-success" : "text-danger";
-                var progress_market = z.change_value > 0 ? "up" : "down";
-                console.log(z.symbol_name);
-                $("#top_gainers_table").append(
-                  `<tr>
+
+    $.ajax({
+      url: "/market_actions",
+      method: "GET",
+      success: function (response) {
+        console.log(response.tables);
+
+        // top_start
+        topgainers = response.tables.filter((x) => {
+          return x.category == "topGainers";
+        });
+        console.log(topgainers);
+        var top_gainers = "";
+        final_top = topgainers.map((y) => {
+          y.data.forEach((z) => {
+            var progress_market_color = z.change_value > 0 ? "text-success" : "text-danger";
+            var progress_market = z.change_value > 0 ? "up" : "down";
+            console.log(z.symbol_name);
+            $("#top_gainers_table").append(
+              `<tr>
                       <td><i class="bi bi-graph-up"></i></td>
                       <td>${z.symbol_name}</td>
                       <td>${z.prev_high}</td>
@@ -343,24 +356,24 @@ cursor: pointer;
                       <td>${z.prev_close}</td>
                       <td>${z.today_volume}</td>
                   </tr>`
-                );
-              });
-            });
-            //end_top_start
+            );
+          });
+        });
+        //end_top_start
 
         // top_loser_start
         topLosers = response.tables.filter((loser_1) => {
-              return loser_1.category == "topLosers";
-            });
-            console.log(topLosers);
-            var top_gainers = "";
-            final_top = topLosers.map((loser_2) => {
-                loser_2.data.forEach((loser_3) => {
-                    var progress_market_color = loser_3.change_value > 0 ? "text-success" : "text-danger";
-                var progress_market = loser_3.change_value > 0 ? "up" : "down";
-                console.log(loser_3.symbol_name);
-                $("#top_losers_table").append(
-                  `<tr>
+          return loser_1.category == "topLosers";
+        });
+        console.log(topLosers);
+        var top_gainers = "";
+        final_top = topLosers.map((loser_2) => {
+          loser_2.data.forEach((loser_3) => {
+            var progress_market_color = loser_3.change_value > 0 ? "text-success" : "text-danger";
+            var progress_market = loser_3.change_value > 0 ? "up" : "down";
+            console.log(loser_3.symbol_name);
+            $("#top_losers_table").append(
+              `<tr>
                       <td><i class="bi bi-graph-up"></i></td>
                       <td>${loser_3.symbol_name}</td>
                       <td>${loser_3.prev_high}</td>
@@ -370,23 +383,23 @@ cursor: pointer;
                       <td>${loser_3.prev_close}</td>
                       <td>${loser_3.today_volume}</td>
                   </tr>`
-                );
-              });
-            });
-            //end_top_loser_start
+            );
+          });
+        });
+        //end_top_loser_start
         // top_sameopenandlow_start
         sameOpenAndLow = response.tables.filter((sameOpenAndLow_1) => {
-              return sameOpenAndLow_1.category == "sameOpenAndLow";
-            });
-            console.log(sameOpenAndLow);
-            var top_gainers = "";
-            final_top = sameOpenAndLow.map((sameOpenAndLow_2) => {
-                sameOpenAndLow_2.data.forEach((sameOpenAndLow_3) => {
-                    var progress_market_color = sameOpenAndLow_3.change_value > 0 ? "text-success" : "text-danger";
-                var progress_market = sameOpenAndLow_3.change_value > 0 ? "up" : "down";
-                console.log(sameOpenAndLow_3.symbol_name);
-                $("#same_open_and_low").append(
-                  `<tr>
+          return sameOpenAndLow_1.category == "sameOpenAndLow";
+        });
+        console.log(sameOpenAndLow);
+        var top_gainers = "";
+        final_top = sameOpenAndLow.map((sameOpenAndLow_2) => {
+          sameOpenAndLow_2.data.forEach((sameOpenAndLow_3) => {
+            var progress_market_color = sameOpenAndLow_3.change_value > 0 ? "text-success" : "text-danger";
+            var progress_market = sameOpenAndLow_3.change_value > 0 ? "up" : "down";
+            console.log(sameOpenAndLow_3.symbol_name);
+            $("#same_open_and_low").append(
+              `<tr>
                       <td><i class="bi bi-graph-up"></i></td>
                       <td>${sameOpenAndLow_3.symbol_name}</td>
                       <td>${sameOpenAndLow_3.prev_high}</td>
@@ -396,23 +409,23 @@ cursor: pointer;
                       <td>${sameOpenAndLow_3.prev_close}</td>
                       <td>${sameOpenAndLow_3.today_volume}</td>
                   </tr>`
-                );
-              });
-            });
-            //end_sameopenandlow_start
+            );
+          });
+        });
+        //end_sameopenandlow_start
         // top_sameOpenAndHigh_start
         sameOpenAndHigh = response.tables.filter((sameOpenAndHigh_1) => {
-              return sameOpenAndHigh_1.category == "sameOpenAndHigh";
-            });
-            console.log(sameOpenAndHigh);
-            var top_gainers = "";
-            final_top = sameOpenAndHigh.map((sameOpenAndHigh_2) => {
-                sameOpenAndHigh_2.data.forEach((sameOpenAndHigh_3) => {
-                    var progress_market_color = sameOpenAndHigh_3.change_value > 0 ? "text-success" : "text-danger";
-                var progress_market = sameOpenAndHigh_3.change_value > 0 ? "up" : "down";
-                console.log(sameOpenAndHigh_3.symbol_name);
-                $("#same_Open_And_High").append(
-                  `<tr>
+          return sameOpenAndHigh_1.category == "sameOpenAndHigh";
+        });
+        console.log(sameOpenAndHigh);
+        var top_gainers = "";
+        final_top = sameOpenAndHigh.map((sameOpenAndHigh_2) => {
+          sameOpenAndHigh_2.data.forEach((sameOpenAndHigh_3) => {
+            var progress_market_color = sameOpenAndHigh_3.change_value > 0 ? "text-success" : "text-danger";
+            var progress_market = sameOpenAndHigh_3.change_value > 0 ? "up" : "down";
+            console.log(sameOpenAndHigh_3.symbol_name);
+            $("#same_Open_And_High").append(
+              `<tr>
                       <td><i class="bi bi-graph-up"></i></td>
                       <td>${sameOpenAndHigh_3.symbol_name}</td>
                       <td>${sameOpenAndHigh_3.prev_high}</td>
@@ -422,23 +435,23 @@ cursor: pointer;
                       <td>${sameOpenAndHigh_3.prev_close}</td>
                       <td>${sameOpenAndHigh_3.today_volume}</td>
                   </tr>`
-                );
-              });
-            });
-            //end_same_Open_And_High_start
+            );
+          });
+        });
+        //end_same_Open_And_High_start
         // top_gapUp_start
         gapUp = response.tables.filter((gapUp_1) => {
-              return gapUp_1.category == "gapUp";
-            });
-            console.log(gapUp);
-            var top_gainers = "";
-            final_top = gapUp.map((gapUp_2) => {
-                gapUp_2.data.forEach((gapUp_3) => {
-                    var progress_market_color = gapUp_3.change_value > 0 ? "text-success" : "text-danger";
-                var progress_market = gapUp_3.change_value > 0 ? "up" : "down";
-                console.log(gapUp_3.symbol_name);
-                $("#gap_Up").append(
-                  `<tr>
+          return gapUp_1.category == "gapUp";
+        });
+        console.log(gapUp);
+        var top_gainers = "";
+        final_top = gapUp.map((gapUp_2) => {
+          gapUp_2.data.forEach((gapUp_3) => {
+            var progress_market_color = gapUp_3.change_value > 0 ? "text-success" : "text-danger";
+            var progress_market = gapUp_3.change_value > 0 ? "up" : "down";
+            console.log(gapUp_3.symbol_name);
+            $("#gap_Up").append(
+              `<tr>
                       <td><i class="bi bi-graph-up"></i></td>
                       <td>${gapUp_3.symbol_name}</td>
                       <td>${gapUp_3.prev_high}</td>
@@ -448,23 +461,23 @@ cursor: pointer;
                       <td>${gapUp_3.prev_close}</td>
                       <td>${gapUp_3.today_volume}</td>
                   </tr>`
-                );
-              });
-            });
-            //end_gapUp_start
+            );
+          });
+        });
+        //end_gapUp_start
         // top_gapDown_start
         gapDown = response.tables.filter((gapDown_1) => {
-              return gapDown_1.category == "gapDown";
-            });
-            console.log(gapDown);
-            var top_gainers = "";
-            final_top = gapDown.map((gapDown_2) => {
-                gapDown_2.data.forEach((gapDown_3) => {
-                    var progress_market_color = gapDown_3.change_value > 0 ? "text-success" : "text-danger";
-                var progress_market = gapDown_3.change_value > 0 ? "up" : "down";
-                console.log(gapDown_3.symbol_name);
-                $("#gap_Down").append(
-                  `<tr>
+          return gapDown_1.category == "gapDown";
+        });
+        console.log(gapDown);
+        var top_gainers = "";
+        final_top = gapDown.map((gapDown_2) => {
+          gapDown_2.data.forEach((gapDown_3) => {
+            var progress_market_color = gapDown_3.change_value > 0 ? "text-success" : "text-danger";
+            var progress_market = gapDown_3.change_value > 0 ? "up" : "down";
+            console.log(gapDown_3.symbol_name);
+            $("#gap_Down").append(
+              `<tr>
                       <td><i class="bi bi-graph-up"></i></td>
                       <td>${gapDown_3.symbol_name}</td>
                       <td>${gapDown_3.prev_high}</td>
@@ -474,66 +487,66 @@ cursor: pointer;
                       <td>${gapDown_3.prev_close}</td>
                       <td>${gapDown_3.today_volume}</td>
                   </tr>`
-                );
-              });
-            });
-            //end_gapDown_start
-
-          },
-          error: function () {
-            console.log("Error occurred while fetching data for category: " + category.name);
-          },
-          complete: function () {
-                    // Schedule the next update after 5 seconds
-
-                    setTimeout(updateData, 5000);
-                }
-        });
-    }
-        // Process the categories and create tables
-        market_data()
-        $(document).ready(function () {
-          var categories = JSON.parse(your_json_data).categories;
-          $.each(categories, function (index, category) {
-            createCategoryTable(category);
+            );
           });
         });
-      </script>
-    
-    <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: "{% url 'ban_list_dashboard' %}",
-                method: "GET",
-                success: function(response) {
-                    console.log(response)
-                    populateTable(response.securities_ban_result, "#securities_ban_table");
-                    populateTable(response.possible_entrants_result, "#possible_entrants_table");
-                    populateTable(response.possible_exits_result, "#possible_exits_table");
-                },
-                error: function() {
-                    console.log("Error occurred while fetching data.");
-                }
-            });
+        //end_gapDown_start
 
-            function populateTable(data, tableId) {
-                var tableBody = $(tableId + " tbody");
-                tableBody.empty();
+      },
+      error: function () {
+        console.log("Error occurred while fetching data for category: " + category.name);
+      },
+      complete: function () {
+        // Schedule the next update after 5 seconds
 
-                data.forEach(function(item) {
-                    console.log(item)
-                    var row = $("<tr></tr>");
-                    row.append($("<td></td>").text(item.symbol_name));
-                    row.append($("<td></td>").text(item.previous_percent));
-                    row.append($("<td></td>").text(item.current_percent));
-                    // Add more columns as needed
+        setTimeout(updateData, 5000);
+      }
+    });
+  }
+  // Process the categories and create tables
+  market_data()
+  $(document).ready(function () {
+    var categories = JSON.parse(your_json_data).categories;
+    $.each(categories, function (index, category) {
+      createCategoryTable(category);
+    });
+  });
+</script>
 
-                    tableBody.append(row);
-                });
-            }
-        });
-    </script>
-        <!-- <script>
+<script>
+  $(document).ready(function () {
+    $.ajax({
+      url: "{% url 'ban_list_dashboard' %}",
+      method: "GET",
+      success: function (response) {
+        console.log(response)
+        populateTable(response.securities_ban_result, "#securities_ban_table");
+        populateTable(response.possible_entrants_result, "#possible_entrants_table");
+        populateTable(response.possible_exits_result, "#possible_exits_table");
+      },
+      error: function () {
+        console.log("Error occurred while fetching data.");
+      }
+    });
+
+    function populateTable(data, tableId) {
+      var tableBody = $(tableId + " tbody");
+      tableBody.empty();
+
+      data.forEach(function (item) {
+        console.log(item)
+        var row = $("<tr></tr>");
+        row.append($("<td></td>").text(item.symbol_name));
+        row.append($("<td></td>").text(item.previous_percent));
+        row.append($("<td></td>").text(item.current_percent));
+        // Add more columns as needed
+
+        tableBody.append(row);
+      });
+    }
+  });
+</script>
+<!-- <script>
           $(document).ready(function() {
               $.ajax({
                   url: '/stock-listing/',
@@ -561,190 +574,166 @@ cursor: pointer;
 
 
 
-    <h4 class="my-3">Markets</h4>
-    <div class="nitfy_fin_bank_main">
-        <div class="nifty_main shadow"
-            style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+  <h4 class="my-3">Markets</h4>
+  <div class="nitfy_fin_bank_main">
+    <div class="nifty_main shadow"
+      style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
 
-            <div class="title_nifty  " style="display: flex;gap: 1rem;">
-                <h5 style="    font-size: 1rem;" id="nifty_50_symbol"></h5>
-                <h5 style="    font-size: 1rem;" class="" id="nifty_50_value"></h5>
-            </div>
+      <div class="title_nifty  " style="display: flex;gap: 1rem;">
+        <h5 style="    font-size: 1rem;" id="nifty_50_symbol"></h5>
+        <h5 style="    font-size: 1rem;" class="" id="nifty_50_value"></h5>
+      </div>
 
 
-            <div class="middle_nifty">
-                <div class="traded_icons" id="traded_icons">
-                    <div id="nifty_icons"></div>
-                    <h4 style="    font-size: 2rem;color: darkslategray;" id="nifty_50_trade_value"></h4>
-                </div>
-                <div class="high_low_nifty" style="    font-size: 13px;
+      <div class="middle_nifty">
+        <div class="traded_icons" id="traded_icons">
+          <div id="nifty_icons"></div>
+          <h4 style="    font-size: 2rem;color: darkslategray;" id="nifty_50_trade_value"></h4>
+        </div>
+        <div class="high_low_nifty" style="    font-size: 13px;
             font-weight: 700;
             color: darkslategray;">
-                    <div class="high">
-                        <p style="margin-bottom: auto;">High</p>
-                        <p style="margin-bottom: auto;" class="text-success" id="nifty_50_high"></p>
-                    </div>
-                    <div class="low">
-                        <p style="margin-bottom: auto;">Low</p>
-                        <p style="margin-bottom: auto;" class="text-danger" id="nifty_50_low"></p>
-                    </div>
-                </div>
-
-            </div>
-            <hr>
-
-            <div class="bottom_card">
-                <a href="" id="market_top">Analytics</a>
-                <a href="" id="market_top">Options</a>
-                <a href="" id="market_top">PCR</a>
-                <a href="" id="market_top">Chain</a>
-                <a href="" id="market_top">Max pain</a>
-                <a href="" id="market_top">Contributors</a>
-            </div>
+          <div class="high">
+            <p style="margin-bottom: auto;">High</p>
+            <p style="margin-bottom: auto;" class="text-success" id="nifty_50_high"></p>
+          </div>
+          <div class="low">
+            <p style="margin-bottom: auto;">Low</p>
+            <p style="margin-bottom: auto;" class="text-danger" id="nifty_50_low"></p>
+          </div>
         </div>
-        <div class="nifty_main shadow"
-            style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
 
-            <div class="title_nifty  " style="display: flex;gap: 1rem;">
-                <h5 style="    font-size: 1rem;" id="niftybank_symbol"></h5>
-                <h5 style="    font-size: 1rem;" class="" id="niftybank_value"></h5>
-            </div>
+      </div>
+      <hr>
+
+      <div class="bottom_card">
+        <a href="" id="market_top">Analytics</a>
+        <a href="" id="market_top">Options</a>
+        <a href="" id="market_top">PCR</a>
+        <a href="" id="market_top">Chain</a>
+        <a href="" id="market_top">Max pain</a>
+        <a href="" id="market_top">Contributors</a>
+      </div>
+    </div>
+    <div class="nifty_main shadow"
+      style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+
+      <div class="title_nifty  " style="display: flex;gap: 1rem;">
+        <h5 style="    font-size: 1rem;" id="niftybank_symbol"></h5>
+        <h5 style="    font-size: 1rem;" class="" id="niftybank_value"></h5>
+      </div>
 
 
-            <div class="middle_nifty">
-                <div class="traded_icons" id="traded_icons">
-                    <div id="niftybank_icons"></div>
-                    <h4 style="    font-size: 2rem;color: darkslategray;" id="niftybank_trade_value"></h4>
-                </div>
-                <div class="high_low_nifty" style="    font-size: 13px;
+      <div class="middle_nifty">
+        <div class="traded_icons" id="traded_icons">
+          <div id="niftybank_icons"></div>
+          <h4 style="    font-size: 2rem;color: darkslategray;" id="niftybank_trade_value"></h4>
+        </div>
+        <div class="high_low_nifty" style="    font-size: 13px;
             font-weight: 700;
             color: darkslategray;">
-                    <div class="high">
-                        <p style="margin-bottom: auto;">High</p>
-                        <p style="margin-bottom: auto;" class="text-success" id="niftybank_high"></p>
-                    </div>
-                    <div class="low">
-                        <p style="margin-bottom: auto;">Low</p>
-                        <p style="margin-bottom: auto;" class="text-danger" id="niftybank_low"></p>
-                    </div>
-                </div>
-
-            </div>
-            <hr>
-
-            <div class="bottom_card">
-                <a href="" id="market_top">Analytics</a>
-                <a href="" id="market_top">Options</a>
-                <a href="" id="market_top">PCR</a>
-                <a href="" id="market_top">Chain</a>
-                <a href="" id="market_top">Max pain</a>
-                <a href="" id="market_top">Contributors</a>
-            </div>
+          <div class="high">
+            <p style="margin-bottom: auto;">High</p>
+            <p style="margin-bottom: auto;" class="text-success" id="niftybank_high"></p>
+          </div>
+          <div class="low">
+            <p style="margin-bottom: auto;">Low</p>
+            <p style="margin-bottom: auto;" class="text-danger" id="niftybank_low"></p>
+          </div>
         </div>
-        <div class="nifty_main shadow"
-            style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
 
-            <div class="title_nifty  " style="display: flex;gap: 1rem;">
-                <h5 style="    font-size: 1rem;" id="finnity_symbol"></h5>
-                <h5 style="    font-size: 1rem;" class="" id="finnity_value"></h5>
-            </div>
+      </div>
+      <hr>
+
+      <div class="bottom_card">
+        <a href="" id="market_top">Analytics</a>
+        <a href="" id="market_top">Options</a>
+        <a href="" id="market_top">PCR</a>
+        <a href="" id="market_top">Chain</a>
+        <a href="" id="market_top">Max pain</a>
+        <a href="" id="market_top">Contributors</a>
+      </div>
+    </div>
+    <div class="nifty_main shadow"
+      style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+
+      <div class="title_nifty  " style="display: flex;gap: 1rem;">
+        <h5 style="    font-size: 1rem;" id="finnity_symbol"></h5>
+        <h5 style="    font-size: 1rem;" class="" id="finnity_value"></h5>
+      </div>
 
 
-            <div class="middle_nifty">
-                <div class="traded_icons" id="traded_icons">
-                    <div id="finnity_icons"></div>
-                    <h4 style="    font-size: 2rem;color: darkslategray;" id="finnity_trade_value"></h4>
-                </div>
-                <div class="high_low_nifty" style="    font-size: 13px;
+      <div class="middle_nifty">
+        <div class="traded_icons" id="traded_icons">
+          <div id="finnity_icons"></div>
+          <h4 style="    font-size: 2rem;color: darkslategray;" id="finnity_trade_value"></h4>
+        </div>
+        <div class="high_low_nifty" style="    font-size: 13px;
             font-weight: 700;
             color: darkslategray;">
-                    <div class="high">
-                        <p style="margin-bottom: auto;">High</p>
-                        <p style="margin-bottom: auto;" class="text-success" id="finnity_high"></p>
-                    </div>
-                    <div class="low">
-                        <p style="margin-bottom: auto;">Low</p>
-                        <p style="margin-bottom: auto;" class="text-danger" id="finnity_low"></p>
-                    </div>
-                </div>
-
-            </div>
-            <hr>
-
-            <div class="bottom_card">
-                <a href="" id="market_top">Analytics</a>
-                <a href="" id="market_top">Options</a>
-                <a href="" id="market_top">PCR</a>
-                <a href="" id="market_top">Chain</a>
-                <a href="" id="market_top">Max pain</a>
-                <a href="" id="market_top">Contributors</a>
-            </div>
+          <div class="high">
+            <p style="margin-bottom: auto;">High</p>
+            <p style="margin-bottom: auto;" class="text-success" id="finnity_high"></p>
+          </div>
+          <div class="low">
+            <p style="margin-bottom: auto;">Low</p>
+            <p style="margin-bottom: auto;" class="text-danger" id="finnity_low"></p>
+          </div>
         </div>
 
+      </div>
+      <hr>
+
+      <div class="bottom_card">
+        <a href="" id="market_top">Analytics</a>
+        <a href="" id="market_top">Options</a>
+        <a href="" id="market_top">PCR</a>
+        <a href="" id="market_top">Chain</a>
+        <a href="" id="market_top">Max pain</a>
+        <a href="" id="market_top">Contributors</a>
+      </div>
     </div>
 
-    <h4 class="my-3">Global Markets</h4>
+  </div>
+
+  <h4 class="my-3">Global Markets</h4>
 
 
-    <div id="tables-container" class="d-flex" style="    row-gap: 1rem;justify-content: space-around;     flex-wrap: wrap;"></div>
+  <div id="tables-container" class="d-flex"
+    style="    row-gap: 1rem;justify-content: space-around;     flex-wrap: wrap;"></div>
 
 
-<h4 class="my-3">Market Action</h4>
-<div class="description_usage my-4 container">
+  <h4 class="my-3">Market Action</h4>
+  <div class="description_usage my-4 container">
     <div class="head_desc_usage">
       <div class="row border-bottom" style="    justify-content: center;">
-        <div
-          class="chart-header col-2 text-center"
-          onclick="filterChart('topgainers')"
-          data-btn-id="1"
-          style="font-size: 21px;    width: fit-content;"
-          
-        >
-         Top Gainers
+        <div class="chart-header col-2 text-center" onclick="filterChart('topgainers')" data-btn-id="1"
+          style="font-size: 21px;    width: fit-content;">
+          Top Gainers
         </div>
-        <div
-          class="chart-header col-2 text-center"
-          onclick="filterChart('toplosers')"
-          data-btn-id="2"
-          style="font-size: 21px;    width: fit-content;"
-        >
+        <div class="chart-header col-2 text-center" onclick="filterChart('toplosers')" data-btn-id="2"
+          style="font-size: 21px;    width: fit-content;">
           Top Losers
         </div>
 
-        <div
-          class="chart-header col-2  text-center"
-          onclick="filterChart('sameopenandlow')"
-          data-btn-id="3"
-          style="font-size: 21px;    width: fit-content;"
-        >
-        sameOpenAndLow
+        <div class="chart-header col-2  text-center" onclick="filterChart('sameopenandlow')" data-btn-id="3"
+          style="font-size: 21px;    width: fit-content;">
+          sameOpenAndLow
         </div>
 
-        <div
-          class="chart-header col-2  text-center"
-          onclick="filterChart('sameOpenAndHigh')"
-          data-btn-id="4"
-          style="font-size: 21px;    width: fit-content;"
-        >
-        sameOpenAndHigh
+        <div class="chart-header col-2  text-center" onclick="filterChart('sameOpenAndHigh')" data-btn-id="4"
+          style="font-size: 21px;    width: fit-content;">
+          sameOpenAndHigh
         </div>
 
-        <div
-          class="chart-header col-2  text-center"
-          onclick="filterChart('gapUp')"
-          data-btn-id="4"
-          style="font-size: 21px;    width: fit-content;"
-        >
-        gapUp
+        <div class="chart-header col-2  text-center" onclick="filterChart('gapUp')" data-btn-id="4"
+          style="font-size: 21px;    width: fit-content;">
+          gapUp
         </div>
 
-        <div
-          class="chart-header col-2  text-center"
-          onclick="filterChart('gapDown')"
-          data-btn-id="4"
-          style="font-size: 21px;     width: fit-content;"
-        >
-        gapDown
+        <div class="chart-header col-2  text-center" onclick="filterChart('gapDown')" data-btn-id="4"
+          style="font-size: 21px;     width: fit-content;">
+          gapDown
         </div>
 
 
@@ -753,118 +742,118 @@ cursor: pointer;
       <div class="main_desc_usage mt-4" id="main_desc_usage"></div>
     </div>
     <div id="chartContainer " style=" overflow: auto;   height: fit-content;">
-        <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">chart</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Current Price</th>
-                    <th scope="col">Today Low</th>
-                    <th scope="col">Today High</th>
-                    <th scope="col">Change %</th>
-                    <th scope="col">Prev Close</th>
-                    <th scope="col">Volume</th>
-                  </tr>
-                </thead>
-                <tbody id="top_gainers_table"></tbody>
-              </table>
-        </div>
-        <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
-      <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">chart</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Current Price</th>
-                    <th scope="col">Today Low</th>
-                    <th scope="col">Today High</th>
-                    <th scope="col">Change %</th>
-                    <th scope="col">Prev Close</th>
-                    <th scope="col">Volume</th>
-                  </tr>
-                </thead>
-                <tbody id="top_losers_table"></tbody>
-              </table>
-        </div>
-    
-        <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">chart</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Current Price</th>
-                    <th scope="col">Today Low</th>
-                    <th scope="col">Today High</th>
-                    <th scope="col">Change %</th>
-                    <th scope="col">Prev Close</th>
-                    <th scope="col">Volume</th>
-                  </tr>
-                </thead>
-                <tbody id="same_open_and_low"></tbody>
-              </table>
-        </div>
-        <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">chart</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Current Price</th>
-                    <th scope="col">Today Low</th>
-                    <th scope="col">Today High</th>
-                    <th scope="col">Change %</th>
-                    <th scope="col">Prev Close</th>
-                    <th scope="col">Volume</th>
-                  </tr>
-                </thead>
-                <tbody id="same_Open_And_High"></tbody>
-              </table>
-        </div>
-        <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">chart</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Current Price</th>
-                    <th scope="col">Today Low</th>
-                    <th scope="col">Today High</th>
-                    <th scope="col">Change %</th>
-                    <th scope="col">Prev Close</th>
-                    <th scope="col">Volume</th>
-                  </tr>
-                </thead>
-                <tbody id="gap_Up"></tbody>
-              </table>
-        </div>
-        <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">chart</th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Current Price</th>
-                    <th scope="col">Today Low</th>
-                    <th scope="col">Today High</th>
-                    <th scope="col">Change %</th>
-                    <th scope="col">Prev Close</th>
-                    <th scope="col">Volume</th>
-                  </tr>
-                </thead>
-                <tbody id="gap_Down"></tbody>
-              </table>
-        </div>
-
-
+      <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">chart</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Today Low</th>
+              <th scope="col">Today High</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Prev Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="top_gainers_table"></tbody>
+        </table>
       </div>
-      <h5 class="text-primary d-flex justify-content-end">View more</h5>
-      {% comment %} <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
-        <button class=" btn btn-primary">Get a Lifetime Free Demat Account</button>
-        <button class=" btn btn-danger">Intraday & Options Tradings @ Zero Brockrage</button>
-        <button class="btn btn-primary">Search Stocks</button>
-      </div> {% endcomment %}
+      <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">chart</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Today Low</th>
+              <th scope="col">Today High</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Prev Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="top_losers_table"></tbody>
+        </table>
+      </div>
+
+      <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">chart</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Today Low</th>
+              <th scope="col">Today High</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Prev Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="same_open_and_low"></tbody>
+        </table>
+      </div>
+      <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">chart</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Today Low</th>
+              <th scope="col">Today High</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Prev Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="same_Open_And_High"></tbody>
+        </table>
+      </div>
+      <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">chart</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Today Low</th>
+              <th scope="col">Today High</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Prev Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="gap_Up"></tbody>
+        </table>
+      </div>
+      <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">chart</th>
+              <th scope="col">Symbol</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Today Low</th>
+              <th scope="col">Today High</th>
+              <th scope="col">Change %</th>
+              <th scope="col">Prev Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="gap_Down"></tbody>
+        </table>
+      </div>
+
+
+    </div>
+    <h5 class="text-primary d-flex justify-content-end">View more</h5>
+    {% comment %} <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
+      <button class=" btn btn-primary">Get a Lifetime Free Demat Account</button>
+      <button class=" btn btn-danger">Intraday & Options Tradings @ Zero Brockrage</button>
+      <button class="btn btn-primary">Search Stocks</button>
+    </div> {% endcomment %}
   </div>
 
   <h4 class="my-3">Ban List </h4>
@@ -873,126 +862,126 @@ cursor: pointer;
     gap: 2rem;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
     padding: 25px;">
-<div class="ban_security">
-    <h5>Securities In Ban </h5>
-    <table class="table  table-hover" id="securities_ban_table">
+    <div class="ban_security">
+      <h5>Securities In Ban </h5>
+      <table class="table  table-hover" id="securities_ban_table">
         <thead class="table-info">
-            <tr>
-                <th>SYMBOL</th>
-                <th>PREVIOUS MWPL %</th>
-                <th>CURRENT MWPL %</th>
-                <!-- Add more columns as needed -->
-            </tr>
+          <tr>
+            <th>SYMBOL</th>
+            <th>PREVIOUS MWPL %</th>
+            <th>CURRENT MWPL %</th>
+            <!-- Add more columns as needed -->
+          </tr>
         </thead>
         <tbody></tbody>
-    </table>
-</div>
-<div class="ban_entry">
-    <h5>Possible Entrants </h5>
-    <table class="table  table-hover" id="possible_entrants_table">
+      </table>
+    </div>
+    <div class="ban_entry">
+      <h5>Possible Entrants </h5>
+      <table class="table  table-hover" id="possible_entrants_table">
         <thead class="table-info">
-            <tr>
-                <th>SYMBOL</th>
-                <th>PREVIOUS MWPL %</th>
-                <th>CURRENT MWPL %</th>
-                <!-- Add more columns as needed -->
-            </tr>
+          <tr>
+            <th>SYMBOL</th>
+            <th>PREVIOUS MWPL %</th>
+            <th>CURRENT MWPL %</th>
+            <!-- Add more columns as needed -->
+          </tr>
         </thead>
         <tbody></tbody>
-    </table>
-</div>
-<div class="ban_exits">
-    <h5>Possible Exits </h5>
-    <table class="table  table-hover" id="possible_exits_table">
+      </table>
+    </div>
+    <div class="ban_exits">
+      <h5>Possible Exits </h5>
+      <table class="table  table-hover" id="possible_exits_table">
         <thead class="table-info">
-            <tr>
-                <th>SYMBOL</th>
-                <th>PREVIOUS MWPL %</th>
-                <th>CURRENT MWPL %</th>
-                <!-- Add more columns as needed -->
-            </tr>
+          <tr>
+            <th>SYMBOL</th>
+            <th>PREVIOUS MWPL %</th>
+            <th>CURRENT MWPL %</th>
+            <!-- Add more columns as needed -->
+          </tr>
         </thead>
         <tbody></tbody>
-    </table>
-</div>
-</div>
+      </table>
+    </div>
+  </div>
 
 
 
-<h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
+  <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
 
-<div class="main_future_open d-flex gap-4 container" style="justify-content: center;
+  <div class="main_future_open d-flex gap-4 container" style="justify-content: center;
 border-bottom: 1px solid lightgray;">
 
-  <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
-  <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
-  <div id="OI_volume_buzzers" onclick="future_filter('OI_volume_buzzers')">Volume Buzzers</div>
-  <div id="OI_volume_1" onclick="future_filter('OI_volume_1')">Volume Buzzers 1</div>
-  <div id="OI_volume_2" onclick="future_filter('OI_volume_2')">Volume Buzzer 2</div>
+    <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
+    <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
+    <div id="OI_volume_buzzers" onclick="future_filter('OI_volume_buzzers')">Volume Buzzers</div>
+    <div id="OI_volume_1" onclick="future_filter('OI_volume_1')">Volume Buzzers 1</div>
+    <div id="OI_volume_2" onclick="future_filter('OI_volume_2')">Volume Buzzer 2</div>
 
 
-</div>
+  </div>
 
 
-<div id="OI_gainer_table">
+  <div id="OI_gainer_table">
 
 
-  <table id="Oi_gainer_data"  class="table table-striped table-hover" >
-    <thead class="table-info">
+    <table id="Oi_gainer_data" class="table table-striped table-hover">
+      <thead class="table-info">
         <tr id="columnHeaders">
         </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
 
 
 
 
-</div>
-<div id="OI_loser_table">
- 
-  <table id="Oi_loser_data_table_data_table"  class="table table-striped table-hover" >
-    <thead  class="table-info">
+  </div>
+  <div id="OI_loser_table">
+
+    <table id="Oi_loser_data_table_data_table" class="table table-striped table-hover">
+      <thead class="table-info">
         <tr id="columnHeaders_loser">
         </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
 
 
 
-</div>
-<div id="OI_volume_buzzers_table">
-  <table id="volumeShockerTable" class="table table-striped table-hover" >
-    <thead class="table-info">
-      <tr>
-        
-        <th>Company Name</th>
-       
-        <th>Volume</th>
-        <th>Volume Percentage Change</th>
-        <th>Exchange</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-</div>
-<div id="OI_volume_1_table">
-  OI_volume_1
-</div>
+  </div>
+  <div id="OI_volume_buzzers_table">
+    <table id="volumeShockerTable" class="table table-striped table-hover">
+      <thead class="table-info">
+        <tr>
 
-<div id="OI_volume_2_table">
-  OI_volume_2
-</div>
+          <th>Company Name</th>
 
+          <th>Volume</th>
+          <th>Volume Percentage Change</th>
+          <th>Exchange</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <div id="OI_volume_1_table">
+    <table id="OI_volume_1_table_data"></table>
+  </div>
 
+  <div id="OI_volume_2_table">
+ <table id="OI_volume_2_table_data"></table>
+  </div>
 
 
 
-<!-- <h4 class="my-3">IPO List </h4>
+
+
+  <!-- <h4 class="my-3">IPO List </h4>
 <div class="ipo container" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 padding: 25px;">
 
@@ -1090,402 +1079,429 @@ padding: 25px;">
 
 
 <div id="spinner"
-    class="position-fixed top-50 start-50 translate-middle d-flex align-items-center justify-content-center">
-    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+  class="position-fixed top-50 start-50 translate-middle d-flex align-items-center justify-content-center">
+  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
 </div>
 <script>
   var equity = document.getElementById("equity");
-var sme = document.getElementById("sme");
+  var sme = document.getElementById("sme");
 
-equity.style.display = "block";
-
-sme.style.display = "none";
-var equity_btn =document.getElementById("equity_btn")
-
-equity_btn.classList.add("filter_child_active")
-function filter_Equity_Sme(filter_e_s) {
-if (filter_e_s=="1st") {
   equity.style.display = "block";
 
-sme.style.display = "none";
-equity_btn.classList.add("filter_child_active")
-sme_btn.classList.remove("filter_child_active")
-}
-else if (filter_e_s=="2nd") {
-  equity.style.display = "none";
+  sme.style.display = "none";
+  var equity_btn = document.getElementById("equity_btn")
 
-sme.style.display = "block";
-sme_btn.classList.add("filter_child_active")
-equity_btn.classList.remove("filter_child_active")
-}
-}
+  equity_btn.classList.add("filter_child_active")
+  function filter_Equity_Sme(filter_e_s) {
+    if (filter_e_s == "1st") {
+      equity.style.display = "block";
+
+      sme.style.display = "none";
+      equity_btn.classList.add("filter_child_active")
+      sme_btn.classList.remove("filter_child_active")
+    }
+    else if (filter_e_s == "2nd") {
+      equity.style.display = "none";
+
+      sme.style.display = "block";
+      sme_btn.classList.add("filter_child_active")
+      equity_btn.classList.remove("filter_child_active")
+    }
+  }
 </script>
 
 <script>
-// Function to show or hide charts based on filter_ipo selection
-var equity_sme = document.getElementById("equity_sme");
-var r_list = document.getElementById("r_list");
-var f_list = document.getElementById("f_list");
-equity_sme.style.display = "block";
-document.getElementById("r_btn").classList.add("filter_ipo_active")
-r_list.style.display = "none";
-f_list.style.display = "none";
-function filter_ipoIpo(filter_ipo) {
+  // Function to show or hide charts based on filter_ipo selection
   var equity_sme = document.getElementById("equity_sme");
   var r_list = document.getElementById("r_list");
   var f_list = document.getElementById("f_list");
-  var chartContainer = document.getElementById("chartContainer");
+  equity_sme.style.display = "block";
+  document.getElementById("r_btn").classList.add("filter_ipo_active")
+  r_list.style.display = "none";
+  f_list.style.display = "none";
+  function filter_ipoIpo(filter_ipo) {
+    var equity_sme = document.getElementById("equity_sme");
+    var r_list = document.getElementById("r_list");
+    var f_list = document.getElementById("f_list");
+    var chartContainer = document.getElementById("chartContainer");
 
-  if (filter_ipo === "r_list") {
-    equity_sme.style.display = "block";
+    if (filter_ipo === "r_list") {
+      equity_sme.style.display = "block";
 
-    r_list.style.display = "none";
-    f_list.style.display = "none";
-    document.getElementById("r_btn").classList.add("filter_ipo_active")
-    document.getElementById("a_btn").classList.remove("filter_ipo_active")
-    document.getElementById("f_btn").classList.remove("filter_ipo_active")
-  } else if (filter_ipo === "a_list") {
-    equity_sme.style.display = "none";
-    r_list.style.display = "block";
-    f_list.style.display = "none";
-    document.getElementById("a_btn").classList.add("filter_ipo_active")
-    document.getElementById("r_btn").classList.remove("filter_ipo_active")
-    document.getElementById("f_btn").classList.remove("filter_ipo_active")
-  } else if (filter_ipo === "f_list") {
-    equity_sme.style.display = "none";
-    r_list.style.display = "none";
-    f_list.style.display = "block";
-    document.getElementById("f_btn").classList.add("filter_ipo_active")
-    document.getElementById("a_btn").classList.remove("filter_ipo_active")
-    document.getElementById("r_btn").classList.remove("filter_ipo_active")
+      r_list.style.display = "none";
+      f_list.style.display = "none";
+      document.getElementById("r_btn").classList.add("filter_ipo_active")
+      document.getElementById("a_btn").classList.remove("filter_ipo_active")
+      document.getElementById("f_btn").classList.remove("filter_ipo_active")
+    } else if (filter_ipo === "a_list") {
+      equity_sme.style.display = "none";
+      r_list.style.display = "block";
+      f_list.style.display = "none";
+      document.getElementById("a_btn").classList.add("filter_ipo_active")
+      document.getElementById("r_btn").classList.remove("filter_ipo_active")
+      document.getElementById("f_btn").classList.remove("filter_ipo_active")
+    } else if (filter_ipo === "f_list") {
+      equity_sme.style.display = "none";
+      r_list.style.display = "none";
+      f_list.style.display = "block";
+      document.getElementById("f_btn").classList.add("filter_ipo_active")
+      document.getElementById("a_btn").classList.remove("filter_ipo_active")
+      document.getElementById("r_btn").classList.remove("filter_ipo_active")
+    }
   }
-}
 
 
 </script>
 
 <script>
-    // Function to show or hide charts based on filter selection
+  // Function to show or hide charts based on filter selection
+  var topgainers = document.getElementById("topgainers");
+  var toplosers = document.getElementById("toplosers");
+  var sameopenandlow = document.getElementById("sameopenandlow");
+  var sameOpenAndHigh = document.getElementById("sameOpenAndHigh");
+  var gapUp = document.getElementById("gapUp");
+  var gapDown = document.getElementById("gapDown");
+  topgainers.style.display = "block";
+
+
+  toplosers.style.display = "none";
+  sameopenandlow.style.display = "none";
+  sameOpenAndHigh.style.display = "none";
+  gapUp.style.display = "none";
+  gapDown.style.display = "none";
+  function filterChart(filter) {
+
     var topgainers = document.getElementById("topgainers");
     var toplosers = document.getElementById("toplosers");
     var sameopenandlow = document.getElementById("sameopenandlow");
     var sameOpenAndHigh = document.getElementById("sameOpenAndHigh");
     var gapUp = document.getElementById("gapUp");
     var gapDown = document.getElementById("gapDown");
-    topgainers.style.display = "block";
-    
+    var chartContainer = document.getElementById("chartContainer");
 
-    toplosers.style.display = "none";
-    sameopenandlow.style.display = "none";
-    sameOpenAndHigh.style.display = "none";
-    gapUp.style.display = "none";
-    gapDown.style.display = "none";
-    function filterChart(filter) {
+    if (filter === "topgainers") {
+      topgainers.style.display = "block";
 
-      var topgainers = document.getElementById("topgainers");
-      var toplosers = document.getElementById("toplosers");
-      var sameopenandlow = document.getElementById("sameopenandlow");
-      var sameOpenAndHigh = document.getElementById("sameOpenAndHigh");
-    var gapUp = document.getElementById("gapUp");
-    var gapDown = document.getElementById("gapDown");
-      var chartContainer = document.getElementById("chartContainer");
 
-      if (filter === "topgainers") {
-        topgainers.style.display = "block";
-    
-
-        toplosers.style.display = "none";
-        sameopenandlow.style.display = "none";
-        sameOpenAndHigh.style.display = "none";
-        gapUp.style.display = "none";
-        gapDown.style.display = "none";
-      } else if (filter === "toplosers") {
-        topgainers.style.display = "none";
-        toplosers.style.display = "block";
-        sameopenandlow.style.display = "none";
-        sameOpenAndHigh.style.display = "none";
-        gapUp.style.display = "none";
-        gapDown.style.display = "none";
-      } else if (filter === "sameopenandlow") {
-        topgainers.style.display = "none";
-        toplosers.style.display = "none";
-        sameopenandlow.style.display = "block";
-        sameOpenAndHigh.style.display = "none";
-        gapUp.style.display = "none";
-        gapDown.style.display = "none";
-      }else if (filter=="sameOpenAndHigh") {
-        topgainers.style.display = "none";
-        toplosers.style.display = "none";
-        sameopenandlow.style.display = "none";
-        sameOpenAndHigh.style.display = "block";
-        gapUp.style.display = "none";
-        gapDown.style.display = "none";
-      }
-      else if (filter=="gapUp") {
-        topgainers.style.display = "none";
-        toplosers.style.display = "none";
-        sameopenandlow.style.display = "none";
-        sameOpenAndHigh.style.display = "none";
-        gapUp.style.display = "block";
-        gapDown.style.display = "none";
-      }
-      
-      else if (filter=="gapDown") {
-        topgainers.style.display = "none";
-        toplosers.style.display = "none";
-        sameopenandlow.style.display = "none";
-        sameOpenAndHigh.style.display = "none";
-        gapUp.style.display = "none";
-        gapDown.style.display = "block";
-      }
-      
-       
-      
+      toplosers.style.display = "none";
+      sameopenandlow.style.display = "none";
+      sameOpenAndHigh.style.display = "none";
+      gapUp.style.display = "none";
+      gapDown.style.display = "none";
+    } else if (filter === "toplosers") {
+      topgainers.style.display = "none";
+      toplosers.style.display = "block";
+      sameopenandlow.style.display = "none";
+      sameOpenAndHigh.style.display = "none";
+      gapUp.style.display = "none";
+      gapDown.style.display = "none";
+    } else if (filter === "sameopenandlow") {
+      topgainers.style.display = "none";
+      toplosers.style.display = "none";
+      sameopenandlow.style.display = "block";
+      sameOpenAndHigh.style.display = "none";
+      gapUp.style.display = "none";
+      gapDown.style.display = "none";
+    } else if (filter == "sameOpenAndHigh") {
+      topgainers.style.display = "none";
+      toplosers.style.display = "none";
+      sameopenandlow.style.display = "none";
+      sameOpenAndHigh.style.display = "block";
+      gapUp.style.display = "none";
+      gapDown.style.display = "none";
     }
-    $(document).ready(function () {
-      $("[data-btn-id]:first-child").addClass("desc_usage_active");
-      // Filter button click event
-      $("[data-btn-id]").click(function () {
-        var btnId = $(this).attr("data-btn-id");
-        filterResults(btnId);
-        changeButtonColor($(this));
-      });
+    else if (filter == "gapUp") {
+      topgainers.style.display = "none";
+      toplosers.style.display = "none";
+      sameopenandlow.style.display = "none";
+      sameOpenAndHigh.style.display = "none";
+      gapUp.style.display = "block";
+      gapDown.style.display = "none";
+    }
 
-      // Initial filtering (optional)
-      filterResults(1);
-      // Function to filter results
-      function filterResults(btnId) {
-        // Clear previous results
-        // Filter elements based on btnId
-      }
+    else if (filter == "gapDown") {
+      topgainers.style.display = "none";
+      toplosers.style.display = "none";
+      sameopenandlow.style.display = "none";
+      sameOpenAndHigh.style.display = "none";
+      gapUp.style.display = "none";
+      gapDown.style.display = "block";
+    }
 
-      // Function to change button color
-      function changeButtonColor(button) {
-        // Reset color of all buttons
-        $("[data-btn-id]").removeClass("desc_usage_active");
 
-        // Add color to the clicked button
-        button.addClass("desc_usage_active");
+
+  }
+  $(document).ready(function () {
+    $("[data-btn-id]:first-child").addClass("desc_usage_active");
+    // Filter button click event
+    $("[data-btn-id]").click(function () {
+      var btnId = $(this).attr("data-btn-id");
+      filterResults(btnId);
+      changeButtonColor($(this));
+    });
+
+    // Initial filtering (optional)
+    filterResults(1);
+    // Function to filter results
+    function filterResults(btnId) {
+      // Clear previous results
+      // Filter elements based on btnId
+    }
+
+    // Function to change button color
+    function changeButtonColor(button) {
+      // Reset color of all buttons
+      $("[data-btn-id]").removeClass("desc_usage_active");
+
+      // Add color to the clicked button
+      button.addClass("desc_usage_active");
+    }
+  });
+</script>
+<script>
+  var OI_gainer_table = document.getElementById("OI_gainer_table")
+  var OI_loser_table = document.getElementById("OI_loser_table")
+  var OI_volume_buzzers_table = document.getElementById("OI_volume_buzzers_table")
+  var OI_volume_1_table = document.getElementById("OI_volume_1_table")
+  var OI_volume_2_table = document.getElementById("OI_volume_2_table")
+
+  var OI_gainer = document.getElementById("OI_gainer")
+  var OI_loser = document.getElementById("OI_loser")
+  var OI_volume_buzzers = document.getElementById("OI_volume_buzzers")
+  var OI_volume_1 = document.getElementById("OI_volume_1")
+  var OI_volume_2 = document.getElementById("OI_volume_2")
+
+
+
+
+  OI_gainer_table.style.display = "block"
+  OI_loser_table.style.display = "none"
+  OI_volume_buzzers_table.style.display = "none"
+  OI_volume_1_table.style.display = "none"
+  OI_volume_2_table.style.display = "none"
+  OI_gainer.classList.add("future_active")
+
+
+  function future_filter(future) {
+    if (future == "OI_gainer") {
+      OI_gainer_table.style.display = "block"
+      OI_loser_table.style.display = "none"
+      OI_volume_buzzers_table.style.display = "none"
+      OI_volume_1_table.style.display = "none"
+      OI_volume_2_table.style.display = "none"
+
+      OI_gainer.classList.add("future_active")
+      OI_loser.classList.remove("future_active")
+      OI_volume_buzzers.classList.remove("future_active")
+      OI_volume_1.classList.remove("future_active")
+      OI_volume_2.classList.remove("future_active")
+
+    } else if (future == "OI_loser") {
+      OI_gainer_table.style.display = "none"
+      OI_loser_table.style.display = "block"
+      OI_volume_buzzers_table.style.display = "none"
+      OI_volume_1_table.style.display = "none"
+      OI_volume_2_table.style.display = "none"
+
+      OI_loser.classList.add("future_active")
+      OI_gainer.classList.remove("future_active")
+      OI_volume_buzzers.classList.remove("future_active")
+      OI_volume_1.classList.remove("future_active")
+      OI_volume_2.classList.remove("future_active")
+
+    }
+    else if (future == "OI_volume_buzzers") {
+      OI_gainer_table.style.display = "none"
+      OI_loser_table.style.display = "none"
+      OI_volume_buzzers_table.style.display = "block"
+      OI_volume_1_table.style.display = "none"
+      OI_volume_2_table.style.display = "none"
+
+      OI_loser.classList.remove("future_active")
+      OI_gainer.classList.remove("future_active")
+      OI_volume_buzzers.classList.add("future_active")
+      OI_volume_1.classList.remove("future_active")
+      OI_volume_2.classList.remove("future_active")
+    }
+    else if (future == "OI_volume_1") {
+      OI_gainer_table.style.display = "none"
+      OI_loser_table.style.display = "none"
+      OI_volume_buzzers_table.style.display = "none"
+      OI_volume_1_table.style.display = "block"
+      OI_volume_2_table.style.display = "none"
+
+      OI_loser.classList.remove("future_active")
+      OI_gainer.classList.remove("future_active")
+      OI_volume_buzzers.classList.remove("future_active")
+      OI_volume_1.classList.add("future_active")
+      OI_volume_2.classList.remove("future_active")
+    }
+
+    else if (future == "OI_volume_2") {
+      OI_gainer_table.style.display = "none"
+      OI_loser_table.style.display = "none"
+      OI_volume_buzzers_table.style.display = "none"
+      OI_volume_1_table.style.display = "none"
+      OI_volume_2_table.style.display = "block"
+
+      OI_loser.classList.remove("future_active")
+      OI_gainer.classList.remove("future_active")
+      OI_volume_buzzers.classList.remove("future_active")
+      OI_volume_1.classList.remove("future_active")
+      OI_volume_2.classList.add("future_active")
+    }
+  }
+</script>
+<script>
+  $(document).ready(function () {
+    $.ajax({
+      url: '/volume-shocker/',
+      method: 'GET',
+      success: function (data) {
+        createTable(data);
+      },
+      error: function (error) {
+        console.log(error);
       }
     });
-  </script>
-  <script>
-    var OI_gainer_table = document.getElementById("OI_gainer_table")
-    var OI_loser_table = document.getElementById("OI_loser_table")
-    var OI_volume_buzzers_table = document.getElementById("OI_volume_buzzers_table")
-    var OI_volume_1_table = document.getElementById("OI_volume_1_table")
-    var OI_volume_2_table = document.getElementById("OI_volume_2_table")
 
-    var OI_gainer = document.getElementById("OI_gainer")
-    var OI_loser = document.getElementById("OI_loser")
-    var OI_volume_buzzers = document.getElementById("OI_volume_buzzers")
-    var OI_volume_1 = document.getElementById("OI_volume_1")
-    var OI_volume_2 = document.getElementById("OI_volume_2")
+    function createTable(data) {
+      console.log(data);
+      const tableBody = $('#volumeShockerTable tbody');
 
+      // Clear any existing rows in the table body
+      tableBody.empty();
 
+      // Iterate over the data array using the map function
+      var rows = data.map(function (item) {
+        return '<tr>' +
 
+          '<td>' + item.companyName + '</td>' +
 
-    OI_gainer_table.style.display = "block"
-    OI_loser_table.style.display = "none"
-    OI_volume_buzzers_table.style.display = "none"
-    OI_volume_1_table.style.display = "none"
-    OI_volume_2_table.style.display = "none"
-    OI_gainer.classList.add("future_active")
+          '<td>' + item.volume + '</td>' +
+          '<td>' + item.volumePercentageChange.toFixed(2) + '</td>' +
+          '<td>' + item.exchange + '</td>' +
+          '</tr>';
+      });
 
-
-    function future_filter(future) {
-      if (future == "OI_gainer") {
-        OI_gainer_table.style.display = "block"
-        OI_loser_table.style.display = "none"
-        OI_volume_buzzers_table.style.display = "none"
-        OI_volume_1_table.style.display = "none"
-        OI_volume_2_table.style.display = "none"
-
-        OI_gainer.classList.add("future_active")
-        OI_loser.classList.remove("future_active")
-        OI_volume_buzzers.classList.remove("future_active")
-        OI_volume_1.classList.remove("future_active")
-        OI_volume_2.classList.remove("future_active")
-
-      } else if (future == "OI_loser") {
-        OI_gainer_table.style.display = "none"
-        OI_loser_table.style.display = "block"
-        OI_volume_buzzers_table.style.display = "none"
-        OI_volume_1_table.style.display = "none"
-        OI_volume_2_table.style.display = "none"
-
-        OI_loser.classList.add("future_active")
-        OI_gainer.classList.remove("future_active")
-        OI_volume_buzzers.classList.remove("future_active")
-        OI_volume_1.classList.remove("future_active")
-        OI_volume_2.classList.remove("future_active")
-
-      }
-      else if (future == "OI_volume_buzzers") {
-        OI_gainer_table.style.display = "none"
-        OI_loser_table.style.display = "none"
-        OI_volume_buzzers_table.style.display = "block"
-        OI_volume_1_table.style.display = "none"
-        OI_volume_2_table.style.display = "none"
-
-        OI_loser.classList.remove("future_active")
-        OI_gainer.classList.remove("future_active")
-        OI_volume_buzzers.classList.add("future_active")
-        OI_volume_1.classList.remove("future_active")
-        OI_volume_2.classList.remove("future_active")
-      }
-      else if (future == "OI_volume_1") {
-        OI_gainer_table.style.display = "none"
-        OI_loser_table.style.display = "none"
-        OI_volume_buzzers_table.style.display = "none"
-        OI_volume_1_table.style.display = "block"
-        OI_volume_2_table.style.display = "none"
-
-        OI_loser.classList.remove("future_active")
-        OI_gainer.classList.remove("future_active")
-        OI_volume_buzzers.classList.remove("future_active")
-        OI_volume_1.classList.add("future_active")
-        OI_volume_2.classList.remove("future_active")
-      }
-
-      else if (future == "OI_volume_2") {
-        OI_gainer_table.style.display = "none"
-        OI_loser_table.style.display = "none"
-        OI_volume_buzzers_table.style.display = "none"
-        OI_volume_1_table.style.display = "none"
-        OI_volume_2_table.style.display = "block"
-
-        OI_loser.classList.remove("future_active")
-        OI_gainer.classList.remove("future_active")
-        OI_volume_buzzers.classList.remove("future_active")
-        OI_volume_1.classList.remove("future_active")
-        OI_volume_2.classList.add("future_active")
-      }
+      // Join the rows array and append it to the table body
+      tableBody.append(rows.join(''));
+      $('#volumeShockerTable').DataTable({
+        "pageLength": 10
+      });
     }
-  </script>
-    <script>
-      $(document).ready(function () {
-        $.ajax({
-          url: '/volume-shocker/',
-          method: 'GET',
-          success: function (data) {
-            createTable(data);
-          },
-          error: function (error) {
-            console.log(error);
-          }
-        });
-    
-        function createTable(data) {
-          console.log(data);
-          const tableBody = $('#volumeShockerTable tbody');
-          
-          // Clear any existing rows in the table body
-          tableBody.empty();
-    
-          // Iterate over the data array using the map function
-          var rows = data.map(function (item) {
-            return '<tr>' +
-              
-              '<td>' + item.companyName + '</td>' +
-             
-              '<td>' + item.volume + '</td>' +
-              '<td>' + item.volumePercentageChange.toFixed(2) + '</td>' +
-              '<td>' + item.exchange + '</td>' +
-              '</tr>';
-          });
-    
-          // Join the rows array and append it to the table body
-          tableBody.append(rows.join(''));
-        }
+  });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+<script>
+  $(document).ready(function () {
+    $.ajax({
+      url: 'oi_gainers',
+      method: 'GET',
+      success: function (data) {
+        createTable(data);
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+
+    function createTable(data) {
+      const tableBody = $('#Oi_gainer_data tbody');
+      const tableHeaders = $('#columnHeaders');
+
+      // Create table headers
+      const columnHeaders = data.columns.map(function (column) {
+        return '<th>' + column + '</th>';
       });
-    </script>
-    <script>
-      $(document).ready(function() {
-          $.ajax({
-              url: 'oi_gainers',
-              method: 'GET',
-              success: function(data) {
-                  createTable(data);
-              },
-              error: function(error) {
-                  console.log(error);
-              }
-          });
+      tableHeaders.html(columnHeaders.join(''));
 
-          function createTable(data) {
-              const tableBody = $('#Oi_gainer_data tbody');
-              const tableHeaders = $('#columnHeaders');
-
-              // Create table headers
-              const columnHeaders = data.columns.map(function(column) {
-                  return '<th>' + column + '</th>';
-              });
-              tableHeaders.html(columnHeaders.join(''));
-
-              // Create table rows
-              const tableRows = data.data.map(function(row) {
-                  return '<tr>' +
-                      '<td>' + row[0] + '</td>' +  // name
-                      '<td>' + row[1] + '</td>' +  // price
-                      '<td>' + row[2] + '</td>' +  // Date Chang
-                      '<td>' + row[3] + '</td>' +  // Volume Contracts
-                      '<td>' + row[4] + '</td>' +  // % Volume Contracts
-                      '<td>' + row[5] + '</td>' +  // TTV
-                      '<td>' + row[6] + '</td>' +  // OI
-                      '<td>' + row[7] + '</td>' +  // %OI
-                      '<td>' + row[8] + '</td>' +  // Basis
-                      '<td>' + row[9] + '</td>' +  // COC
-                      '<td>' + row[10] + '</td>' + // Spot
-                      '<td>' + row[11] + '</td>' + // Build Up
-                      '</tr>';
-              });
-              tableBody.html(tableRows.join(''));
-          }
+      // Create table rows
+      const tableRows = data.data.map(function (row) {
+        return '<tr>' +
+          '<td>' + row[0] + '</td>' +  // name
+          '<td>' + row[1] + '</td>' +  // price
+          '<td>' + row[2] + '</td>' +  // Date Chang
+          '<td>' + row[3] + '</td>' +  // Volume Contracts
+          '<td>' + row[4] + '</td>' +  // % Volume Contracts
+          '<td>' + row[5] + '</td>' +  // TTV
+          '<td>' + row[6] + '</td>' +  // OI
+          '<td>' + row[7] + '</td>' +  // %OI
+          '<td>' + row[8] + '</td>' +  // Basis
+          '<td>' + row[9] + '</td>' +  // COC
+          '<td>' + row[10] + '</td>' + // Spot
+          '<td>' + row[11] + '</td>' + // Build Up
+          '</tr>';
       });
-  </script>
-    <script>
-      $(document).ready(function() {
-          $.ajax({
-              url: 'oi_losers',
-              method: 'GET',
-              success: function(data) {
-                  createTable(data);
-              },
-              error: function(error) {
-                  console.log(error);
-              }
-          });
+      tableBody.html(tableRows.join(''));
 
-          function createTable(data) {
-              const tableBody = $('#Oi_loser_data_table_data_table tbody');
-              const tableHeaders = $('#columnHeaders_loser');
-
-              // Create table headers
-              const columnHeaders_loser = data.columns.map(function(column) {
-                  return '<th>' + column + '</th>';
-              });
-              tableHeaders.html(columnHeaders_loser.join(''));
-
-              // Create table rows
-              const tableRows = data.data.map(function(row) {
-                  return '<tr>' +
-                      '<td>' + row[0] + '</td>' +  // name
-                      '<td>' + row[1] + '</td>' +  // price
-                      '<td>' + row[2] + '</td>' +  // Date Chang
-                      '<td>' + row[3] + '</td>' +  // Volume Contracts
-                      '<td>' + row[4] + '</td>' +  // % Volume Contracts
-                      '<td>' + row[5] + '</td>' +  // TTV
-                      '<td>' + row[6] + '</td>' +  // OI
-                      '<td>' + row[7] + '</td>' +  // %OI
-                      '<td>' + row[8] + '</td>' +  // Basis
-                      '<td>' + row[9] + '</td>' +  // COC
-                      '<td>' + row[10] + '</td>' + // Spot
-                      '<td>' + row[11] + '</td>' + // Build Up
-                      '</tr>';
-              });
-              tableBody.html(tableRows.join(''));
-          }
+      // Initialize DataTable
+      $('#Oi_gainer_data').DataTable({
+        "pageLength": 10
       });
-  </script>
+
+    }
+  });
+</script>
+
+
+<script>
+  $(document).ready(function () {
+    $.ajax({
+      url: 'oi_losers',
+      method: 'GET',
+      success: function (data) {
+        createTable(data);
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
+
+    function createTable(data) {
+      const tableBody = $('#Oi_loser_data_table_data_table tbody');
+      const tableHeaders = $('#columnHeaders_loser');
+
+      // Create table headers
+      const columnHeaders_loser = data.columns.map(function (column) {
+        return '<th>' + column + '</th>';
+      });
+      tableHeaders.html(columnHeaders_loser.join(''));
+
+      // Create table rows
+      const tableRows = data.data.map(function (row) {
+        return '<tr>' +
+          '<td>' + row[0] + '</td>' +  // name
+          '<td>' + row[1] + '</td>' +  // price
+          '<td>' + row[2] + '</td>' +  // Date Chang
+          '<td>' + row[3] + '</td>' +  // Volume Contracts
+          '<td>' + row[4] + '</td>' +  // % Volume Contracts
+          '<td>' + row[5] + '</td>' +  // TTV
+          '<td>' + row[6] + '</td>' +  // OI
+          '<td>' + row[7] + '</td>' +  // %OI
+          '<td>' + row[8] + '</td>' +  // Basis
+          '<td>' + row[9] + '</td>' +  // COC
+          '<td>' + row[10] + '</td>' + // Spot
+          '<td>' + row[11] + '</td>' + // Build Up
+          '</tr>';
+      });
+      tableBody.html(tableRows.join(''));
+      $('#Oi_loser_data_table_data_table').DataTable({
+        "pageLength": 10
+      });
+    }
+  });
+  $(document).ready(function () {
+    $('#OI_volume_1_table_data').DataTable({
+        "pageLength": 10
+      });
+      $('#Oi_loser_data_table_data_table').DataTable({
+        "pageLength": 10
+      });
+  })
+</script>
 {% endblock dashboard_body %}
