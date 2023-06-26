@@ -8,7 +8,7 @@ from .models import TradedVolume
 from .models import Top_Loser
 from .models import Top_Gainer
 from bs4 import BeautifulSoup
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.http import JsonResponse
 import uuid
 import json
@@ -607,7 +607,7 @@ def login_user(request):
             login(request, user)
             if request.user.is_superuser:
                 messages.success(request, 'You are successfully logged in as Admin')
-                return redirect("/dashboard")
+                return redirect("/admin_panel")
             else:
              messages.success(request, 'You are successfully logged in')
              return redirect("/")
@@ -1634,10 +1634,10 @@ def oi_gainers(request):
         "columns": [
             "name",
             "price",
-            "Date Chang",
+            "Date Change",
             "Volume Contracts",
             "% Volume Contracts",
-            "TTV",
+            # "TTV",
             "OI",
             "%OI",
             "Basis",
@@ -1689,7 +1689,7 @@ def oi_losers(request):
             "Date Chang",
             "Volume Contracts",
             "% Volume Contracts",
-            "TTV",
+            # "TTV",
             "OI",
             "%OI",
             "Basis",
@@ -1765,3 +1765,42 @@ def put_call_ratio(request):
         'time_values': time_values,
     }
     return render(request,"put_call_ratio.html",context)
+
+from django.shortcuts import get_object_or_404
+
+def Edit_user_data(request, id):
+    user = get_object_or_404(User, id=id)
+    if request.method == "POST":
+        edit_fullname = request.POST.get('edit_fullname', '')
+        edit_email = request.POST.get('edit_email', '')
+        phone_code_edit = request.POST.get('phone_code_edit', '')
+        mobile_edit = request.POST.get('mobile_edit', '')
+        edit_country = request.POST.get('edit_country', '')
+        edit_state = request.POST.get('edit_state', '')
+        edit_status = request.POST.get('edit_status', '')
+        
+        if edit_status == 'Active':
+            user.is_active = True
+        elif edit_status == 'Inactive':
+            user.is_active = False
+        
+        user.save()
+        
+        user.full_name = edit_fullname
+        user.email = edit_email
+        user.phone_code = phone_code_edit
+        user.mobile_number = mobile_edit
+        user.country = edit_country
+        user.state = edit_state
+        user.save()
+        
+        messages.success(request, 'Data has been successfully edited')
+        return redirect('admin_panel')
+
+    return render(request, 'admin_panel.html')
+
+
+def feedback_management(request):
+    return render(request,"feedback_management.html")
+def payments_details(request):
+    return render(request,"payments_details.html")
