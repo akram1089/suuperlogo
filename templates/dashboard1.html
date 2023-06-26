@@ -193,6 +193,20 @@
     margin: 9px 0 9px 0;
 
   }
+  /* .sorting{
+    display: none !important;
+  } */
+  thead {
+    border-color: #8080803b  !important;
+    border-style: solid;
+    border-width: 0;
+}
+table.dataTable.no-footer {
+    border-bottom: 1px solid #11111112 !important;
+}
+.sorting::after,.sorting::before{
+  display: none !important;
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -748,8 +762,9 @@ padding: 25px;">
     </div>
     <div id="chartContainer " style=" overflow: auto;   height: fit-content;">
       <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
-        <table class="table table-hover table-striped ">
-          <thead class="table-info">
+        <table class="table table-hover  ">
+          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
             <tr>
               <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
@@ -765,8 +780,9 @@ padding: 25px;">
         </table>
       </div>
       <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
-        <table class="table table-hover table-striped">
-          <thead class="table-info">
+        <table class="table table-hover ">
+          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
             <tr>
               <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
@@ -783,8 +799,9 @@ padding: 25px;">
       </div>
 
       <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
-        <table class="table table-hover table-striped">
-          <thead class="table-info">
+        <table class="table table-hover ">
+          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
             <tr>
               <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
@@ -800,8 +817,9 @@ padding: 25px;">
         </table>
       </div>
       <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
-        <table class="table table-hover table-striped">
-          <thead class="table-info">
+        <table class="table table-hover ">
+          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
             <tr>
               <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
@@ -817,8 +835,9 @@ padding: 25px;">
         </table>
       </div>
       <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
-        <table class="table table-hover table-striped">
-          <thead class="table-info">
+        <table class="table table-hover ">
+          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
             <tr>
               <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
@@ -834,8 +853,9 @@ padding: 25px;">
         </table>
       </div>
       <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
-        <table class="table table-hover table-striped">
-          <thead class="table-info">
+        <table class="table table-hover ">
+          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
             <tr>
               <th scope="col">Chart</th>
               <th scope="col">Symbol</th>
@@ -861,58 +881,6 @@ padding: 25px;">
     </div> {% endcomment %}
   </div>
 </div>
-  <div class="ban_list_main" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-  padding: 25px;">
-  <h4 class="my-3">BAN LIST </h4>
-  <div class="main_ban" style="    display: flex;
-    justify-content: center; 
-    gap: 2rem;
-    ">
-    <div class="ban_security">
-      <h5>Securities In Ban </h5>
-      <table class="table  table-hover table-striped" id="securities_ban_table">
-        <thead class="table-info">
-          <tr>
-            <th>SYMBOL</th>
-            <th>PREVIOUS MWPL %</th>
-            <th>CURRENT MWPL %</th>
-            <!-- Add more columns as needed -->
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="ban_entry">
-      <h5>Possible Entrants </h5>
-      <table class="table  table-hover table-striped" id="possible_entrants_table">
-        <thead class="table-info">
-          <tr>
-            <th>SYMBOL</th>
-            <th>PREVIOUS MWPL %</th>
-            <th>CURRENT MWPL %</th>
-            <!-- Add more columns as needed -->
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="ban_exits">
-      <h5>Possible Exits </h5>
-      <table class="table  table-hover table-striped" id="possible_exits_table">
-        <thead class="table-info">
-          <tr>
-            <th>SYMBOL</th>
-            <th>PREVIOUS MWPL %</th>
-            <th>CURRENT MWPL %</th>
-            <!-- Add more columns as needed -->
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 <div class="main_future_tables my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 padding: 25px;">
   <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
@@ -932,8 +900,9 @@ padding: 25px;">
   <div id="OI_gainer_table">
 
 
-    <table id="Oi_gainer_data" class="table table-striped table-hover">
-      <thead class="table-info">
+    <table id="Oi_gainer_data" class="table  table-hover">
+      <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
         <tr id="columnHeaders">
         </tr>
       </thead>
@@ -947,8 +916,9 @@ padding: 25px;">
   </div>
   <div id="OI_loser_table">
 
-    <table id="Oi_loser_data_table_data_table" class="table table-striped table-hover">
-      <thead class="table-info">
+    <table id="Oi_loser_data_table_data_table" class="table  table-hover">
+      <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
         <tr id="columnHeaders_loser">
         </tr>
       </thead>
@@ -960,8 +930,9 @@ padding: 25px;">
 
   </div>
   <div id="OI_volume_buzzers_table">
-    <table id="volumeShockerTable" class="table table-striped table-hover">
-      <thead class="table-info">
+    <table id="volumeShockerTable" class="table  table-hover">
+      <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
         <tr>
 
           <th>Company Name</th>
@@ -986,6 +957,62 @@ padding: 25px;">
 
 
 </div>
+  <div class="ban_list_main" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  padding: 25px;">
+  <h4 class="my-3">BAN LIST </h4>
+  <div class="main_ban" style="    display: flex;
+    justify-content: center; 
+    gap: 2rem;
+    ">
+    <div class="ban_security">
+      <h5>Securities In Ban </h5>
+      <table class="table  table-hover " id="securities_ban_table">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+          <tr>
+            <th>SYMBOL</th>
+            <th>PREVIOUS MWPL %</th>
+            <th>CURRENT MWPL %</th>
+            <!-- Add more columns as needed -->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="ban_entry">
+      <h5>Possible Entrants </h5>
+      <table class="table  table-hover " id="possible_entrants_table">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+          <tr>
+            <th>SYMBOL</th>
+            <th>PREVIOUS MWPL %</th>
+            <th>CURRENT MWPL %</th>
+            <!-- Add more columns as needed -->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="ban_exits">
+      <h5>Possible Exits </h5>
+      <table class="table  table-hover " id="possible_exits_table">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+          <tr>
+            <th>SYMBOL</th>
+            <th>PREVIOUS MWPL %</th>
+            <th>CURRENT MWPL %</th>
+            <!-- Add more columns as needed -->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
 
   <!-- <h4 class="my-3">IPO List </h4>
 <div class="ipo container" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
@@ -1385,7 +1412,7 @@ padding: 25px;">
           '<td>' + item.companyName + '</td>' +
 
           '<td>' + item.volume + '</td>' +
-          '<td>' + item.volumePercentageChange.toFixed(2) + '</td>' +
+          '<td>' + item.volumePercentageChange.toFixed(2) + '%</td>' +
           '<td>' + item.exchange + '</td>' +
           '</tr>';
       });
@@ -1428,15 +1455,18 @@ padding: 25px;">
 
       // Create table rows
       const tableRows = data.data.map(function (row) {
+       var date_change_percent = row[2] >0 ? " text-success  " : "text-danger";
+       var volume_contract_percent = row[4] >0 ? " text-success  " : "text-danger";
+       var oi_percent = row[4] >0 ? " text-success  " : "text-danger";
         return '<tr>' +
           '<td>' + row[0] + '</td>' +  // name
           '<td>' + row[1] + '</td>' +  // price
-          '<td>' + row[2] + '</td>' +  // Date Chang
+          '<td class= ' + date_change_percent + '>' +row[2]+ '%</td>' +  // Date Chang
           '<td>' + row[3] + '</td>' +  // Volume Contracts
-          '<td>' + row[4] + '</td>' +  // % Volume Contracts
-          '<td>' + row[5] + '</td>' +  // TTV
+          '<td class= ' + volume_contract_percent + '>' + row[4] + '%</td>' +  // % Volume Contracts
+          // '<td style= " white-space: nowrap;">₹' + row[5] + '  Cr</td>' +  // TTV
           '<td>' + row[6] + '</td>' +  // OI
-          '<td>' + row[7] + '</td>' +  // %OI
+          '<td class= ' + oi_percent + '     style= " white-space: nowrap;">' + row[7] + ' %</td>' +  // %OI
           '<td>' + row[8] + '</td>' +  // Basis
           '<td>' + row[9] + '</td>' +  // COC
           '<td>' + row[10] + '</td>' + // Spot
@@ -1480,15 +1510,18 @@ padding: 25px;">
 
       // Create table rows
       const tableRows = data.data.map(function (row) {
+         var date_change_percent = row[2] >0 ? " text-success  " : "text-danger";
+       var volume_contract_percent = row[4] >0 ? " text-success  " : "text-danger";
+       var oi_percent = row[4] >0 ? " text-success  " : "text-danger";
         return '<tr>' +
-          '<td>' + row[0] + '</td>' +  // name
+       '<td>' + row[0] + '</td>' +  // name
           '<td>' + row[1] + '</td>' +  // price
-          '<td>' + row[2] + '</td>' +  // Date Chang
+          '<td class= ' + date_change_percent + '>' +row[2]+ '%</td>' +  // Date Chang
           '<td>' + row[3] + '</td>' +  // Volume Contracts
-          '<td>' + row[4] + '</td>' +  // % Volume Contracts
-          '<td>' + row[5] + '</td>' +  // TTV
+          '<td class= ' + volume_contract_percent + '>' + row[4] + '%</td>' +  // % Volume Contracts
+          // '<td style= " white-space: nowrap;">₹' + row[5] + '  Cr</td>' +  // TTV
           '<td>' + row[6] + '</td>' +  // OI
-          '<td>' + row[7] + '</td>' +  // %OI
+          '<td class= ' + oi_percent + '     style= " white-space: nowrap;">' + row[7] + ' %</td>' +  // %OI
           '<td>' + row[8] + '</td>' +  // Basis
           '<td>' + row[9] + '</td>' +  // COC
           '<td>' + row[10] + '</td>' + // Spot

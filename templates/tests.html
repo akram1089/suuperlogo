@@ -1,68 +1,69 @@
-<!-- template.html -->
-
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Volume Shocker</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <style>
+    /* Add custom styles here */
+  </style>
 </head>
-
 <body>
-    <h1>OI gainer</h1>
-    <table id="Oi_gainer_data">
-        <thead>
-            <tr id="columnHeaders">
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-    <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: 'oi_gainers',
-                method: 'GET',
-                success: function(data) {
-                    createTable(data);
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="sidebar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Settings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="content">
+          <h1>Welcome to the Admin Dashboard</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            function createTable(data) {
-                const tableBody = $('#Oi_gainer_data tbody');
-                const tableHeaders = $('#columnHeaders');
-
-                // Create table headers
-                const columnHeaders = data.columns.map(function(column) {
-                    return '<th>' + column + '</th>';
-                });
-                tableHeaders.html(columnHeaders.join(''));
-
-                // Create table rows
-                const tableRows = data.data.map(function(row) {
-                    return '<tr>' +
-                        '<td>' + row[0] + '</td>' +  // name
-                        '<td>' + row[1] + '</td>' +  // price
-                        '<td>' + row[2] + '</td>' +  // Date Chang
-                        '<td>' + row[3] + '</td>' +  // Volume Contracts
-                        '<td>' + row[4] + '</td>' +  // % Volume Contracts
-                        '<td>' + row[5] + '</td>' +  // TTV
-                        '<td>' + row[6] + '</td>' +  // OI
-                        '<td>' + row[7] + '</td>' +  // %OI
-                        '<td>' + row[8] + '</td>' +  // Basis
-                        '<td>' + row[9] + '</td>' +  // COC
-                        '<td>' + row[10] + '</td>' + // Spot
-                        '<td>' + row[11] + '</td>' + // Build Up
-                        '</tr>';
-                });
-                tableBody.html(tableRows.join(''));
-            }
-        });
-    </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
-
 </html>
