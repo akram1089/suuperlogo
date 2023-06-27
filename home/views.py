@@ -1740,8 +1740,17 @@ def admin_panel(request):
     return render(request,"admin_panel.html",{"User_check": User_check})
 
 
-def put_call_ratio(request):
-    url = "https://webapi.niftytrader.in/webapi/option/oi-pcr-data?reqType=niftypcr&reqDate="
+import datetime
+import json
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+
+
+def put_call_ratio_chart(request):
+    trade = request.GET.get('trade', 'nifty')  # Default value is 'nifty'
+    print(trade)
+    url = f"https://webapi.niftytrader.in/webapi/option/oi-pcr-data?reqType={trade}pcr&reqDate="
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
         "Accept-Language": "en-US,en;q=0.9",
@@ -1750,6 +1759,7 @@ def put_call_ratio(request):
     }
     response = requests.get(url, headers=headers)
     data = response.json()
+    
     pcr_values = []
     index_close_values = []
     time_values = []
@@ -1764,7 +1774,12 @@ def put_call_ratio(request):
         'index_close_values': index_close_values,
         'time_values': time_values,
     }
-    return render(request,"put_call_ratio.html",context)
+    
+    return JsonResponse(context)
+
+def put_call_ratio(request):
+    return render(request, "put_call_ratio.html")
+
 
 from django.shortcuts import get_object_or_404
 
@@ -1804,3 +1819,80 @@ def feedback_management(request):
     return render(request,"feedback_management.html")
 def payments_details(request):
     return render(request,"payments_details.html")
+
+
+
+def stock_analysis(request):
+    return render(request,"stock_analysis.html")
+import requests
+from django.http import JsonResponse
+
+def filtered_oi_data(request):
+    url = "https://webapi.niftytrader.in/webapi/option/oi-data?reqType=niftyoilist&reqDate="
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    spot_url = "https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol=NIFTY+50"
+
+    spot_response = requests.get(spot_url, headers=headers)
+    spot_data = spot_response.json()
+
+    result_data = spot_data.get("resultData")
+    if result_data is not None:
+        spot_price = result_data.get("last_trade_price")
+        if spot_price is not None:
+            closest_prices = []
+            calls_oi = []
+            puts_oi = []
+
+            for result in data["resultData"]["oiDatas"]:
+                price = result["strike_price"]
+                closest_prices.append(price)
+                calls_oi.append(result["calls_oi"])
+                puts_oi.append(result["puts_oi"])
+
+            closest_prices, calls_oi, puts_oi = zip(
+                *sorted(
+                    zip(closest_prices, calls_oi, puts_oi),
+                    key=lambda x: abs(x[0] - spot_price)
+                )
+            )
+
+            bar_count = request.GET.get("bar_count")
+            if bar_count:
+                if bar_count == "all":
+                    closest_prices = closest_prices
+                    calls_oi = calls_oi
+                    puts_oi = puts_oi
+                else:
+                    bar_count = int(bar_count)
+                    closest_prices = closest_prices[:bar_count]
+                    calls_oi = calls_oi[:bar_count]
+                    puts_oi = puts_oi[:bar_count]
+
+            print("Spot Price:", spot_price)
+            print("Closest Prices:", closest_prices)
+            print("Calls OI:", calls_oi)
+            print("Puts OI:", puts_oi)
+
+            context = {
+                'spot_price': spot_price,
+                'closest_prices': closest_prices,
+                'calls_oi': calls_oi,
+                'puts_oi': puts_oi
+            }
+            return JsonResponse(context)
+
+    print("Data not available")
+    return JsonResponse({'message': 'Data not available'})
+
+
+def admin_dashboard(request):
+    return render(request,"admin_dashboard.html")

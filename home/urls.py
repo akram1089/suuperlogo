@@ -60,6 +60,11 @@ urlpatterns = [
     path('market_wide_position', views.market_wide_position,
          name='market_wide_position'),
     path('dii_fii', views.dii_fii, name='dii_fii'),
+    path('stock_analysis', views.stock_analysis, name='stock_analysis'),
+    path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
+
+    path('put_call_ratio_chart', views.put_call_ratio_chart, name='put_call_ratio_chart'),
+    path('filtered_oi_data', views.filtered_oi_data, name='filtered_oi_data'),
 
     path('Edit_user_data/<str:id>', views.Edit_user_data, name='Edit_user_data'),
 
