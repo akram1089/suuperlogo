@@ -1,0 +1,22 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% block dashboard_body %}
+
+
+<div class="stock_analysis shadow p-4 d-flex gap-2" style="    width: 30%;
+justify-content: center;
+float: right;
+margin-top: 1rem;
+border-radius: 10px;">
+
+
+    <div class="input-group ">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" placeholder="Search for a company" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+
+      <button class="button btn btn-outline-primary">Search</button>
+
+</div>
+
+{% endblock dashboard_body %}

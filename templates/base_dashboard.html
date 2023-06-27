@@ -505,7 +505,7 @@
               {% if request.user.is_superuser %}
           
               <a
-              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/admin_panel"  %} active_dash {% endif %} " href={% url 'admin_panel' %} style="   padding: 10px 0 0px 23px;">          
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/admin_dashboard"  %} active_dash {% endif %} " href={% url 'admin_dashboard' %} style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-lock"></i><p>Admin Panel</p>
             </a>
     
@@ -516,6 +516,10 @@
         
 
 
+              <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/stock_analysis"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'stock_analysis' %}">          
+              <i class="bi bi-hdd-stack"></i><p>Stock Analysis</p>
+            </a>
               <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/put_call_ratio"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'put_call_ratio' %}">          
               <i class="bi bi-hdd-stack"></i><p>Put Call Ratio</p>

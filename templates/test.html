@@ -2,61 +2,50 @@
 <html>
 
 <head>
-  <title>Volume Shocker</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <title>Doughnut Chart Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    canvas {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Volume Shocker</h1>
-  <table id="volumeShockerTable">
-    <thead>
-      <tr>
-        <th>Symbol</th>
-        <th>Company Name</th>
-        <th>Last Price</th>
-        <th>Volume</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+  <canvas id="Doughnut_chart"></canvas>
 
   <script>
-    $(document).ready(function () {
-      $.ajax({
-        url: '/volume-shocker/',
-        method: 'GET',
-        success: function (data) {
-          createTable(data);
-        },
-        error: function (error) {
-          console.log(error);
+    var data = {
+      labels: ["Yandex", "YouTube", "Google", "Facebook", "Instagram"],
+      datasets: [{
+        data: [2742, 3272, 2303, 1434, 799],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
+      }]
+    };
+
+    var options = {
+      responsive: true,
+      cutoutPercentage: 50,
+      tooltips: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var dataset = data.datasets[tooltipItem.datasetIndex];
+            var value = dataset.data[tooltipItem.index];
+            return data.labels[tooltipItem.index] + ": $" + value.toLocaleString();
+          }
         }
-      });
-  
-      function createTable(data) {
-        console.log(data);
-        const tableBody = $('#volumeShockerTable tbody');
-        
-        // Clear any existing rows in the table body
-        tableBody.empty();
-  
-        // Iterate over the data array using the map function
-        var rows = data.map(function (item) {
-          return '<tr>' +
-            '<td>' + item.symbol + '</td>' +
-            '<td>' + item.companyName + '</td>' +
-            '<td>' + item.lastPrice + '</td>' +
-            '<td>' + item.volume + '</td>' +
-            '</tr>';
-        });
-  
-        // Join the rows array and append it to the table body
-        tableBody.append(rows.join(''));
       }
+    };
+
+    var chart = new Chart("Doughnut_chart", {
+      type: "doughnut",
+      data: data,
+      options: options
     });
   </script>
-  
 </body>
 
 </html>

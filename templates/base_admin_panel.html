@@ -26,7 +26,8 @@
 
   <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
   <!-- Favicons -->
   <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
   <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -34,10 +35,7 @@
   <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
   <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
   <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
-  <link rel="stylesheet" href=" {% static 'css/v1/dashboard.css' %} ">
-  <link rel="stylesheet" href=" {% static 'css/v1/market_place.css' %} ">
-  <link rel="stylesheet" href=" {% static 'css/v1/my_strategies.css' %} ">
-  <link rel="stylesheet" href=" {% static 'css/v1/strategies_builder.css' %} ">
+
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -48,6 +46,7 @@
   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href=" {% static 'css/v1/admin_dashboard.css' %} ">
+  {% comment %} <link rel="stylesheet" href=" {% static 'css/v1/admin_dashboard_index.css' %} "> {% endcomment %}
   <meta name="theme-color" content="#712cf9">
   <style>
     .dropdown:hover .dropdown-menu {
@@ -269,7 +268,8 @@
     <section id="sidebar">
       <a href="#" class="brand"><i class='bx bxs-smile icon'></i> Admin-Panel</a>
       <ul class="side-menu">
-  
+        <li><a href="{% url 'admin_dashboard' %}" class="{% if request.path == "/admin_dashboard"  %} active_outer_admin {% endif %}"><i class='bx bxs-dashboard icon'></i>Dashboard</a></li>
+
   
         <li>
           <a   class="{% if request.path == "/admin_panel"  %} active_outer_admin {% endif %}">

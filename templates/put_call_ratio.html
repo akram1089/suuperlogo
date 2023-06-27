@@ -1,70 +1,177 @@
 {% extends "base_dashboard.html" %}
 {% load static %}
 {% block dashboard_body %}
+<style>
+  .All_chart_main {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .All_ratios,
+  .All_nifty_traders {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .active_ratios {
+    border-top: 3px solid rgba(0, 123, 255, 0.873);
+    color: rgba(0, 123, 255, 0.873);
+  }
+
+  .trader {
+    cursor: pointer;
+  }
+
+  .trader:hover {
+    color: gray;
+  }
+
+  .main_put_call {
+    position: relative;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+    height: 80vh;
+    max-width: 1200px; /* Set a max-width to prevent the chart from becoming too wide */
+    margin: 0 auto; /* Center the chart horizontally */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 19px 31px 45px 33px;
+  }
+  
+  @media (max-width: 768px) {
+    .main_put_call {
+      padding: 10px; /* Adjust padding for smaller screens */
+    }
+  }
+
+  /* @media (max-width: 768px) {
+    .main_put_call {
+      position: relative;
+      border-radius: 10px;
+      text-align: center;
+      width: 22rem ;
+      height: 31rem ;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      padding: 19px 31px 45px 33px;
+    }
 
 
-
-  <div class="my-3" >
-    <canvas id="myChart"></canvas>
+  } */
+</style>
+<h5 class="my-3">Nifty Open Interest Live Chart: Nifty Option Chain</h5>
+<div class="main_put_call">
+  <div class="All_chart_main my-4">
+    <div class="All_ratios text-secondary">
+      <p onclick="ratios('OI')">Open Interest</p>
+      <p onclick="ratios('C_OI')">Change in OI</p>
+      <p class="active_ratios" onclick="ratios('PCR')">Put Call Ratio</p>
+      <p onclick="ratios('V_PCR')">Volume PCR</p>
+      <p onclick="ratios('LMP')">Live Max Pain</p>
+    </div>
+    <div class="All_nifty_traders text-primary">
+      <p class="trader border-end" onclick="traders('nifty')">Nifty</p>
+      <p class="trader border-end" onclick="traders('banknifty')">Bank Nifty</p>
+      <p class="trader border-end" onclick="traders('finnifty')">Fin Nifty</p>
+      <p onclick="traders('stocks')">Stocks</p>
+    </div>
   </div>
 
-  <script>
-    var pcrValues = {{ pcr_values| safe }};
-    var indexCloseValues = {{ index_close_values| safe }};
-    var timeValues = {{ time_values| safe }};
+  <div class="my-3">
+    <canvas id="myChart"></canvas>
+  </div>
+</div>
+<div id="spinner" class="spinner-border text-primary d-none" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
 
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: timeValues,
-        datasets: [{
-          label: 'PCR',
-          data: pcrValues,
-          yAxisID: 'pcr-axis',
-          borderColor: 'rgb(75, 192, 192)',
-          backgroundColor: 'rgb(75, 192, 192, 0.2)',
-        }, {
-          label: 'Index Close',
-          data: indexCloseValues,
-          yAxisID: 'index-close-axis',
-          borderColor: 'rgb(192, 75, 75)',
-          backgroundColor: 'rgb(192, 75, 75, 0.2)',
-        }]
-      },
-      options: {
-    scales: {
-        yAxes: [{
-            id: 'pcr-axis',
-            type: 'linear',
-            position: 'left',
-            ticks: {
-                beginAtZero: true
-            },
-            scaleLabel: {
-                display: true,
-                labelString: 'PCR Value'
-            }
-        }],
-        yAxes: [{
-            id: 'index-close-axis',
-            type: 'linear',
-            position: 'right',
-            ticks: {
-                beginAtZero: true
-            },
-            scaleLabel: {
-                display: true,
-                labelString: 'Index Close'
-            }
-        }]
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  function ratios(ratio) {
+    if (ratio == "PCR") {
+      traders('nifty');
     }
-}
+
+  }
+  let myChart;
+
+  function showSpinner() {
+    document.getElementById('spinner').classList.remove('d-none');
+  }
+
+  function hideSpinner() {
+    document.getElementById('spinner').classList.add('d-none');
+  }
+
+  function traders(trade) {
+    showSpinner();
+
+    fetch(`/put_call_ratio_chart?trade=${trade}`)
+      .then(response => response.json())
+      .then(data => {
+        var pcrValues = data.pcr_values;
+        var indexCloseValues = data.index_close_values;
+        var timeValues = data.time_values;
+
+        // Clear existing chart
+        if (myChart) {
+          myChart.destroy();
+        }
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: timeValues,
+            datasets: [{
+              label: 'PCR',
+              data: pcrValues,
+              yAxisID: 'pcr-axis',
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgb(75, 192, 192, 0.2)',
+            }, {
+              label: 'Index Close',
+              data: indexCloseValues,
+              yAxisID: 'index-close-axis',
+              borderColor: 'rgb(192, 75, 75)',
+              backgroundColor: 'rgb(192, 75, 75, 0.2)',
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              yAxes: [{
+                id: 'pcr-axis',
+                type: 'linear',
+                position: 'left',
+                ticks: {
+                  beginAtZero: true
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'PCR Value'
+                }
+              }, {
+                id: 'index-close-axis',
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                  beginAtZero: true
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Index Close'
+                }
+              }]
+            }
+          }
+        });
+
+        hideSpinner();
+      });
+  }
 
 
-    });
-  </script>
-
-
-
+</script>
 {% endblock dashboard_body %}
