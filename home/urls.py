@@ -64,7 +64,10 @@ urlpatterns = [
     path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
 
     path('put_call_ratio_chart', views.put_call_ratio_chart, name='put_call_ratio_chart'),
+    
     path('filtered_oi_data', views.filtered_oi_data, name='filtered_oi_data'),
+    path('filtered_oi_change_data', views.filtered_oi_change_data, name='filtered_oi_change_data'),
+    path('scale_stacking_chart', views.scale_stacking_chart, name='scale_stacking_chart'),
 
     path('Edit_user_data/<str:id>', views.Edit_user_data, name='Edit_user_data'),
 

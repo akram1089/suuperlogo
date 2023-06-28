@@ -1,3 +1,4 @@
+import logging
 import random
 from datetime import datetime
 from collections import defaultdict
@@ -1824,11 +1825,39 @@ def payments_details(request):
 
 def stock_analysis(request):
     return render(request,"stock_analysis.html")
+
+
+
+
+
+
+def admin_dashboard(request):
+    return render(request,"admin_dashboard.html")
+
+
 import requests
+import datetime
 from django.http import JsonResponse
+import json
 
 def filtered_oi_data(request):
-    url = "https://webapi.niftytrader.in/webapi/option/oi-data?reqType=niftyoilist&reqDate="
+    expiry_date = request.GET.get("expiry_date")  # Retrieve the selected expiry date
+    arg = request.GET.get("arg")  # Retrieve the arg parameter
+    print(arg)  # Print the value of arg to the console
+    
+    nifty_value = None
+    spot_value = None
+
+    if arg:
+        arg_dict = json.loads(arg)
+        nifty_value = arg_dict.get("nifty")
+        spot_value = arg_dict.get("spot")
+
+    oi_url = f"https://webapi.niftytrader.in/webapi/option/oi-data?reqType={nifty_value}&reqDate={expiry_date}"
+    print(oi_url)
+
+    dates_url = f"https://webapi.niftytrader.in/webapi/option/oi-data?reqType={nifty_value}&reqDate="
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
         "Accept-Language": "en-US,en;q=0.9",
@@ -1836,10 +1865,13 @@ def filtered_oi_data(request):
         "Connection": "keep-alive"
     }
 
-    response = requests.get(url, headers=headers)
-    data = response.json()
+    oi_response = requests.get(oi_url, headers=headers)
+    oi_data = oi_response.json()
 
-    spot_url = "https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol=NIFTY+50"
+    dates_response = requests.get(dates_url, headers=headers)
+    dates_data = dates_response.json()
+
+    spot_url = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol={spot_value}"
 
     spot_response = requests.get(spot_url, headers=headers)
     spot_data = spot_response.json()
@@ -1847,16 +1879,22 @@ def filtered_oi_data(request):
     result_data = spot_data.get("resultData")
     if result_data is not None:
         spot_price = result_data.get("last_trade_price")
+        change_value = result_data.get("change_value")  # Added change_value
+        change_per = result_data.get("change_per")  # Added change_per
+
         if spot_price is not None:
             closest_prices = []
             calls_oi = []
             puts_oi = []
 
-            for result in data["resultData"]["oiDatas"]:
-                price = result["strike_price"]
-                closest_prices.append(price)
-                calls_oi.append(result["calls_oi"])
-                puts_oi.append(result["puts_oi"])
+            oi_datas = oi_data.get("resultData", {}).get("oiDatas", [])
+
+            for result in oi_datas:
+                price = result.get("strike_price")
+                if price is not None:
+                    closest_prices.append(price)
+                    calls_oi.append(result.get("calls_oi", 0))
+                    puts_oi.append(result.get("puts_oi", 0))
 
             closest_prices, calls_oi, puts_oi = zip(
                 *sorted(
@@ -1877,22 +1915,166 @@ def filtered_oi_data(request):
                     calls_oi = calls_oi[:bar_count]
                     puts_oi = puts_oi[:bar_count]
 
-            print("Spot Price:", spot_price)
-            print("Closest Prices:", closest_prices)
-            print("Calls OI:", calls_oi)
-            print("Puts OI:", puts_oi)
+            dates = []
+            for result in dates_data.get("resultData", {}).get("oiExpiryDates", []):
+                date_str = result.split("T")[0]
+                date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+                formatted_date = datetime.datetime.strftime(date_obj, "%Y-%m-%d")
+                dates.append(formatted_date)
+
+            context = {
+                'spot_price': spot_price,
+                'change_value': change_value,  # Added change_value
+                'change_per': change_per,  # Added change_per
+                'closest_prices': closest_prices,
+                'calls_oi': calls_oi,
+                'puts_oi': puts_oi,
+                'dates': dates
+            }
+            return JsonResponse(context)
+
+    return JsonResponse({'message': 'Data not available'})
+
+
+
+
+import requests
+import datetime
+from django.http import JsonResponse
+import json
+
+def filtered_oi_change_data(request):
+    expiry_date = request.GET.get("expiry_date")  # Retrieve the selected expiry date
+    arg = request.GET.get("arg")  # Retrieve the arg parameter
+    print(arg)  # Print the value of arg to the console
+    
+    nifty_value = None
+    spot_value = None
+
+    if arg:
+        arg_dict = json.loads(arg)
+        nifty_value = arg_dict.get("nifty")
+        spot_value = arg_dict.get("spot")
+
+    oi_url = f"https://webapi.niftytrader.in/webapi/option/?reqType={nifty_value}&reqDate={expiry_date}"
+
+
+    dates_url = f"https://webapi.niftytrader.in/webapi/option/?reqType={nifty_value}&reqDate="
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    oi_response = requests.get(oi_url, headers=headers)
+    oi_data = oi_response.json()
+
+    dates_response = requests.get(dates_url, headers=headers)
+    dates_data = dates_response.json()
+
+    spot_url = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol={spot_value}"
+
+    spot_response = requests.get(spot_url, headers=headers)
+    spot_data = spot_response.json()
+
+    result_data = spot_data.get("resultData")
+    if result_data is not None:
+        spot_price = result_data.get("last_trade_price")
+        if spot_price is not None:
+            closest_prices = []
+            calls_oi = []
+            puts_oi = []
+
+            oi_datas = oi_data.get("resultData", {}).get("oiDatas", [])
+
+            for result in oi_datas:
+                price = result.get("strike_price")
+                if price is not None:
+                    closest_prices.append(price)
+                    calls_oi.append(result.get("calls_oi", 0))
+                    puts_oi.append(result.get("puts_oi", 0))
+
+            closest_prices, calls_oi, puts_oi = zip(
+                *sorted(
+                    zip(closest_prices, calls_oi, puts_oi),
+                    key=lambda x: abs(x[0] - spot_price)
+                )
+            )
+
+            bar_count = request.GET.get("bar_count")
+            if bar_count:
+                if bar_count == "all":
+                    closest_prices = closest_prices
+                    calls_oi = calls_oi
+                    puts_oi = puts_oi
+                else:
+                    bar_count = int(bar_count)
+                    closest_prices = closest_prices[:bar_count]
+                    calls_oi = calls_oi[:bar_count]
+                    puts_oi = puts_oi[:bar_count]
+
+            dates = []
+            for result in dates_data.get("resultData", {}).get("oiExpiryDates", []):
+                date_str = result.split("T")[0]
+                date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+                formatted_date = datetime.datetime.strftime(date_obj, "%Y-%m-%d")
+                dates.append(formatted_date)
 
             context = {
                 'spot_price': spot_price,
                 'closest_prices': closest_prices,
                 'calls_oi': calls_oi,
-                'puts_oi': puts_oi
+                'puts_oi': puts_oi,
+                'dates': dates
             }
             return JsonResponse(context)
 
-    print("Data not available")
     return JsonResponse({'message': 'Data not available'})
 
 
-def admin_dashboard(request):
-    return render(request,"admin_dashboard.html")
+
+import requests
+import pandas as pd
+from django.http import JsonResponse
+from django.shortcuts import render
+
+def scale_stacking_chart(request):
+    symbol_pain = request.GET.get('symbol', 'nifty')
+    print(symbol_pain)  # Get the selected symbol from the request parameters
+
+    url = f"https://webapi.niftytrader.in/webapi/Option/symbol-max-pain-data?symbol={symbol_pain}"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    result_data = data.get("resultData", [])
+    if result_data:
+        df = pd.DataFrame(result_data)
+        df["strike_price"] = df["strike_price"].astype(str)  # Convert "strike_price" column to strings
+        df = df[df["strike_price"] != "pp"]  # Filter out "pp" values
+        df = df[df["strike_price"] != "cp"]  # Filter out "cp" values
+        df = df[~df["strike_price"].str.startswith("strike_price")]  # Filter out "strike_price" headers
+
+        labels = df["strike_price"].tolist()
+        pp_values = df["pp"].tolist()
+        cp_values = df["cp"].tolist()
+
+        chart_data = {
+            'labels': labels,
+            'pp_values': pp_values,
+            'cp_values': cp_values
+        }
+
+        return JsonResponse(chart_data)
+    else:
+        return JsonResponse({'message': 'No data available'})
+

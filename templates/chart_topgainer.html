@@ -1,98 +1,90 @@
 <!DOCTYPE html>
 <html>
-   <head>
-       <title>Scale Stacking Chart</title>
-       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   </head>
-   <body>
-       <h1>Scale Stacking Chart</h1>
-       <div>
-           <label for="barCount">Number of Bars:</label>
-           <select id="barCount" onchange="updateChart()">
-               <option value="15" selected>15</option>
-               <option value="10">10</option>
-               <option value="5">5</option>
-               <option value="all">All</option>
-           </select>
-       </div>
-       <div>
-           <canvas id="chart"></canvas>
-       </div>
+<head>
+    <title>Scale Stacking Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="symbols_chart">
+        <h5 onclick="symbol_pain('nifty')">Nifty</h5>
+        <h5 onclick="symbol_pain('banknifty')">Bank Nifty</h5>
+        <h5 onclick="symbol_pain('finnifty')">Fin Nifty</h5>
+    </div>
+    <canvas id="chart"></canvas>
 
-       <script>
-           // Function to update the chart using AJAX
-           function updateChart() {
-               const barCount = document.getElementById('barCount').value;
+    <script>
+        var myChart;
 
-               $.ajax({
-                   url: "/filtered_oi_data",
-                   type: "GET",
-                   data: { bar_count: barCount },
-                   dataType: "json",
-                   success: function (response) {
-                       const spotPrice = response.spot_price;
-                       const closestPrices = response.closest_prices;
-                       const callOI = response.calls_oi;
-                       const putOI = response.puts_oi;
+        function symbol_pain(symbol) {
+            if (myChart) {
+                myChart.destroy();  // Destroy previous chart instance
+            }
 
-                       const labels = closestPrices.map(price => price.toString());
+            $.ajax({
+                url: '{% url "scale_stacking_chart" %}',
+                type: 'GET',
+                data: {
+                    'symbol': symbol
+                },
+                dataType: 'json',
+                success: function(chartData) {
+                    var labels = chartData.labels;
+                    var ppValues = chartData.pp_values;
+                    var cpValues = chartData.cp_values;
 
-                       const data = {
-                           labels: labels,
-                           datasets: [
-                               {
-                                   label: 'Call OI',
-                                   data: callOI,
-                                   backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                   borderColor: 'rgba(75, 192, 192, 1)',
-                                   borderWidth: 1
-                               },
-                               {
-                                   label: 'Put OI',
-                                   data: putOI,
-                                   backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                   borderColor: 'rgba(255, 99, 132, 1)',
-                                   borderWidth: 1
-                               }
-                           ]
-                       };
+                    var data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'pp',
+                                data: ppValues,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'cp',
+                                data: cpValues,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    };
 
-                       const options = {
-                           scales: {
-                               x: {
-                                   title: {
-                                       display: true,
-                                       text: 'Strike Prices'
-                                   }
-                               },
-                               y: {
-                                   title: {
-                                       display: true,
-                                       text: 'Call OI'
-                                   }
-                               }
-                           }
-                       };
+                    var options = {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Strike Price'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'pp'
+                                }
+                            }
+                        }
+                    };
 
-                       const chartElement = document.getElementById('chart');
-                       // Clear previous chart if exists
-                       if (window.barChart !== undefined) {
-                           window.barChart.destroy();
-                       }
-                       window.barChart = new Chart(chartElement, {
-                           type: 'bar',
-                           data: data,
-                           options: options
-                       });
-                   }
-               });
-           }
+                    var ctx = document.getElementById('chart').getContext('2d');
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: data,
+                        options: options
+                    });
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(errmsg);
+                }
+            });
+        }
 
-           // Initial chart setup
-           $(document).ready(function () {
-               updateChart();
-           });
-       </script>
-   </body>
+        // Initial chart rendering with default symbol
+        symbol_pain('nifty');
+    </script>
+</body>
 </html>
