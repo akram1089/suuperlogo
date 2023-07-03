@@ -1086,12 +1086,13 @@ padding: 25px;">
 
 
       <div class="security_main d-flex justify-content-end mt-3">
-        <div class="form-group">
-          <label for="data-dropdown-upper">Select Option:</label>
+        <div class="form-group d-flex" style="    align-items: center;
+        gap: 1rem;">
+          <label for="data-dropdown-upper">View: </label>
           <select id="data-dropdown-upper" class="form-select">
-            <option value="AllSec">AllSec</option>
-            <option value="SecGtr20">SecGtr20</option>
-            <option value="SecLwr20">SecLwr20</option>
+            <option value="AllSec">All</option>
+            <option value="SecGtr20">Securities > 20</option>
+            <option value="SecLwr20">Securities < 20</option>
           </select>
         </div>
       </div>
@@ -1119,8 +1120,43 @@ padding: 25px;">
 
 
     </div>
-    <div class="only_sellers">Sellers</div>
-  </div>
+    <div class="only_sellers">
+
+      <div class="only_sellers">
+        <div class="security_main d-flex justify-content-end mt-3">
+            <div class="form-group d-flex" style="    align-items: center;
+            gap: 1rem;">
+                <label for="data-dropdown-lower ">View:</label>
+                <select id="data-dropdown-lower" class="form-select">
+                    <option value="AllSec">All</option>
+                    <option value="SecGtr20">Securities > 20</option>
+                    <option value="SecLwr20">Securities < 20</option>
+                </select>
+            </div>
+        </div>
+
+        <table id="stock_table_lower" class="table table-hover">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Series</th>
+                    <th>LTP</th>
+                    <th>Change</th>
+                    <th>PChange</th>
+                    <th>PriceBand</th>
+                    <th>HighPrice</th>
+                    <th>LowPrice</th>
+                    <th>YearHigh</th>
+                    <th>YearLow</th>
+                    <th>TotalTradedVol</th>
+                    <th>Turnover</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    </div>
+
   <script>
     $(document).ready(function () {
       // Define the DataTable instance variable
@@ -1353,7 +1389,78 @@ padding: 25px;">
   </script>
 
 
+<script>
+  $(document).ready(function () {
+      // Function to update the table data using AJAX
+      function updateTable(selectedOption_lower) {
+          // Show the spinner
+          $("#spinner").show();
 
+          $.ajax({
+              url: "/only_buyers",
+              type: "GET",
+              data: { option: selectedOption_lower }, // Pass the selected option as a parameter
+              dataType: "json",
+              success: function (data) {
+                  console.log(data["lower"][selectedOption_lower]["data"]);
+                  // Hide the spinner
+                  $("#spinner").hide();
+
+                  // Clear the existing table rows
+                  var table = $("#stock_table_lower").DataTable();
+                  table.clear().draw();
+
+                  // Populate the table with the received data
+                  var stockData = data["lower"][selectedOption_lower]["data"];
+
+                  for (var i = 0; i < stockData.length; i++) {
+                      var stock = stockData[i];
+                      table.row.add([
+                          stock.symbol,
+                          stock.series,
+                          stock.ltp,
+                          stock.change,
+                          stock.pChange,
+                          stock.priceBand,
+                          stock.highPrice,
+                          stock.lowPrice,
+                          stock.yearHigh,
+                          stock.yearLow,
+                          stock.totalTradedVol,
+                          stock.turnover
+                      ]).draw(false);
+                  }
+              },
+              error: function () {
+                  console.log("Error occurred while fetching data.");
+              }
+          });
+      }
+
+      // Function to save the dropdown selection to local storage
+      function saveSelection() {
+          var selectedOption_lower = $("#data-dropdown-lower").val();
+          localStorage.setItem("selectedOption_lower", selectedOption_lower);
+      }
+
+      // Initial update of the table
+      var selectedOption_lower = localStorage.getItem("selectedOption_lower") || "AllSec";
+      $("#data-dropdown-lower").val(selectedOption_lower);
+
+      $("#stock_table_lower").DataTable({
+          responsive: true
+      });
+
+      updateTable(selectedOption_lower);
+
+      // Event listener for dropdown change
+      $("#data-dropdown-lower").change(function () {
+          var selectedOption_lower = $(this).val();
+          updateTable(selectedOption_lower);
+          saveSelection();
+      });
+  });
+</script>
 
 
 

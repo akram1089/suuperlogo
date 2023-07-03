@@ -23,7 +23,7 @@
                     data: { option: selectedOption }, // Pass the selected option as a parameter
                     dataType: "json",
                     success: function (data) {
-                        console.log(data["upper"][selectedOption]["data"]);
+                        console.log(data["lower"][selectedOption]["data"]);
                         // Hide the spinner
                         $("#spinner").hide();
 
@@ -98,27 +98,25 @@
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table id="stock_table_upper" class="table table-hover">
-                <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Series</th>
-                        <th>LTP</th>
-                        <th>Change</th>
-                        <th>PChange</th>
-                        <th>PriceBand</th>
-                        <th>HighPrice</th>
-                        <th>LowPrice</th>
-                        <th>YearHigh</th>
-                        <th>YearLow</th>
-                        <th>TotalTradedVol</th>
-                        <th>Turnover</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+        <table id="stock_table_upper" class="table table-hover">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Series</th>
+                    <th>LTP</th>
+                    <th>Change</th>
+                    <th>PChange</th>
+                    <th>PriceBand</th>
+                    <th>HighPrice</th>
+                    <th>LowPrice</th>
+                    <th>YearHigh</th>
+                    <th>YearLow</th>
+                    <th>TotalTradedVol</th>
+                    <th>Turnover</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
