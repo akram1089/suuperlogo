@@ -78,3 +78,26 @@ from django.db import models
 
 #     def __str__(self):
 #         return f"Stock Listing {self.pk}"
+
+
+from django.db import models
+
+class StockData(models.Model):
+    api_response = models.TextField()
+
+    def __str__(self):
+        return str(self.pk)
+from django.db import models
+
+class Stock_Low_Data(models.Model):
+    api_response_low = models.TextField()
+
+    def __str__(self):
+        return str(self.pk)
+    
+class Only_buyers(models.Model):
+    api_response_buyers = models.TextField()
+
+    def __str__(self):
+        return str(self.pk)
+

@@ -68,6 +68,7 @@ urlpatterns = [
     path('filtered_oi_data', views.filtered_oi_data, name='filtered_oi_data'),
     path('filtered_oi_change_data', views.filtered_oi_change_data, name='filtered_oi_change_data'),
     path('scale_stacking_chart', views.scale_stacking_chart, name='scale_stacking_chart'),
+    path('pcr_volume', views.pcr_volume, name='pcr_volume'),
 
     path('Edit_user_data/<str:id>', views.Edit_user_data, name='Edit_user_data'),
 
@@ -82,7 +83,11 @@ urlpatterns = [
     path('oi_losers', views.oi_losers, name='oi_losers'),
     path('dii_fii', views.dii_fii, name='dii_fii'),
 
-
+path('performance_data', views.performance_chart, name='performance_chart'),
+path('nifty_tracker', views.nifty_tracker, name='nifty_tracker'),
+path('get_52_week_data', views.get_52_week_data, name='get_52_week_data'),
+path('get_52_week_low_data', views.get_52_week_low_data, name='get_52_week_low_data'),
+path('only_buyers', views.only_buyers, name='only_buyers'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

@@ -273,48 +273,48 @@
   
         <li>
           <a   class="{% if request.path == "/admin_panel"  %} active_outer_admin {% endif %}">
-            <i class='bx bxs-inbox icon'></i> Customer Management <i
-              class='bx bx-chevron-right icon-right'></i></a>
+            <i class='bx bxs-group icon'></i>  Customer Management <i
+            class='bx bx-chevron-right icon-right'></i></a>
           <ul class="side-dropdown">
             <li  class="">
-              <a href=" {% url 'admin_panel' %}" class="{% if request.path == "/admin_panel"  %} active_inner_admin {% endif %}">Customer Profile</a></li>
+              <a href=" {% url 'admin_panel' %}" class="{% if request.path == "/admin_panel"  %} active_inner_admin {% endif %}"><i class='bx bxs-user icon'></i> Customer Profile</a></li>
             
   
           </ul>
         </li>
   
   
-        <li><a href="#" ><i class='bx bxs-dashboard icon'></i>Content Management</a></li>
+        <li><a href="#" ><i class='bx bxs-grid-alt icon'></i>Content Management</a></li>
 
-        <li><a href="{% url 'feedback_management' %}" class="{% if request.path == "/feedback_management"  %} active_outer_admin {% endif %}"><i class='bx bxs-dashboard icon'></i>Feedback Management</a></li>
+        <li><a href="{% url 'feedback_management' %}" class="{% if request.path == "/feedback_management"  %} active_outer_admin {% endif %}"><i class='bx bxs-message-square-dots icon'></i>Feedback Management</a></li>
 
-        <li><a href="#"><i class='bx bxs-dashboard icon'></i>Broker Management</a></li>
-        <li><a href="#"><i class='bx bxs-dashboard icon'></i>Rocket Calls Management</a></li>
+        <li><a href="#"><i class='bx bxs-user-voice icon'></i>Broker Management</a></li>
+        <li><a href="#"><i class='bx bxs-rocket icon' ></i>Rocket Calls Management</a></li>
   
   
         <li>
           <a href="#"><i class='bx bxs-inbox icon'></i> Portfolio Management <i
               class='bx bx-chevron-right icon-right'></i></a>
           <ul class="side-dropdown">
-            <li><a href="#">Stratergies</a></li>
+            <li><a href="#"> <i class='bx bx-stats icon'></i>Stratergies</a></li>
   
           </ul>
         </li>
   
         <li><a href="#"><i class='bx bxs-chart icon'></i> Algo Marketplace Management</a></li>
-        <li><a href="#"><i class='bx bxs-widget icon'></i> Watch list Management</a></li>
-        <li><a href="#"><i class='bx bxs-widget icon'></i> Invoice Management</a></li>
-        <li><a href="{% url 'payments_details' %}"  class="{% if request.path == "/payments_details"  %} active_outer_admin {% endif %}"><i class='bx bxs-widget icon'></i> Payments</a></li>
-        <li><a href="#"><i class='bx bxs-widget icon'></i> Social Media</a></li>
-        <li><a href="#"><i class='bx bxs-widget icon'></i> Referrals & Rewards </a></li>
+        <li><a href="#"><i class='bx bx-list-ul icon'></i> Watch list Management</a></li>
+        <li><a href="#"><i class='bx bxs-book-content icon'></i> Invoice Management</a></li>
+        <li><a href="{% url 'payments_details' %}"  class="{% if request.path == "/payments_details"  %} active_outer_admin {% endif %}"><i class='bx bxs-bank icon'></i> Payments</a></li>
+        <li><a href="#"><i class='bx bxs-user-account icon'></i> Social Media</a></li>
+        <li><a href="#"><i class='bx bxs-wallet icon'></i> Referrals & Rewards </a></li>
   
   
         <li>
-          <a href="#"><i class='bx bxs-inbox icon'></i> Notifications<i class='bx bx-chevron-right icon-right'></i></a>
+          <a href="#"><i class='bx bxs-bell icon'></i> Notifications<i class='bx bx-chevron-right icon-right'></i></a>
           <ul class="side-dropdown">
-            <li><a href="#">SMS</a></li>
-            <li><a href="#">Whatsapp</a></li>
-            <li><a href="#">Banners</a></li>
+            <li><a href="#"><i class='bx bxs-message-rounded-dots icon'></i>SMS</a></li>
+            <li><a href="#"><i class='bx bxl-whatsapp icon'></i>Whatsapp</a></li>
+            <li><a href="#"> <i class='bx bxs-notification icon'></i>Banners</a></li>
   
           </ul>
         </li>

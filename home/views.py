@@ -888,7 +888,7 @@ from collections import defaultdict
 from django.shortcuts import render
 
 def dii_fii(request):
-    url = "https://webapi.niftytrader.in/webapi/Resource/fii-cash-month"
+    url = "https://webapi.niftytrader.in/webapi/Resource/fii-cash-month?Date=2023-06"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
         "Accept-Language": "en-US,en;q=0.9",
@@ -1096,7 +1096,7 @@ def dashboard(request):
     # Prepare data for Chart.js
     looser_labels = top_10_losers["companyShortName"].tolist()
     looser_values = top_10_losers["percentChange"].tolist()
-    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_gainers/"
+    url = "https://trendlyne.com/futures-options/api-filter/futures/27-jul-2023-next/oi_gainers/"
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -1120,7 +1120,7 @@ def dashboard(request):
     # Prepare data for Chart.js
     labels_oi_gainer = top_10_df_oi["name"].tolist()
     values_oi_losers = top_10_df_oi["value"].tolist()
-    url = "https://trendlyne.com/futures-options/api-filter/futures/29-jun-2023-near/oi_losers/"
+    url = "https://trendlyne.com/futures-options/api-filter/futures/27-jul-2023-next/oi_losers/"
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -1708,32 +1708,6 @@ from django.shortcuts import render
 import requests
 # from datetime import datetime
 
-def chart_topgainer(request):
-    url = "https://webapi.niftytrader.in/webapi/option/oi-pcr-data?reqType=niftypcr&reqDate="
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
-    response = requests.get(url, headers=headers)
-    data = response.json()
-    pcr_values = []
-    index_close_values = []
-    time_values = []
-    for result in data['resultData']["oiDatas"]:
-        pcr_values.append(result['pcr'])
-        index_close_values.append(result['index_close'])
-        time_value = datetime.datetime.strptime(result['time'], "%Y-%m-%dT%H:%M:%S")
-        time_values.append(time_value.strftime("%H:%M"))
-
-    context = {
-        'pcr_values': pcr_values,
-        'index_close_values': index_close_values,
-        'time_values': time_values,
-    }
-
-    return render(request, 'chart_topgainer.html', context)
 
 
 def admin_panel(request):
@@ -1955,11 +1929,11 @@ def filtered_oi_change_data(request):
         arg_dict = json.loads(arg)
         nifty_value = arg_dict.get("nifty")
         spot_value = arg_dict.get("spot")
+    oi_url = f"https://webapi.niftytrader.in/webapi/option/oi-change-data/?reqType={nifty_value}&reqDate={expiry_date}"
 
-    oi_url = f"https://webapi.niftytrader.in/webapi/option/?reqType={nifty_value}&reqDate={expiry_date}"
 
 
-    dates_url = f"https://webapi.niftytrader.in/webapi/option/?reqType={nifty_value}&reqDate="
+    dates_url = f"https://webapi.niftytrader.in/webapi/option/oi-change-data/?reqType={nifty_value}&reqDate="
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -1973,8 +1947,10 @@ def filtered_oi_change_data(request):
 
     dates_response = requests.get(dates_url, headers=headers)
     dates_data = dates_response.json()
+    print(spot_value)
 
     spot_url = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol={spot_value}"
+
 
     spot_response = requests.get(spot_url, headers=headers)
     spot_data = spot_response.json()
@@ -1982,6 +1958,8 @@ def filtered_oi_change_data(request):
     result_data = spot_data.get("resultData")
     if result_data is not None:
         spot_price = result_data.get("last_trade_price")
+        change_value = result_data.get("change_value")  # Added change_value
+        change_per = result_data.get("change_per") 
         if spot_price is not None:
             closest_prices = []
             calls_oi = []
@@ -1993,8 +1971,8 @@ def filtered_oi_change_data(request):
                 price = result.get("strike_price")
                 if price is not None:
                     closest_prices.append(price)
-                    calls_oi.append(result.get("calls_oi", 0))
-                    puts_oi.append(result.get("puts_oi", 0))
+                    calls_oi.append(result.get("calls_change_oi", 0))
+                    puts_oi.append(result.get("puts_change_oi", 0))
 
             closest_prices, calls_oi, puts_oi = zip(
                 *sorted(
@@ -2025,6 +2003,8 @@ def filtered_oi_change_data(request):
             context = {
                 'spot_price': spot_price,
                 'closest_prices': closest_prices,
+                'change_value': change_value,  # Added change_value
+                'change_per': change_per,  # 
                 'calls_oi': calls_oi,
                 'puts_oi': puts_oi,
                 'dates': dates
@@ -2078,3 +2058,274 @@ def scale_stacking_chart(request):
     else:
         return JsonResponse({'message': 'No data available'})
 
+
+
+
+
+def chart_topgainer(request):
+    return render(request,"chart_topgainer.html")
+
+
+from django.http import JsonResponse
+import requests
+
+def pcr_volume(request):
+    pcr_args = request.GET.get('trade', 'niftyvolumepcr')
+    
+
+    url = f"https://webapi.niftytrader.in/webapi/option/oi-volume-data?reqType={pcr_args}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    timestamps = []
+    pcr_index_close = []
+    pcr = []
+
+    for pcrdata in data["resultData"]:
+        timestamp = pcrdata["time"]
+        time_parts = timestamp.split("T")[1].split(":")[:2]  # Extract hours and minutes
+        formatted_time = ":".join(time_parts)
+        timestamps.append(formatted_time)
+        pcr.append(pcrdata["pcr"])
+        pcr_index_close.append(pcrdata["index_close"])
+
+    chart_data = {
+        'pcr_values': pcr,
+        'time_values': timestamps,
+        'index_close_values': pcr_index_close,
+    }
+
+    return JsonResponse(chart_data)
+
+def nifty_tracker(request):
+    return render(request,"nifty_tracker.html")
+
+import datetime
+import pandas as pd 
+
+def performance_chart(request):
+    today = datetime.datetime.now().date()
+    yesterday = today - datetime.timedelta(days=1)
+    ts2 = str(int(datetime.datetime(yesterday.year, yesterday.month, yesterday.day).timestamp()))
+
+    d_days = int(request.GET.get('days', '20'))  # Get the 'days' parameter from the request, defaulting to 20 if not provided
+    ts1 = str(int((datetime.datetime.now() - datetime.timedelta(days=d_days)).timestamp()))
+    print(d_days)
+
+    interval = '1d'
+    history_data = request.GET.get('historical_symbols', '%5ENSEI')
+    print(history_data)  # Get the historical_symbols parameter from the request
+    events = 'history'
+
+    url = 'https://query1.finance.yahoo.com/v7/finance/download/'+ history_data +'?period1='\
+           + ts1 + '&period2=' + ts2 + '&interval=' + interval + '&events=history&includeAdjustedClose=true'
+
+    try:
+        stockdata = pd.read_csv(url)
+        stockdata['Date'] = pd.to_datetime(stockdata['Date'])  # Convert 'Date' column to datetime format
+        stockdata = stockdata.dropna()  # Remove rows with NaN values
+
+        dates = stockdata['Date'].dt.strftime('%b-%d').tolist()  # Update date format to '%b-%d'
+        closes = stockdata['Close'].tolist()
+        opens = stockdata['Open'].tolist()
+        differences = [abs(open - close) for open, close in zip(opens, closes)]
+
+        data = {
+            'dates': dates,
+            'closes': closes,
+            'opens': opens,
+            'differences': differences,
+        }
+
+        return JsonResponse(data)
+    except:
+        return JsonResponse({'error': 'Failed to fetch stock data'})
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import StockData
+import requests
+import json
+
+def get_52_week_data(request):
+    url = "https://www.nseindia.com/api/live-analysis-52Week?index=high"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+    
+    try:
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        # Convert the JSON data to a string
+        api_response = json.dumps(data)
+
+        if response.status_code == 200:
+            # Delete the previous saved data
+            StockData.objects.all().delete()
+
+            # Create a new entry with the updated API response
+            StockData.objects.create(api_response=api_response)
+
+            return JsonResponse(data, safe=False)
+        else:
+            try:
+                # Retrieve the saved API response from the database
+                saved_data = StockData.objects.first()
+                saved_response = saved_data.api_response
+
+                # Convert the string back to JSON
+                saved_json = json.loads(saved_response)
+
+                return JsonResponse(saved_json, safe=False)
+            except AttributeError:
+                # Return an empty JSON response if no saved data is available
+                return JsonResponse([], safe=False)
+    except requests.exceptions.RequestException:
+        # Handle the case when the API request fails
+        try:
+            # Retrieve the saved API response from the database
+            saved_data = StockData.objects.first()
+            saved_response = saved_data.api_response
+
+            # Convert the string back to JSON
+            saved_json = json.loads(saved_response)
+
+            return JsonResponse(saved_json, safe=False)
+        except AttributeError:
+            # Return an empty JSON response if no saved data is available
+            return JsonResponse([], safe=False)
+
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Stock_Low_Data
+import requests
+import json
+
+def get_52_week_low_data(request):
+    url = "https://www.nseindia.com/api/live-analysis-52Week?index=low"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+    
+    try:
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        # Convert the JSON data to a string
+        api_response = json.dumps(data)
+
+        if response.status_code == 200:
+            # Delete the previous saved data
+            Stock_Low_Data.objects.all().delete()
+
+            # Create a new entry with the updated API response
+            Stock_Low_Data.objects.create(api_response_low=api_response)
+
+            return JsonResponse(data, safe=False)
+        else:
+            try:
+                # Retrieve the saved API response from the database
+                saved_data = Stock_Low_Data.objects.first()
+                saved_response = saved_data.api_response_low
+
+                # Convert the string back to JSON
+                saved_json = json.loads(saved_response)
+
+                return JsonResponse(saved_json, safe=False)
+            except AttributeError:
+                # Return an empty JSON response if no saved data is available
+                return JsonResponse([], safe=False)
+    except requests.exceptions.RequestException:
+        # Handle the case when the API request fails
+        try:
+            # Retrieve the saved API response from the database
+            saved_data = Stock_Low_Data.objects.first()
+            saved_response = saved_data.api_response_low
+
+            # Convert the string back to JSON
+            saved_json = json.loads(saved_response)
+
+            return JsonResponse(saved_json, safe=False)
+        except AttributeError:
+            # Return an empty JSON response if no saved data is available
+            return JsonResponse([], safe=False)
+
+
+
+
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Only_buyers
+import requests
+import json
+
+def only_buyers(request):
+    url = "https://www.nseindia.com/api/live-analysis-price-band-hitter"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+    
+    try:
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        # Convert the JSON data to a string
+        api_response = json.dumps(data)
+
+        if response.status_code == 200:
+            # Delete the previous saved data
+            Only_buyers.objects.all().delete()
+
+            # Create a new entry with the updated API response
+            Only_buyers.objects.create(api_response_buyers=api_response)
+
+            return JsonResponse(data, safe=False)
+        else:
+            try:
+                # Retrieve the saved API response from the database
+                saved_data = Only_buyers.objects.first()
+                saved_response = saved_data.api_response_buyers
+
+                # Convert the string back to JSON
+                saved_json = json.loads(saved_response)
+
+                return JsonResponse(saved_json, safe=False)
+            except AttributeError:
+                # Return an empty JSON response if no saved data is available
+                return JsonResponse([], safe=False)
+    except requests.exceptions.RequestException:
+        # Handle the case when the API request fails
+        try:
+            # Retrieve the saved API response from the database
+            saved_data = Only_buyers.objects.first()
+            saved_response = saved_data.api_response_buyers
+
+            # Convert the string back to JSON
+            saved_json = json.loads(saved_response)
+
+            return JsonResponse(saved_json, safe=False)
+        except AttributeError:
+            # Return an empty JSON response if no saved data is available
+            return JsonResponse([], safe=False)

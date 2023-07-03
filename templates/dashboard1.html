@@ -189,24 +189,30 @@
     font-size: 21px;
     font-weight: 600;
   }
-  .dataTables_length,.dataTables_filter{
+
+  .dataTables_length,
+  .dataTables_filter {
     margin: 9px 0 9px 0;
 
   }
+
   /* .sorting{
     display: none !important;
   } */
   thead {
-    border-color: #8080803b  !important;
+    border-color: #8080803b !important;
     border-style: solid;
     border-width: 0;
-}
-table.dataTable.no-footer {
+  }
+
+  table.dataTable.no-footer {
     border-bottom: 1px solid #11111112 !important;
-}
-.sorting::after,.sorting::before{
-  display: none !important;
-}
+  }
+
+  .sorting::after,
+  .sorting::before {
+    display: none !important;
+  }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -720,244 +726,700 @@ table.dataTable.no-footer {
   <div id="tables-container" class="d-flex"
     style="    row-gap: 1rem;justify-content: space-around;     flex-wrap: wrap;"></div>
 
-<div class="main_stocks_details my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  <div class="main_stocks_details my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 padding: 25px;">
-  <h4 class="my-3">MARKET ACTION</h4>
-  <div class="description_usage my-4 container">
-    <div class="head_desc_usage">
-      <div class="row border-bottom" style="    justify-content: center;">
-        <div class="chart-header col-2 text-center" onclick="filterChart('topgainers')" data-btn-id="1"
-          style="font-size: 21px;    width: fit-content;">
-          Top Gainers
+    <h4 class="my-3">MARKET ACTION</h4>
+    <div class="description_usage my-4 container">
+      <div class="head_desc_usage">
+        <div class="row border-bottom" style="    justify-content: center;">
+          <div class="chart-header col-2 text-center" onclick="filterChart('topgainers')" data-btn-id="1"
+            style="font-size: 21px;    width: fit-content;">
+            Top Gainers
+          </div>
+          <div class="chart-header col-2 text-center" onclick="filterChart('toplosers')" data-btn-id="2"
+            style="font-size: 21px;    width: fit-content;">
+            Top Losers
+          </div>
+
+          <div class="chart-header col-2  text-center" onclick="filterChart('sameopenandlow')" data-btn-id="3"
+            style="font-size: 21px;    width: fit-content;">
+            sameOpenAndLow
+          </div>
+
+          <div class="chart-header col-2  text-center" onclick="filterChart('sameOpenAndHigh')" data-btn-id="4"
+            style="font-size: 21px;    width: fit-content;">
+            sameOpenAndHigh
+          </div>
+
+          <div class="chart-header col-2  text-center" onclick="filterChart('gapUp')" data-btn-id="4"
+            style="font-size: 21px;    width: fit-content;">
+            gapUp
+          </div>
+
+          <div class="chart-header col-2  text-center" onclick="filterChart('gapDown')" data-btn-id="4"
+            style="font-size: 21px;     width: fit-content;">
+            gapDown
+          </div>
+
+
+
         </div>
-        <div class="chart-header col-2 text-center" onclick="filterChart('toplosers')" data-btn-id="2"
-          style="font-size: 21px;    width: fit-content;">
-          Top Losers
+        <div class="main_desc_usage mt-4" id="main_desc_usage"></div>
+      </div>
+      <div id="chartContainer " style=" overflow: auto;   height: fit-content;">
+        <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
+          <table class="table table-hover  ">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+              <tr>
+                <th scope="col">Chart</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Today Low</th>
+                <th scope="col">Today High</th>
+                <th scope="col">Change %</th>
+                <th scope="col">Prev Close</th>
+                <th scope="col">Volume</th>
+              </tr>
+            </thead>
+            <tbody id="top_gainers_table"></tbody>
+          </table>
+        </div>
+        <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
+          <table class="table table-hover ">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+              <tr>
+                <th scope="col">Chart</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Today Low</th>
+                <th scope="col">Today High</th>
+                <th scope="col">Change %</th>
+                <th scope="col">Prev Close</th>
+                <th scope="col">Volume</th>
+              </tr>
+            </thead>
+            <tbody id="top_losers_table"></tbody>
+          </table>
         </div>
 
-        <div class="chart-header col-2  text-center" onclick="filterChart('sameopenandlow')" data-btn-id="3"
-          style="font-size: 21px;    width: fit-content;">
-          sameOpenAndLow
-        </div>
+        <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
+          <table class="table table-hover ">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
 
-        <div class="chart-header col-2  text-center" onclick="filterChart('sameOpenAndHigh')" data-btn-id="4"
-          style="font-size: 21px;    width: fit-content;">
-          sameOpenAndHigh
+              <tr>
+                <th scope="col">Chart</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Today Low</th>
+                <th scope="col">Today High</th>
+                <th scope="col">Change %</th>
+                <th scope="col">Prev Close</th>
+                <th scope="col">Volume</th>
+              </tr>
+            </thead>
+            <tbody id="same_open_and_low"></tbody>
+          </table>
         </div>
+        <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
+          <table class="table table-hover ">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
 
-        <div class="chart-header col-2  text-center" onclick="filterChart('gapUp')" data-btn-id="4"
-          style="font-size: 21px;    width: fit-content;">
-          gapUp
+              <tr>
+                <th scope="col">Chart</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Today Low</th>
+                <th scope="col">Today High</th>
+                <th scope="col">Change %</th>
+                <th scope="col">Prev Close</th>
+                <th scope="col">Volume</th>
+              </tr>
+            </thead>
+            <tbody id="same_Open_And_High"></tbody>
+          </table>
         </div>
+        <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
+          <table class="table table-hover ">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
 
-        <div class="chart-header col-2  text-center" onclick="filterChart('gapDown')" data-btn-id="4"
-          style="font-size: 21px;     width: fit-content;">
-          gapDown
+              <tr>
+                <th scope="col">Chart</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Today Low</th>
+                <th scope="col">Today High</th>
+                <th scope="col">Change %</th>
+                <th scope="col">Prev Close</th>
+                <th scope="col">Volume</th>
+              </tr>
+            </thead>
+            <tbody id="gap_Up"></tbody>
+          </table>
         </div>
+        <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
+          <table class="table table-hover ">
+            <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
 
+              <tr>
+                <th scope="col">Chart</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Today Low</th>
+                <th scope="col">Today High</th>
+                <th scope="col">Change %</th>
+                <th scope="col">Prev Close</th>
+                <th scope="col">Volume</th>
+              </tr>
+            </thead>
+            <tbody id="gap_Down"></tbody>
+          </table>
+        </div>
 
 
       </div>
-      <div class="main_desc_usage mt-4" id="main_desc_usage"></div>
+      <h5 class="text-primary d-flex justify-content-end">View more</h5>
+      {% comment %} <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
+        <button class=" btn btn-primary">Get a Lifetime Free Demat Account</button>
+        <button class=" btn btn-danger">Intraday & Options Tradings @ Zero Brockrage</button>
+        <button class="btn btn-primary">Search Stocks</button>
+      </div> {% endcomment %}
     </div>
-    <div id="chartContainer " style=" overflow: auto;   height: fit-content;">
-      <div class="topgainers" id="topgainers" style="width: 100%; height: 80%">
-        <table class="table table-hover  ">
-          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
-
-            <tr>
-              <th scope="col">Chart</th>
-              <th scope="col">Symbol</th>
-              <th scope="col">Current Price</th>
-              <th scope="col">Today Low</th>
-              <th scope="col">Today High</th>
-              <th scope="col">Change %</th>
-              <th scope="col">Prev Close</th>
-              <th scope="col">Volume</th>
-            </tr>
-          </thead>
-          <tbody id="top_gainers_table"></tbody>
-        </table>
-      </div>
-      <div class="toplosers" id="toplosers" style="width: 100%; height: 80%">
-        <table class="table table-hover ">
-          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
-
-            <tr>
-              <th scope="col">Chart</th>
-              <th scope="col">Symbol</th>
-              <th scope="col">Current Price</th>
-              <th scope="col">Today Low</th>
-              <th scope="col">Today High</th>
-              <th scope="col">Change %</th>
-              <th scope="col">Prev Close</th>
-              <th scope="col">Volume</th>
-            </tr>
-          </thead>
-          <tbody id="top_losers_table"></tbody>
-        </table>
-      </div>
-
-      <div class="sameopenandlow" id="sameopenandlow" style="width: 100%; height: 80%">
-        <table class="table table-hover ">
-          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
-
-            <tr>
-              <th scope="col">Chart</th>
-              <th scope="col">Symbol</th>
-              <th scope="col">Current Price</th>
-              <th scope="col">Today Low</th>
-              <th scope="col">Today High</th>
-              <th scope="col">Change %</th>
-              <th scope="col">Prev Close</th>
-              <th scope="col">Volume</th>
-            </tr>
-          </thead>
-          <tbody id="same_open_and_low"></tbody>
-        </table>
-      </div>
-      <div class="sameOpenAndHigh" id="sameOpenAndHigh" style="width: 100%; height: 80%">
-        <table class="table table-hover ">
-          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
-
-            <tr>
-              <th scope="col">Chart</th>
-              <th scope="col">Symbol</th>
-              <th scope="col">Current Price</th>
-              <th scope="col">Today Low</th>
-              <th scope="col">Today High</th>
-              <th scope="col">Change %</th>
-              <th scope="col">Prev Close</th>
-              <th scope="col">Volume</th>
-            </tr>
-          </thead>
-          <tbody id="same_Open_And_High"></tbody>
-        </table>
-      </div>
-      <div class="gapUp" id="gapUp" style="width: 100%; height: 80%">
-        <table class="table table-hover ">
-          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
-
-            <tr>
-              <th scope="col">Chart</th>
-              <th scope="col">Symbol</th>
-              <th scope="col">Current Price</th>
-              <th scope="col">Today Low</th>
-              <th scope="col">Today High</th>
-              <th scope="col">Change %</th>
-              <th scope="col">Prev Close</th>
-              <th scope="col">Volume</th>
-            </tr>
-          </thead>
-          <tbody id="gap_Up"></tbody>
-        </table>
-      </div>
-      <div class="gapDown" id="gapDown" style="width: 100%; height: 80%">
-        <table class="table table-hover ">
-          <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
-
-            <tr>
-              <th scope="col">Chart</th>
-              <th scope="col">Symbol</th>
-              <th scope="col">Current Price</th>
-              <th scope="col">Today Low</th>
-              <th scope="col">Today High</th>
-              <th scope="col">Change %</th>
-              <th scope="col">Prev Close</th>
-              <th scope="col">Volume</th>
-            </tr>
-          </thead>
-          <tbody id="gap_Down"></tbody>
-        </table>
-      </div>
-
-
-    </div>
-    <h5 class="text-primary d-flex justify-content-end">View more</h5>
-    {% comment %} <div class="button_end_table d-flex justify-content-center gap-2 flex-wrap">
-      <button class=" btn btn-primary">Get a Lifetime Free Demat Account</button>
-      <button class=" btn btn-danger">Intraday & Options Tradings @ Zero Brockrage</button>
-      <button class="btn btn-primary">Search Stocks</button>
-    </div> {% endcomment %}
   </div>
-</div>
-<div class="main_future_tables my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  <div class="main_future_tables my-4" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 padding: 25px;">
-  <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
+    <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
 
-  <div class="main_future_open d-flex gap-4 container" style="justify-content: center;border-bottom: 1px solid lightgray;">
+    <div class="main_future_open d-flex gap-4 container"
+      style="justify-content: center;border-bottom: 1px solid lightgray;">
 
-    <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
-    <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
-    <div id="OI_volume_buzzers" onclick="future_filter('OI_volume_buzzers')">Volume Buzzers</div>
-    <div id="OI_volume_1" onclick="future_filter('OI_volume_1')">Only Buyers </div>
-    <div id="OI_volume_2" onclick="future_filter('OI_volume_2')">  Only Sellers </div>
+      <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
+      <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
+      <div id="OI_volume_buzzers" onclick="future_filter('OI_volume_buzzers')">Volume Buzzers</div>
+      <div id="OI_volume_1" onclick="future_filter('OI_volume_1')">Volume Buzzers 1 </div>
+      <div id="OI_volume_2" onclick="future_filter('OI_volume_2')"> Volume Buzzers 2 </div>
+
+
+    </div>
+
+
+    <div id="OI_gainer_table">
+
+
+      <table id="Oi_gainer_data" class="table  table-hover">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+          <tr id="columnHeaders">
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+
+
+
+    </div>
+    <div id="OI_loser_table">
+
+      <table id="Oi_loser_data_table_data_table" class="table  table-hover">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+          <tr id="columnHeaders_loser">
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+
+
+
+    </div>
+    <div id="OI_volume_buzzers_table">
+      <table id="volumeShockerTable" class="table  table-hover">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+
+          <tr>
+
+            <th>Company Name</th>
+
+            <th>Volume</th>
+            <th>Volume Percentage Change</th>
+            <th>Exchange</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div id="OI_volume_1_table">
+      <table id="OI_volume_1_table_data"></table>
+    </div>
+
+    <div id="OI_volume_2_table">
+      <table id="OI_volume_2_table_data"></table>
+    </div>
+
 
 
   </div>
 
 
-  <div id="OI_gainer_table">
+  <div class="maket_52_week my-4"
+    style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;padding: 25px;">
+    <h4 class="my-3">NEW 52 WEEK HIGH/LOW</h4>
+    <style>
+      #week_52_high,
+      #week_52_low,
+      #only_buyers,
+      #only_sellers {
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 21px;
+      }
+
+      .active_52_week {
+        color: #011490;
+        text-align: center;
+        border-bottom: 2px solid #011490;
+        font-size: 21px;
+        font-weight: 600;
+      }
+
+      #security_select {
+        display: flex;
+        position: relative;
+        gap: 1rem;
+        white-space: nowrap;
+        align-items: center;
+        width: fit-content;
+
+      }
+    </style>
+
+    <div class="main_future_open d-flex gap-4 container"
+      style="justify-content: center;border-bottom: 1px solid lightgray;">
+
+      <div id="week_52_high" onclick="week_52filter('week_52_high')">52 Week High </div>
+      <div id="week_52_low" onclick="week_52filter('week_52_low')">52 Week Low</div>
+      <div id="only_buyers" onclick="week_52filter('only_buyers')">Only Buyers</div>
+      <div id="only_sellers" onclick="week_52filter('only_sellers')">Only Sellers</div>
 
 
-    <table id="Oi_gainer_data" class="table  table-hover">
-      <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
 
-        <tr id="columnHeaders">
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    </div>
+    <div class="week_52_high">
+      <div class="security_main d-flex justify-content-end mt-3">
+        <div class="form-group" id="security_select">
+          <label for="data-dropdown">Select Securities:</label>
+          <select id="data-dropdown" class="form-select">
+            <option value="dataLtpGreater20">Securities > 20</option>
+            <option value="dataLtpLess20">Securities < 20</option>
+          </select>
+        </div>
+      </div>
+
+
+      <table id="stock_table_52_high" class="mt-3 table table-hover">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
+          <tr>
+            <th>SYMBOL</th>
+            <th>SECURITY</th>
+            <th>NEW 52W/H
+              PRICE</th>
+            <th>PREV.
+              HIGH</th>
+            <th>PREV. HIGH
+              DATE</th>
+            <th>LTP</th>
+            <th>PREV. CLOSE</th>
+            <th>CHNG</th>
+            <th>%CHNG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be populated dynamically using JavaScript -->
+        </tbody>
+      </table>
+
+    </div>
+    <div class="week_52_low">
 
 
 
+      <div class="security_main d-flex justify-content-end mt-3">
+        <div class="form-group" id="security_select">
+          <label for="data-dropdown-low">Select Securities:</label>
+          <select id="data-dropdown-low" class="form-select">
+            <option value="dataLtpGreater20">Securities > 20</option>
+            <option value="dataLtpLess20">Securities < 20</option>
+          </select>
+        </div>
+      </div>
 
+      <table id="stock_table_52_low" class="mt-3 table table-hover">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
+          <tr>
+            <th>SYMBOL</th>
+            <th>SECURITY</th>
+            <th>NEW 52W/H
+              PRICE</th>
+            <th>PREV.
+              HIGH</th>
+            <th>PREV. HIGH
+              DATE</th>
+            <th>LTP</th>
+            <th>PREV. CLOSE</th>
+            <th>CHNG</th>
+            <th>%CHNG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be populated dynamically using JavaScript -->
+        </tbody>
+      </table>
+
+    </div>
+    <div class="only_buyers">
+
+
+
+      <div class="security_main d-flex justify-content-end mt-3">
+        <div class="form-group">
+          <label for="data-dropdown-upper">Select Option:</label>
+          <select id="data-dropdown-upper" class="form-select">
+            <option value="AllSec">AllSec</option>
+            <option value="SecGtr20">SecGtr20</option>
+            <option value="SecLwr20">SecLwr20</option>
+          </select>
+        </div>
+      </div>
+
+
+      <table id="stock_table_upper" class="table table-hover">
+        <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
+          <th>Symbol</th>
+          <th>Series</th>
+          <th>LTP</th>
+          <th>Change</th>
+          <th>PChange</th>
+          <th>PriceBand</th>
+          <th>HighPrice</th>
+          <th>LowPrice</th>
+          <th>YearHigh</th>
+          <th>YearLow</th>
+          <th>TotalTradedVol</th>
+          <th>Turnover</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+
+
+    </div>
+    <div class="only_sellers">Sellers</div>
   </div>
-  <div id="OI_loser_table">
+  <script>
+    $(document).ready(function () {
+      // Define the DataTable instance variable
+      var dataTable = null;
 
-    <table id="Oi_loser_data_table_data_table" class="table  table-hover">
-      <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
+      // Function to update the table data using AJAX
+      function updateTable() {
+        // Show the spinner
+        $("#spinner").show();
 
-        <tr id="columnHeaders_loser">
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+        // Get the selected option from the dropdown
+        var selectedOption = $("#data-dropdown").val();
+
+        $.ajax({
+          url: "/get_52_week_data",
+          type: "GET",
+          data: { option: selectedOption }, // Pass the selected option as a parameter
+          dataType: "json",
+          success: function (data) {
+            // Hide the spinner
+            $("#spinner").hide();
+
+            // Clear the existing table rows and destroy the DataTable instance
+            if (dataTable !== null) {
+              dataTable.clear().destroy();
+            }
+            $("#stock_table_52_high tbody").empty();
+
+            // Populate the table with the received data
+            var stockData = data[selectedOption];
+
+            for (var i = 0; i < stockData.length; i++) {
+              var stock = stockData[i];
+              var change_52_high = stock.change > 0 ? "text-success" : "text-danger"
+              var change_52_high_percent = stock.change > 0 ? "text-success" : "text-danger"
+              var row = "<tr>" +
+                "<td>" + stock.symbol + "</td>" +
+                "<td>" + stock.comapnyName + "</td>" +
+                "<td>" + stock.new52WHL + "</td>" +
+                "<td>" + stock.prev52WHL + "</td>" +
+                "<td>" + stock.prevHLDate + "</td>" +
+                "<td>" + stock.ltp + "</td>" +
+                "<td >" + stock.prevClose + "</td>" +
+                "<td class =" + change_52_high + ">" + stock.change + "</td>" +
+                "<td class=" + change_52_high_percent + ">" + stock.pChange.toFixed(2) + "</td>" +
+                "</tr>";
+              $("#stock_table_52_high tbody").append(row);
+            }
+
+            // Initialize DataTable plugin after updating the table
+            dataTable = $('#stock_table_52_high').DataTable({
+              "pageLength": 10
+            });
+          },
+          error: function () {
+            console.log("Error occurred while fetching data.");
+          }
+        });
+      }
+
+      // Restore the selected option from local storage
+      var selectedOption = localStorage.getItem("selectedOption");
+      if (selectedOption) {
+        $("#data-dropdown").val(selectedOption);
+      }
+
+      // Initial update of the table
+      updateTable();
+
+      // Event listener for dropdown change
+      $("#data-dropdown").change(function () {
+        // Save the selected option to local storage
+        var selectedOption = $("#data-dropdown").val();
+        localStorage.setItem("selectedOption", selectedOption);
+
+        updateTable();
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      // Function to update the table data using AJAX
+      var dataTable_Low = null;
+      function updateTable() {
+        // Show the spinner
+        $("#spinner").show();
+
+        // Get the selected option from the dropdown
+        var selectedOption_Low = $("#data-dropdown-low").val();
+
+        $.ajax({
+          url: "/get_52_week_low_data",
+          type: "GET",
+          data: { option: selectedOption_Low }, // Pass the selected option as a parameter
+          dataType: "json",
+          success: function (data) {
+            // Hide the spinner
+            $("#spinner").hide();
+            if (dataTable_Low !== null) {
+              dataTable_Low.clear().destroy();
+            }
+            // Clear the existing table rows
+            $("#stock_table_52_low tbody").empty();
+
+            // Populate the table with the received data
+            var stockData = data[selectedOption_Low];
+
+            for (var i = 0; i < stockData.length; i++) {
+              var stock = stockData[i];
+              var change_52_high = stock.change > 0 ? "text-success" : "text-danger"
+              var change_52_high_percent = stock.change > 0 ? "text-success" : "text-danger"
+              var row = "<tr>" +
+                "<td>" + stock.symbol + "</td>" +
+                "<td>" + stock.comapnyName + "</td>" +
+                "<td>" + stock.new52WHL + "</td>" +
+                "<td>" + stock.prev52WHL + "</td>" +
+                "<td>" + stock.prevHLDate + "</td>" +
+                "<td>" + stock.ltp + "</td>" +
+                "<td>" + stock.prevClose + "</td>" +
+                "<td class =" + change_52_high + ">" + stock.change + "</td>" +
+                "<td class=" + change_52_high_percent + ">" + stock.pChange.toFixed(2) + "</td>" +
+                "</tr>";
+              $("#stock_table_52_low tbody").append(row);
+            }
+            dataTable_Low = $('#stock_table_52_low').DataTable({
+              "pageLength": 10
+            });
+          },
+          error: function () {
+            console.log("Error occurred while fetching data.");
+          }
+        });
+      }
+
+      // Restore the selected option from local storage
+      var selectedOption_Low = localStorage.getItem("selectedOption_Low");
+
+      if (selectedOption_Low) {
+        $("#data-dropdown-low").val(selectedOption_Low);
+      }
+
+      // Initial update of the table
+      updateTable();
+
+      // Periodically update the table data every 5 seconds
+
+
+      // Event listener for dropdown change
+      $("#data-dropdown-low").change(function () {
+        // Save the selected option to local storage
+        var selectedOption_Low = $("#data-dropdown-low").val();
+        localStorage.setItem("selectedOption_Low", selectedOption_Low);
+
+        updateTable();
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      // Function to update the table data using AJAX
+      var dataTable_upper = null;
+      function updateTable(selectedOption_Upper) {
+        // Show the spinner
+        $("#spinner").show();
+
+        $.ajax({
+          url: "/only_buyers",
+          type: "GET",
+          data: { option: selectedOption_Upper }, // Pass the selected option as a parameter
+          dataType: "json",
+          success: function (data) {
+            // console.log(data["upper"][selectedOption_Upper]["data"]);
+            // Hide the spinner
+            $("#spinner").hide();
+            if (dataTable_upper !== null) {
+              dataTable_upper.clear().destroy();
+            }
+            // Clear the existing table rows
+            $("#stock_table_upper tbody").empty();
+
+            // Populate the table with the received data
+            var stockData = data["upper"][selectedOption_Upper]["data"];
+
+            for (var i = 0; i < stockData.length; i++) {
+              var stock = stockData[i];
+              var row = "<tr>" +
+                "<td>" + stock.symbol + "</td>" +
+                "<td>" + stock.series + "</td>" +
+                "<td>" + stock.ltp + "</td>" +
+                "<td>" + stock.change + "</td>" +
+                "<td>" + stock.pChange + "</td>" +
+                "<td>" + stock.priceBand + "</td>" +
+                "<td>" + stock.highPrice + "</td>" +
+                "<td>" + stock.lowPrice + "</td>" +
+                "<td>" + stock.yearHigh + "</td>" +
+                "<td>" + stock.yearLow + "</td>" +
+                "<td>" + stock.totalTradedVol + "</td>" +
+                "<td>" + stock.turnover + "</td>" +
+                "</tr>";
+              $("#stock_table_upper tbody").append(row);
+            }
+            dataTable_upper = $('#stock_table_upper').DataTable({
+              "pageLength": 10
+            });
+          },
+          error: function () {
+            console.log("Error occurred while fetching data.");
+          }
+        });
+      }
+
+      // Function to save the dropdown selection to local storage
+      function saveSelection() {
+        var selectedOption_Upper = $("#data-dropdown-upper").val();
+        localStorage.setItem("selectedOption_Upper", selectedOption_Upper);
+      }
+
+      // Initial update of the table
+      var selectedOption_Upper = localStorage.getItem("selectedOption_Upper") || "AllSec";
+      $("#data-dropdown-upper").val(selectedOption_Upper);
+      updateTable(selectedOption_Upper);
+
+      // Event listener for dropdown change
+      $("#data-dropdown-upper").change(function () {
+        var selectedOption_Upper = $(this).val();
+        updateTable(selectedOption_Upper);
+        saveSelection();
+      });
+    });
+  </script>
 
 
 
-  </div>
-  <div id="OI_volume_buzzers_table">
-    <table id="volumeShockerTable" class="table  table-hover">
-      <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;" class="">
 
-        <tr>
 
-          <th>Company Name</th>
 
-          <th>Volume</th>
-          <th>Volume Percentage Change</th>
-          <th>Exchange</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-  <div id="OI_volume_1_table">
-    <table id="OI_volume_1_table_data"></table>
-  </div>
 
-  <div id="OI_volume_2_table">
- <table id="OI_volume_2_table_data"></table>
-  </div>
+
+  <script>
+    $(document).ready(function () {
+      $(".week_52_high").show();
+      $(".week_52_low").hide();
+      $(".only_buyers").hide();
+      $(".only_sellers").hide();
+      $("#week_52_high").addClass("active_52_week")
+      $("#week_52_low").removeClass("active_52_week")
+      $("#only_buyers").removeClass("active_52_week")
+      $("#only_sellers").removeClass("active_52_week")
+    });
+
+    function week_52filter(week_args) {
+      if (week_args == "week_52_high") {
+        $(".week_52_high").show();
+        $(".week_52_low").hide();
+        $(".only_buyers").hide();
+        $(".only_sellers").hide();
+
+        $("#week_52_high").addClass("active_52_week")
+        $("#week_52_low").removeClass("active_52_week")
+        $("#only_buyers").removeClass("active_52_week")
+        $("#only_sellers").removeClass("active_52_week")
+      } else if (week_args == "week_52_low") {
+        $(".week_52_high").hide();
+        $(".week_52_low").show();
+        $(".only_buyers").hide();
+        $(".only_sellers").hide();
+        $("#week_52_high").removeClass("active_52_week")
+        $("#week_52_low").addClass("active_52_week")
+        $("#only_buyers").removeClass("active_52_week")
+        $("#only_sellers").removeClass("active_52_week")
+      } else if (week_args == "only_buyers") {
+        $(".week_52_high").hide();
+        $(".week_52_low").hide();
+        $(".only_buyers").show();
+        $(".only_sellers").hide();
+        $("#week_52_high").removeClass("active_52_week")
+        $("#week_52_low").removeClass("active_52_week")
+        $("#only_buyers").addClass("active_52_week")
+        $("#only_sellers").removeClass("active_52_week")
+      } else if (week_args == "only_sellers") {
+        $(".week_52_high").hide();
+        $(".week_52_low").hide();
+        $(".only_buyers").hide();
+        $(".only_sellers").show();
+        $("#week_52_high").removeClass("active_52_week")
+        $("#week_52_low").removeClass("active_52_week")
+        $("#only_buyers").removeClass("active_52_week")
+        $("#only_sellers").addClass("active_52_week")
+      }
+    }
+  </script>
 
 
 
 </div>
-  <div class="ban_list_main" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+
+
+
+<div class="ban_list_main" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   padding: 25px;">
   <h4 class="my-3">BAN LIST </h4>
   <div class="main_ban" style="    display: flex;
@@ -1014,7 +1476,7 @@ padding: 25px;">
 
 
 
-  <!-- <h4 class="my-3">IPO List </h4>
+<!-- <h4 class="my-3">IPO List </h4>
 <div class="ipo container" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 padding: 25px;">
 
@@ -1455,13 +1917,13 @@ padding: 25px;">
 
       // Create table rows
       const tableRows = data.data.map(function (row) {
-       var date_change_percent = row[2] >0 ? " text-success  " : "text-danger";
-       var volume_contract_percent = row[4] >0 ? " text-success  " : "text-danger";
-       var oi_percent = row[4] >0 ? " text-success  " : "text-danger";
+        var date_change_percent = row[2] > 0 ? " text-success  " : "text-danger";
+        var volume_contract_percent = row[4] > 0 ? " text-success  " : "text-danger";
+        var oi_percent = row[4] > 0 ? " text-success  " : "text-danger";
         return '<tr>' +
           '<td>' + row[0] + '</td>' +  // name
           '<td>' + row[1] + '</td>' +  // price
-          '<td class= ' + date_change_percent + '>' +row[2]+ '%</td>' +  // Date Chang
+          '<td class= ' + date_change_percent + '>' + row[2] + '%</td>' +  // Date Chang
           '<td>' + row[3] + '</td>' +  // Volume Contracts
           '<td class= ' + volume_contract_percent + '>' + row[4] + '%</td>' +  // % Volume Contracts
           // '<td style= " white-space: nowrap;">₹' + row[5] + '  Cr</td>' +  // TTV
@@ -1510,13 +1972,13 @@ padding: 25px;">
 
       // Create table rows
       const tableRows = data.data.map(function (row) {
-         var date_change_percent = row[2] >0 ? " text-success  " : "text-danger";
-       var volume_contract_percent = row[4] >0 ? " text-success  " : "text-danger";
-       var oi_percent = row[4] >0 ? " text-success  " : "text-danger";
+        var date_change_percent = row[2] > 0 ? " text-success  " : "text-danger";
+        var volume_contract_percent = row[4] > 0 ? " text-success  " : "text-danger";
+        var oi_percent = row[4] > 0 ? " text-success  " : "text-danger";
         return '<tr>' +
-       '<td>' + row[0] + '</td>' +  // name
+          '<td>' + row[0] + '</td>' +  // name
           '<td>' + row[1] + '</td>' +  // price
-          '<td class= ' + date_change_percent + '>' +row[2]+ '%</td>' +  // Date Chang
+          '<td class= ' + date_change_percent + '>' + row[2] + '%</td>' +  // Date Chang
           '<td>' + row[3] + '</td>' +  // Volume Contracts
           '<td class= ' + volume_contract_percent + '>' + row[4] + '%</td>' +  // % Volume Contracts
           // '<td style= " white-space: nowrap;">₹' + row[5] + '  Cr</td>' +  // TTV
@@ -1536,11 +1998,11 @@ padding: 25px;">
   });
   $(document).ready(function () {
     $('#OI_volume_1_table_data').DataTable({
-        "pageLength": 10
-      });
-      $('#Oi_loser_data_table_data_table').DataTable({
-        "pageLength": 10
-      });
+      "pageLength": 10
+    });
+    $('#Oi_loser_data_table_data_table').DataTable({
+      "pageLength": 10
+    });
   })
 </script>
 {% endblock dashboard_body %}

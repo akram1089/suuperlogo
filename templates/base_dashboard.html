@@ -528,6 +528,10 @@
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/my_strategies"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'my_strategies' %}">          
               <i class="bi bi-hdd-stack"></i><p>My Strategies</p>
             </a>
+              <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/nifty_tracker"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'nifty_tracker' %}">          
+              <i class="bi bi-hdd-stack"></i><p>Nifty Tracker</p>
+            </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/market_glance"  %} active_dash {% endif %}"  href="{% url 'market_glance' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-shop"></i><p>Markets Glance</p>
@@ -749,6 +753,7 @@
           "pageLength": 10
         });
   
+ 
    
     
     });

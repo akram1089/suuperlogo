@@ -1,154 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Scale Stacking Chart</title>
+    <title>PCR Volume Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        canvas {
+            max-width: 1000px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Scale Stacking Chart</h1>
-    <div class="symbols">
-        <h5 onclick="OI_symbols('niftyoilist', 'NIFTY+50')">NIFTY</h5>
-        <h5 onclick="OI_symbols('bankniftyoi', 'NIFTY+BANK')">Bank NIFTY</h5>
-        <h5 onclick="OI_symbols('finniftyoilist', 'NIFTY+FIN+SERVICE')">Fin NIFTY</h5>
-    </div>
-    <div>
-        <label for="barCount">Number of Bars:</label>
-        <select id="barCount" onchange="updateChart()">
-            <option value="15" selected>15</option>
-            <option value="10">10</option>
-            <option value="5">5</option>
-            <option value="all">All</option>
-        </select>
-    </div>
-    <div>
-        <label for="expiryDate">Expiry Date:</label>
-        <select id="expiryDate" onchange="updateChart()"></select>
-    </div>
-    <div>
-        <canvas id="chart"></canvas>
-    </div>
+    <h5 onclick="pcr_volume('niftyvolumepcr')">Nifty</h5>
+    <h5 onclick="pcr_volume('bankniftyvolumepcr')">Bank Nifty</h5>
+    <h5 onclick="pcr_volume('finniftyvolumepcr')">Fin NIFTY</h5>
+    <canvas id="myChart_pcr"></canvas>
+    <script>
+        var myChart_pcr; // Reference to the chart instance
 
-<script>
-function OI_symbols(arg1, arg2) {
-    const arg = { nifty: arg1, spot: arg2 };
-    localStorage.removeItem('expiryDate'); // Clear the expiry date from local storage
-    localStorage.setItem('selectedSymbol', JSON.stringify(arg)); // Save selected symbol in local storage
-    const expiryDateSelect = document.getElementById('expiryDate');
-    expiryDateSelect.value = ''; // Reset the expiry date select box
-    updateChart();
-}
+        // Function to update the chart with new data
+        function updateChart_pcr(chartData) {
+            const pcrValues = chartData.pcr_values;
+            const indexCloseValues = chartData.index_close_values;
+            const timeValues = chartData.time_values;
 
-function updateChart() {
-    const barCount = document.getElementById('barCount').value;
-    const selectedSymbol = JSON.parse(localStorage.getItem('selectedSymbol')); // Retrieve selected symbol from local storage
+            // Update the chart data
+            myChart_pcr.data.labels = timeValues;
+            myChart_pcr.data.datasets[0].data = pcrValues;
+            myChart_pcr.data.datasets[1].data = indexCloseValues;
+            myChart_pcr.update();
+        }
 
-    const arg = selectedSymbol || { nifty: 'niftyoilist', spot: 'NIFTY+50' }; // Use the selected symbol or default values if not available
+        // Fetch chart data from the server
+        function pcr_volume(pcr_chart_arg) {
+            $.ajax({
+                url: '/pcr_volume',
+                type: 'GET',
+                dataType: 'json',
+                data: { trade: pcr_chart_arg }, // Pass the argument in the data object
+                success: function (data) {
+                    console.log(data)
+                    updateChart_pcr(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
 
-    localStorage.setItem('barCount', barCount); // Save barCount in local storage
-
-    const expiryDateSelect = document.getElementById('expiryDate');
-    const expiryDate = expiryDateSelect.value;
-
-    if (expiryDate && !expiryDateSelect.disabled) {
-        localStorage.setItem('expiryDate', expiryDate); // Save expiryDate in local storage
-    } else {
-        localStorage.removeItem('expiryDate'); // Clear the expiry date from local storage
-    }
-
-    $.ajax({
-        url: "/filtered_oi_data",
-        type: "GET",
-        data: {
-            bar_count: barCount,
-            expiry_date: arg.nifty === 'finniftyoilist' ? null : localStorage.getItem('expiryDate'),
-            arg: JSON.stringify(arg)
-        },
-        dataType: "json",
-        success: function (response) {
-            const spotPrice = response.spot_price;
-            const closestPrices = response.closest_prices;
-            const callOI = response.calls_oi;
-            const putOI = response.puts_oi;
-            const dates_oi = response.dates;
-
-            let labels = [];
-            if (closestPrices && closestPrices.length > 0) {
-                labels = closestPrices.map(price => price.toString());
-            }
-
-            const data = {
-                labels: labels,
-                datasets: [
+        // Create the initial chart
+        const ctx = document.getElementById('myChart_pcr').getContext('2d');
+        const initialData = {
+            labels: [],
+            datasets: [
+                {
+                    label: 'PCR',
+                    data: [],
+                    yAxisID: 'pcr-axis',
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgb(75, 192, 192, 0.2)',
+                },
+                {
+                    label: 'Index Close',
+                    data: [],
+                    yAxisID: 'index-close-axis',
+                    borderColor: 'rgb(192, 75, 75)',
+                    backgroundColor: 'rgb(192, 75, 75, 0.2)',
+                }
+            ]
+        };
+        const initialOptions = {
+            responsive: true,
+            scales: {
+                yAxes: [
                     {
-                        label: 'Call OI',
-                        data: callOI,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
+                        id: 'pcr-axis',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'PCR Value'
+                        }
                     },
                     {
-                        label: 'Put OI',
-                        data: putOI,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
+                        id: 'index-close-axis',
+                        type: 'linear',
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Index Close'
+                        }
                     }
                 ]
-            };
-
-            const options = {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Strike Prices'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Call OI'
-                        }
-                    }
-                }
-            };
-
-            const chartElement = document.getElementById('chart');
-            if (window.barChart !== undefined) {
-                window.barChart.destroy();
             }
-            window.barChart = new Chart(chartElement, {
-                type: 'bar',
-                data: data,
-                options: options
-            });
+        };
+        myChart_pcr = new Chart(ctx, {
+            type: 'line',
+            data: initialData,
+            options: initialOptions
+        });
 
-            expiryDateSelect.innerHTML = '';
-            for (let i = 0; i < dates_oi.length; i++) {
-                const option = document.createElement('option');
-                option.value = dates_oi[i];
-                option.textContent = dates_oi[i];
-                if (dates_oi[i] === localStorage.getItem('expiryDate')) {
-                    option.selected = true;
-                }
-                expiryDateSelect.appendChild(option);
-            }
-        }
-    });
-}
+        // Fetch chart data on page load
+        pcr_volume('niftyvolumepcr');
 
-$(document).ready(function () {
-    const selectedSymbol = localStorage.getItem('selectedSymbol');
-    if (selectedSymbol) {
-        const arg = JSON.parse(selectedSymbol);
-        const barCount = localStorage.getItem('barCount');
-        document.getElementById('barCount').value = barCount || '15'; // Set barCount from local storage or default value
-        OI_symbols(arg.nifty, arg.spot);
-    } else {
-        updateChart();
-    }
-});
-</script>
+        // Fetch chart data every 5 seconds
+   
+    </script>
 </body>
 </html>

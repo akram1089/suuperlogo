@@ -1,90 +1,127 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Scale Stacking Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Stock Data</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <div class="symbols_chart">
-        <h5 onclick="symbol_pain('nifty')">Nifty</h5>
-        <h5 onclick="symbol_pain('banknifty')">Bank Nifty</h5>
-        <h5 onclick="symbol_pain('finnifty')">Fin Nifty</h5>
-    </div>
-    <canvas id="chart"></canvas>
-
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script>
-        var myChart;
+        $(document).ready(function () {
+            // Function to update the table data using AJAX
+            function updateTable(selectedOption) {
+                // Show the spinner
+                $("#spinner").show();
 
-        function symbol_pain(symbol) {
-            if (myChart) {
-                myChart.destroy();  // Destroy previous chart instance
+                $.ajax({
+                    url: "/only_buyers",
+                    type: "GET",
+                    data: { option: selectedOption }, // Pass the selected option as a parameter
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data["upper"][selectedOption]["data"]);
+                        // Hide the spinner
+                        $("#spinner").hide();
+
+                        // Clear the existing table rows
+                        var table = $("#stock_table_upper").DataTable();
+                        table.clear().draw();
+
+                        // Populate the table with the received data
+                        var stockData = data["upper"][selectedOption]["data"];
+
+                        for (var i = 0; i < stockData.length; i++) {
+                            var stock = stockData[i];
+                            table.row.add([
+                                stock.symbol,
+                                stock.series,
+                                stock.ltp,
+                                stock.change,
+                                stock.pChange,
+                                stock.priceBand,
+                                stock.highPrice,
+                                stock.lowPrice,
+                                stock.yearHigh,
+                                stock.yearLow,
+                                stock.totalTradedVol,
+                                stock.turnover
+                            ]).draw(false);
+                        }
+                    },
+                    error: function () {
+                        console.log("Error occurred while fetching data.");
+                    }
+                });
             }
 
-            $.ajax({
-                url: '{% url "scale_stacking_chart" %}',
-                type: 'GET',
-                data: {
-                    'symbol': symbol
-                },
-                dataType: 'json',
-                success: function(chartData) {
-                    var labels = chartData.labels;
-                    var ppValues = chartData.pp_values;
-                    var cpValues = chartData.cp_values;
+            // Function to save the dropdown selection to local storage
+            function saveSelection() {
+                var selectedOption = $("#data-dropdown-upper").val();
+                localStorage.setItem("selectedOption", selectedOption);
+            }
 
-                    var data = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'pp',
-                                data: ppValues,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'cp',
-                                data: cpValues,
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                borderWidth: 1
-                            }
-                        ]
-                    };
+            // Initial update of the table
+            var selectedOption = localStorage.getItem("selectedOption") || "AllSec";
+            $("#data-dropdown-upper").val(selectedOption);
 
-                    var options = {
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Strike Price'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'pp'
-                                }
-                            }
-                        }
-                    };
-
-                    var ctx = document.getElementById('chart').getContext('2d');
-                    myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: data,
-                        options: options
-                    });
-                },
-                error: function(xhr, errmsg, err) {
-                    console.log(errmsg);
-                }
+            $("#stock_table_upper").DataTable({
+                responsive: true
             });
-        }
 
-        // Initial chart rendering with default symbol
-        symbol_pain('nifty');
+            updateTable(selectedOption);
+
+            // Event listener for dropdown change
+            $("#data-dropdown-upper").change(function () {
+                var selectedOption = $(this).val();
+                updateTable(selectedOption);
+                saveSelection();
+            });
+        });
     </script>
+
+</head>
+
+<body>
+    <div class="only_buyers">
+        <div class="security_main d-flex justify-content-end mt-3">
+            <div class="form-group">
+                <label for="data-dropdown-upper">Select Option:</label>
+                <select id="data-dropdown-upper" class="form-control">
+                    <option value="AllSec">AllSec</option>
+                    <option value="SecGtr20">SecGtr20</option>
+                    <option value="SecLwr20">SecLwr20</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table id="stock_table_upper" class="table table-hover">
+                <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Series</th>
+                        <th>LTP</th>
+                        <th>Change</th>
+                        <th>PChange</th>
+                        <th>PriceBand</th>
+                        <th>HighPrice</th>
+                        <th>LowPrice</th>
+                        <th>YearHigh</th>
+                        <th>YearLow</th>
+                        <th>TotalTradedVol</th>
+                        <th>Turnover</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>
