@@ -2108,24 +2108,22 @@ def nifty_tracker(request):
     return render(request,"nifty_tracker.html")
 
 import datetime
-import pandas as pd 
+import pandas as pd
 
 def performance_chart(request):
     today = datetime.datetime.now().date()
-    yesterday = today - datetime.timedelta(days=1)
+    yesterday = today - datetime.timedelta(days=0)
     ts2 = str(int(datetime.datetime(yesterday.year, yesterday.month, yesterday.day).timestamp()))
 
     d_days = int(request.GET.get('days', '20'))  # Get the 'days' parameter from the request, defaulting to 20 if not provided
-    ts1 = str(int((datetime.datetime.now() - datetime.timedelta(days=d_days)).timestamp()))
-    print(d_days)
+    ts1 = str(int((datetime.datetime.now() - datetime.timedelta(days=d_days+1)).timestamp()))
 
     interval = '1d'
     history_data = request.GET.get('historical_symbols', '%5ENSEI')
-    print(history_data)  # Get the historical_symbols parameter from the request
     events = 'history'
 
-    url = 'https://query1.finance.yahoo.com/v7/finance/download/'+ history_data +'?period1='\
-           + ts1 + '&period2=' + ts2 + '&interval=' + interval + '&events=history&includeAdjustedClose=true'
+    url = 'https://query1.finance.yahoo.com/v7/finance/download/' + history_data + '?period1=' \
+          + ts1 + '&period2=' + ts2 + '&interval=' + interval + '&events=' + events + '&includeAdjustedClose=true'
 
     try:
         stockdata = pd.read_csv(url)
@@ -2135,7 +2133,15 @@ def performance_chart(request):
         dates = stockdata['Date'].dt.strftime('%b-%d').tolist()  # Update date format to '%b-%d'
         closes = stockdata['Close'].tolist()
         opens = stockdata['Open'].tolist()
-        differences = [abs(open - close) for open, close in zip(opens, closes)]
+
+        # Calculate the differences between today's close and the previous close
+        differences = []
+        for i in range(len(closes)):
+            if i > 0:
+                difference = closes[i] - closes[i-1]
+            else:
+                difference = 0  # For the first day, set the difference to 0
+            differences.append(difference)
 
         data = {
             'dates': dates,
@@ -2329,3 +2335,84 @@ def only_buyers(request):
         except AttributeError:
             # Return an empty JSON response if no saved data is available
             return JsonResponse([], safe=False)
+
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+import requests
+
+def index(request):
+    return render(request, 'index.html')
+
+def get_data_buildup(request):
+    buildup_type = request.GET.get('buildup_type', 'all')
+
+    if buildup_type == 'all':
+        urls = [
+            "https://trendlyne.com/futures-options/api-filter/futures/31-aug-2023-next/long_build_up/",
+            "https://trendlyne.com/futures-options/api-filter/futures/31-aug-2023-next/short_build_up/",
+            "https://trendlyne.com/futures-options/api-filter/futures/31-aug-2023-next/long_unwinding/",
+            "https://trendlyne.com/futures-options/api-filter/futures/31-aug-2023-next/short_covering/"
+        ]
+    else:
+        urls = [
+            f"https://trendlyne.com/futures-options/api-filter/futures/31-aug-2023-next/{buildup_type}/"
+        ]
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    data = []
+
+    for url in urls:
+        response = requests.get(url, headers=headers)
+        data_oi = response.json()
+
+        # Extract the desired values from data_oi
+        name_values_list = [
+            (
+                item[0]["name"],  # name
+                item[1],  # price
+                item[2],  # Date Chang
+                item[3],  # Volume Contracts
+                item[4],  # % Volume Contracts
+                item[6],  # OI
+                item[7],  # %OI
+                item[8],  # Basis
+                item[9],  # COC
+                item[10],  # Spot
+                item[11]  # Build Up
+            )
+            for item in data_oi["tableData"]
+        ]
+
+        data.extend(name_values_list)
+
+    response_data = {
+        "buildup_type": buildup_type,
+        "data": data,
+        "columns": [
+            "Name",
+            "Price",
+            "Date Change",
+            "Volume Contracts",
+            "% Volume Contracts",
+            "OI",
+            "%OI",
+            "Basis",
+            "COC",
+            "Spot",
+            "Build Up"
+        ]
+    }
+
+    return JsonResponse(response_data)
+
+
+def watch_list(request):
+    return render(request,"watch_list.html") 

@@ -88,6 +88,9 @@ path('nifty_tracker', views.nifty_tracker, name='nifty_tracker'),
 path('get_52_week_data', views.get_52_week_data, name='get_52_week_data'),
 path('get_52_week_low_data', views.get_52_week_low_data, name='get_52_week_low_data'),
 path('only_buyers', views.only_buyers, name='only_buyers'),
+path('get_data_buildup/', views.get_data_buildup, name='get_data_buildup'),
+path('watch_list', views.watch_list, name='watch_list'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

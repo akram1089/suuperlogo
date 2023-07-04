@@ -38,7 +38,7 @@
         }
 
         .main_inner_body {
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            {% comment %} box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; {% endcomment %}
             padding: 34px;
 
         }
@@ -156,7 +156,7 @@
                         data: {
                             labels: dates,
                             datasets: [{
-                                label: 'Open - Close',
+                                label: 'Prev Close - Today Close',
                                 data: differences,
                                 borderWidth: 1,
                                 borderColor: function (context) {

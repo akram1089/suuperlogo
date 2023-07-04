@@ -339,18 +339,66 @@
   <div class="resourses">
     <div class="dropdown">
       <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
+        Futures
+      </a>
+    
+      <ul class="dropdown-menu" id="resources_dropdown">
+        
+<div class="item_resources">
+      <h5 class="ms-2">Reference</h5>
+      <hr>
+      <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
+      <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
+      <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
+      <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
+
+</div>        
+    
+       
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="resourses">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
+        Options
+      </a>
+    
+      <ul class="dropdown-menu" id="resources_dropdown">
+        
+<div class="item_resources">
+      <h5 class="ms-2">Reference</h5>
+      <hr>
+      <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
+      <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
+      <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
+      <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
+
+</div>        
+    
+       
+      </ul>
+    </div>
+  </div>
+
+ 
+  <div class="resourses">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
         Resources
       </a>
     
       <ul class="dropdown-menu" id="resources_dropdown">
         
 <div class="item_resources">
-  <h5 class="ms-2">Reference</h5>
-  <hr>
-  <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
-  <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
-  <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
-  <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
+      <h5 class="ms-2">Reference</h5>
+      <hr>
+      <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
+      <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
+      <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
+      <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
 
 </div>        
     
@@ -516,6 +564,10 @@
         
 
 
+              <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/watch_list"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'watch_list' %}">          
+              <i class="bi bi-hdd-stack"></i><p>Watchlist</p>
+            </a>
               <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/stock_analysis"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'stock_analysis' %}">          
               <i class="bi bi-hdd-stack"></i><p>Stock Analysis</p>
@@ -750,6 +802,11 @@
     
     
         $('#nifty_ban_nifty').DataTable({
+          "pageLength": 10
+        });
+  
+    
+        $('#watch_list_table').DataTable({
           "pageLength": 10
         });
   
