@@ -157,6 +157,26 @@
   }
 </style>
 <style>
+  .dropstart .dropdown-toggle::before {
+    display: none !important;
+    margin-right: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid transparent;
+    border-right: 0.3em solid;
+    border-bottom: 0.3em solid transparent;
+}
+.market_action:hover #maket_action_dropdown{
+display: block;
+    right: 1;
+
+}
+#market_fav_bell:hover{
+  color: rgb(0, 191, 255);
+  cursor: pointer;
+ 
+}
+
   .filter_ipo_active {
     color: #011490;
     text-align: center;
@@ -378,7 +398,30 @@
                       <td class="text-success">${z.today_high}</td>
                       <td id="top_down_icon_market"><i class="bi bi-caret-${progress_market}-fill ${progress_market_color}"></i>${z.change_value}(${z.change_percent}%)</td>
                       <td>${z.prev_close}</td>
-                      <td>${z.today_volume}</td>
+                      <td>
+
+                        ${z.today_volume}
+                       
+                       </td>
+                       <td>
+                        <div class="market_action dropstart">
+                          <div  class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                          </div>
+                          <ul class="dropdown-menu" id="maket_action_dropdown">
+                            <li id="market_fav_bell" class="d-flex" style="font-size: 12px;gap: 0.2rem;font-weight: 600;align-items: baseline;justify-content: center;">
+                                <i class="bi bi-star fw-3"></i>
+                                <div> Add To Watchlist</div>
+                                </li>
+                                <hr style="margin: 0.5rem 0;">
+                            <li id="market_fav_bell" class="d-flex" style="font-size: 12px;gap: 0.2rem;font-weight: 600;align-items: baseline;justify-content: center;">
+                              <i class="bi bi-bell"></i>
+                                <div>Create Alert</div>
+                                </li>
+                          </ul>
+                        </div>
+                   
+                       </td>
                   </tr>`
             );
           });
@@ -780,6 +823,7 @@ padding: 25px;">
                 <th scope="col">Change %</th>
                 <th scope="col">Prev Close</th>
                 <th scope="col">Volume</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody id="top_gainers_table"></tbody>
@@ -892,7 +936,10 @@ padding: 25px;">
     <h4 class="my-3"> FUTURE OPEN INTEREST SCANS </h4>
 
     <div class="main_future_open d-flex gap-4 container"
-      style="justify-content: center;border-bottom: 1px solid lightgray;">
+      style="    justify-content: center;
+      overflow: auto;
+      border-bottom: 1px solid lightgray;
+      white-space: nowrap;">
 
       <div id="OI_gainer" onclick="future_filter('OI_gainer')"> OI Gainer</div>
       <div id="OI_loser" onclick="future_filter('OI_loser')">OI Loser</div>
@@ -904,7 +951,9 @@ padding: 25px;">
     </div>
 
 
-    <div id="OI_gainer_table">
+    <div id="OI_gainer_table" style="    display: block;
+    overflow: auto;
+">
 
 
       <table id="Oi_gainer_data" class="table  table-hover">
@@ -999,7 +1048,10 @@ padding: 25px;">
     </style>
 
     <div class="main_future_open d-flex gap-4 container"
-      style="justify-content: center;border-bottom: 1px solid lightgray;">
+      style="    overflow: auto;
+      white-space: nowrap;
+      justify-content: center;
+      border-bottom: 1px solid lightgray;">
 
       <div id="week_52_high" onclick="week_52filter('week_52_high')">52 Week High </div>
       <div id="week_52_low" onclick="week_52filter('week_52_low')">52 Week Low</div>
@@ -1020,7 +1072,7 @@ padding: 25px;">
         </div>
       </div>
 
-
+<div class="main_table_52 table-responsive">
       <table id="stock_table_52_high" class="mt-3 table table-hover">
         <thead style="background: #f1f5fa;border-bottom: 1px solid black !important;">
           <tr>
@@ -1042,7 +1094,7 @@ padding: 25px;">
           <!-- Table rows will be populated dynamically using JavaScript -->
         </tbody>
       </table>
-
+    </div>
     </div>
     <div class="week_52_low">
 
