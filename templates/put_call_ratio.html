@@ -141,7 +141,9 @@
     </div>
   </div>
   <div class="main_content_toggles">
-    <div class="mian_put_call_head d-flex justify-content-between">
+    <div class="mian_put_call_head d-flex justify-content-between" style="flex-wrap: wrap;
+    white-space: nowrap;
+    overflow: auto;">
       <div class="head_toggles d-flex gap-2 my-2">
         <h5 onclick="main_put('OI')" class="main_toggles main_toggles_active" id="oi">Open Interest</h5>
         <h5 onclick="main_put('C_OI')" class="main_toggles" id="coi">Change in OI</h5>
@@ -189,25 +191,20 @@
     </div>
 
     <div class="main_contents">
-      <div id="con_1" style="width: 67rem;
-      height: 30rem;">
+      <div id="con_1" style="height:65vh">
 
         <canvas id="chart"></canvas>
       </div>
-      <div id="con_2" style="width: 67rem;
-      height: 30rem;">
+      <div id="con_2" style="height:65vh">
 
         <canvas id="chart_OI_change"></canvas>
       </div>
-      <div id="con_3" style="width: 67rem;
-      height: 30rem;">
+      <div id="con_3" style="height:65vh">
 
         <canvas id="myChart"></canvas>
       </div>
-      <div id="con_4" style="width: 67rem;
-      height: 30rem;"><canvas id="myChart_pcr"></canvas></div>
-      <div id="con_5" style="width: 67rem;
-      height: 30rem;"><canvas id="chart_max_pain"></canvas></div>
+      <div id="con_4" style="height:65vh"><canvas id="myChart_pcr"></canvas></div>
+      <div id="con_5" style="height:65vh"><canvas id="chart_max_pain"></canvas></div>
     </div>
   </div>
 </div>
@@ -425,6 +422,8 @@
           },
           options: {
             responsive: true,
+    
+                maintainAspectRatio: false,
             scales: {
               yAxes: [{
                 id: 'pcr-axis',
@@ -499,6 +498,7 @@
         };
 
         var options = {
+          maintainAspectRatio: false,
           scales: {
             x: {
               title: {
@@ -587,6 +587,7 @@
   };
   const initialOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       yAxes: [
         {
@@ -733,6 +734,8 @@ $("#symbol_stocks").removeClass("symbol_active")
                   };
   
                   const options = {
+                    responsive: true,
+          maintainAspectRatio: false,
                       scales: {
                           x: {
                               title: {
@@ -890,7 +893,8 @@ $("#symbol_stocks").removeClass("symbol_active")
           ]
         };
 
-        const options = {
+        const options = { responsive: true,
+          maintainAspectRatio: false,
           scales: {
             x: {
               title: {
