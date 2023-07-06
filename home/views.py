@@ -2416,3 +2416,5 @@ def get_data_buildup(request):
 
 def watch_list(request):
     return render(request,"watch_list.html") 
+def port_folio_management(request):
+    return render(request,"port_folio_management.html") 

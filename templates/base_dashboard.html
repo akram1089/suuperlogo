@@ -59,9 +59,9 @@
     }
     .dropdown:hover #resources_dropdown {
       display: block;
-      left: -358px !important;
-      height: 250px;
-      width: 32rem !important;
+    left: -52rem !important;
+    width: 68rem !important;
+
     }
     .dropdown-menu[data-bs-popper] {
     display: none !important;
@@ -345,12 +345,169 @@
       <ul class="dropdown-menu" id="resources_dropdown">
         
 <div class="item_resources">
-      <h5 class="ms-2">Reference</h5>
-      <hr>
-      <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
-      <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
-      <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
-      <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
+  <div class="row px-2">
+        
+    <div class="col-3">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
+          Clickable link
+    
+       
+          
+        
+    
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'holiday' %}">
+          <i class="bi bi-caret-right-fill"></i>
+        Holiday
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations"  href="{% url 'rocket_call'  %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Rocket Call
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'bulk_deal_data_page' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          NSE Bulk Deals Data
+        </a>
+      
+  
+      </div>
+  
+  
+  
+  
+    </div>
+    <div class="col-3">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
+          Option Strategy
+        </h5>
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+          Stock Option Chart
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+          Stock Option Chain <span class="bg-primary text-light" style="    padding: 2px;
+          font-size: 10px;
+          border-radius: 50px;">Updated</span>
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+          Live Max Pain Chart For Derivative Stocks
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+     Option Strategies to Mint Money
+        </a>
+  
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+     Option Strategy Optimizer
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+     Options Simulators <span class="bg-primary text-light"  style="    padding: 2px;
+     font-size: 10px;
+     border-radius: 50px;">Beta</span>
+        </a>
+  
+      </div>
+  
+  
+  
+  
+    </div>
+    <div class="col-3">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
+          BankNifty
+        </h5>
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+        Bank Nifty Open Interest Live Chart 
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+          Bank Nifty  Change in Open Interest
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+        Bank Nifty PCR in Live Chart
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+        Bank Nifty Volume PCR Live Chart
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+          Bank Nifty Live Analysis
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+        Bank Nifty Multi Strike Comparison
+        </a>
+  
+      </div>
+  
+  
+  
+  
+    </div>
+    <div class="col-3">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
+          USD INR
+        </h5>
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+          USD INR Options Live
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+         USD INR Change in Option Interest Live
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations">
+          <i class="bi bi-caret-right-fill"></i>
+         USD INR Put Call Ratio
+        </a>
+     
+  
+      </div>
+  
+  
+  
+  
+    </div>
+  
+  
+  
+  
+  </div>
+    
 
 </div>        
     
@@ -368,18 +525,249 @@
     
       <ul class="dropdown-menu" id="resources_dropdown">
         
-<div class="item_resources">
-      <h5 class="ms-2">Reference</h5>
-      <hr>
-      <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
-      <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
-      <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
-      <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
-
-</div>        
-    
-       
-      </ul>
+        <div class="item_resources">
+          <style>
+            .drop_down_navigations{
+              margin-bottom: auto;
+              font-size: 12px;
+              margin-top: 6px;
+              font-weight: 600;
+              transition: 0.3s;
+              margin-bottom: auto;
+              text-decoration: none;
+              color: black;
+          cursor: pointer;
+            }
+            .drop_down_navigations:hover{
+        color: #2470dc;
+            }
+          </style>
+        <div class="row px-2">
+        
+          <div class="col-3">
+        
+            <div class="resources_head_ref">
+              <h5 class="fs-6">
+                <i class="bi bi-text-right"></i>
+                Nifty
+              </h5>
+            </div>
+            <hr class="m-1">
+        
+            <div class="inner_ref d-flex flex-column">
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Nifty Open Interest
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Nifty Change in Open Interest
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Nifty Option Chain Put Call Ratio
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Nifty Option Chain Put Call Ratio
+              </a>
+        
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Nifty Live Analysis
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Nifty Multi Strike Comparison
+              </a>
+        
+            </div>
+        
+        
+        
+        
+          </div>
+          <div class="col-3">
+        
+            <div class="resources_head_ref">
+              <h5 class="fs-6">
+                <i class="bi bi-text-right"></i>
+                Option Strategy
+              </h5>
+            </div>
+            <hr class="m-1">
+        
+            <div class="inner_ref d-flex flex-column">
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Stock Option Chart
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Stock Option Chain <span class="bg-primary text-light" style="    padding: 2px;
+                font-size: 10px;
+                border-radius: 50px;">Updated</span>
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Live Max Pain Chart For Derivative Stocks
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+           Option Strategies to Mint Money
+              </a>
+        
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+           Option Strategy Optimizer
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+           Options Simulators <span class="bg-primary text-light"  style="    padding: 2px;
+           font-size: 10px;
+           border-radius: 50px;">Beta</span>
+              </a>
+        
+            </div>
+        
+        
+        
+        
+          </div>
+          <div class="col-3">
+        
+            <div class="resources_head_ref">
+              <h5 class="fs-6">
+                <i class="bi bi-text-right"></i>
+                BankNifty
+              </h5>
+            </div>
+            <hr class="m-1">
+        
+            <div class="inner_ref d-flex flex-column">
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Bank Nifty Open Interest Live Chart 
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Bank Nifty  Change in Open Interest
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Bank Nifty PCR in Live Chart
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Bank Nifty Volume PCR Live Chart
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Bank Nifty Live Analysis
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Bank Nifty Multi Strike Comparison
+              </a>
+        
+            </div>
+        
+        
+        
+        
+          </div>
+          <div class="col-3">
+        
+            <div class="resources_head_ref">
+              <h5 class="fs-6">
+                <i class="bi bi-text-right"></i>
+                USD INR
+              </h5>
+            </div>
+            <hr class="m-1">
+        
+            <div class="inner_ref d-flex flex-column">
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                USD INR Options Live
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+               USD INR Change in Option Interest Live
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+               USD INR Put Call Ratio
+              </a>
+           
+        
+            </div>
+        
+        
+        
+        
+          </div>
+        
+        
+        
+        
+        </div>
+        <div class="row px-2 mt-3">
+        
+        
+          <div class="col-3">
+        
+            <div class="resources_head_ref">
+              <h5 class="fs-6">
+                <i class="bi bi-text-right"></i>
+                Fin Nifty
+              </h5>
+            </div>
+            <hr class="m-1">
+        
+            <div class="inner_ref d-flex flex-column">
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+                Fin Nifty Open Interest Tracker
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+               Fin Nifty Change in Open Interest
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+               Fin Nifty Option Put Call Ratio
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+              Fin Nifty Option Chain Put Call Ratio Volume
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+               Fin Nifty Live Analysis
+              </a>
+              <a style="margin-bottom: auto;" class="drop_down_navigations">
+                <i class="bi bi-caret-right-fill"></i>
+          Fin Nifty Multi Strike Comparison
+              </a>
+        
+            </div>
+        
+        
+        
+        
+          </div>
+      
+        
+        
+        
+        
+        </div>
+        
+        </div>        
+            
+               
+              </ul>
     </div>
   </div>
 
@@ -393,12 +781,289 @@
       <ul class="dropdown-menu" id="resources_dropdown">
         
 <div class="item_resources">
-      <h5 class="ms-2">Reference</h5>
-      <hr>
-      <li><a  class="dropdown-item" href=" {% url 'holiday' %}">Holiday</a></li>
-      <li><a  class="dropdown-item" href="">NSE F&O Lot Size</a></li>
-      <li><a  class="dropdown-item" href="{% url 'rocket_call'  %}">Rocket Call</a></li>
-      <li> <a  class="dropdown-item" href=" {% url 'bulk_deal_data_page' %}">NSE Bulk Deals Data</a> </li>
+  <style>
+    .drop_down_navigations{
+      margin-bottom: auto;
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: 600;
+      transition: 0.3s;
+      margin-bottom: auto;
+      text-decoration: none;
+      color: black;
+  cursor: pointer;
+    }
+    .drop_down_navigations:hover{
+color: #2470dc;
+    }
+  </style>
+<div class="row px-2">
+
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+        Reference
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Trading and Investment Terminology
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Investing Books
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Candlestick Patterns
+      </a>
+
+    </div>
+
+
+
+
+  </div>
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+        Brokers
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Brokers Directory
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Compare Brockers
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Stock Brockers in India
+      </a>
+
+    </div>
+
+
+
+
+  </div>
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+        Stocks Stats
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Volume Shockers
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Intraday Breakouts
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Gap Up,Gap Up Down Stocks
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Opening Price Clues
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Top Gainers Stocks
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Top Loser Stocks
+      </a>
+
+    </div>
+
+
+
+
+  </div>
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+        Calculators
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Option Pricing Calculators
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Fibonacci Calculators
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Pivot Calculators
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Developing Pivot Calculators
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Elliott Wave Fibonacci Clustor Calculators
+      </a>
+
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+</div>
+<div class="row px-2 mt-3">
+
+
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+        Stats
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        FII Activity F&O & cash
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        FII DII Activity
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       NSE F&O Lot Size | Nifty Trader
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       BSE NSE Hoidays List
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Commodity Trading Holidays
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Praticipant Wise OI
+      </a>
+
+    </div>
+
+
+
+
+  </div>
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+       Daily Stats
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       NSE Bulk Deals Data
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+      Ban List
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+      Derivatives Summary 
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+      Stock Futures
+      </a>
+
+
+    </div>
+
+
+
+
+  </div>
+  <div class="col-3">
+
+    <div class="resources_head_ref">
+      <h5 class="fs-6">
+        <i class="bi bi-text-right"></i>
+        Contributors
+      </h5>
+    </div>
+    <hr class="m-1">
+
+    <div class="inner_ref d-flex flex-column">
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Nifty 50 Contributors
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+        Nifty Next 50 Contributors
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Bank Nifty Contributors
+      </a>
+      <a style="margin-bottom: auto;" class="drop_down_navigations">
+        <i class="bi bi-caret-right-fill"></i>
+       Fin Nifty Contributors
+      </a>
+   
+
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+</div>
 
 </div>        
     
@@ -599,6 +1264,10 @@
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/Futures_Buildup"  %} active_dash {% endif %}" href="{% url 'Futures_Buildup' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-graph-up-arrow"></i><p>Futures Buildup  </p>
+            </a>
+            <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/port_folio_management"  %} active_dash {% endif %}" href="{% url 'port_folio_management' %}" style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-graph-up-arrow"></i><p>Portfolio Management  </p>
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/lot_size"  %} active_dash {% endif %}"  href="{% url 'lot_size' %}" style="padding: 10px 0 0px 23px;">          

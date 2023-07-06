@@ -90,6 +90,7 @@ path('get_52_week_low_data', views.get_52_week_low_data, name='get_52_week_low_d
 path('only_buyers', views.only_buyers, name='only_buyers'),
 path('get_data_buildup/', views.get_data_buildup, name='get_data_buildup'),
 path('watch_list', views.watch_list, name='watch_list'),
+path('port_folio_management', views.port_folio_management, name='port_folio_management'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
