@@ -2398,3 +2398,5 @@ def new_options_data(request):
 
 def options_simulator(request):
     return render(request, "options_simulator.html")
+def admin_report(request):
+    return render(request, "admin_report.html")

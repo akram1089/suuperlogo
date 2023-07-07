@@ -319,7 +319,7 @@
           </ul>
         </li>
         <li><a href="#"><i class='bx bx-network-chart icon'></i> Stratergy Management </a></li>
-        <li><a href="#"><i class='bx bxs-report icon'></i>  Reports  </a></li>
+        <li><a href="{% url 'admin_report' %}"  class="{% if request.path == "/admin_report"  %} active_outer_admin {% endif %}"><i class='bx bxs-report icon'></i>  Reports  </a></li>
       </ul>
   
     </section>

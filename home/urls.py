@@ -63,11 +63,14 @@ urlpatterns = [
     path('stock_analysis', views.stock_analysis, name='stock_analysis'),
     path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
 
-    path('put_call_ratio_chart', views.put_call_ratio_chart, name='put_call_ratio_chart'),
-    
+    path('put_call_ratio_chart', views.put_call_ratio_chart,
+         name='put_call_ratio_chart'),
+
     path('filtered_oi_data', views.filtered_oi_data, name='filtered_oi_data'),
-    path('filtered_oi_change_data', views.filtered_oi_change_data, name='filtered_oi_change_data'),
-    path('scale_stacking_chart', views.scale_stacking_chart, name='scale_stacking_chart'),
+    path('filtered_oi_change_data', views.filtered_oi_change_data,
+         name='filtered_oi_change_data'),
+    path('scale_stacking_chart', views.scale_stacking_chart,
+         name='scale_stacking_chart'),
     path('pcr_volume', views.pcr_volume, name='pcr_volume'),
 
     path('Edit_user_data/<str:id>', views.Edit_user_data, name='Edit_user_data'),
@@ -75,7 +78,8 @@ urlpatterns = [
     path('volume-shocker/', views.volume_shocker, name='volume_shocker'),
     path('admin_panel', views.admin_panel, name='admin_panel'),
     path('put_call_ratio', views.put_call_ratio, name='put_call_ratio'),
-    path('feedback_management', views.feedback_management, name='feedback_management'),
+    path('feedback_management', views.feedback_management,
+         name='feedback_management'),
     path('payments_details', views.payments_details, name='payments_details'),
 
 
@@ -83,16 +87,19 @@ urlpatterns = [
     path('oi_losers', views.oi_losers, name='oi_losers'),
     path('dii_fii', views.dii_fii, name='dii_fii'),
 
-path('performance_data', views.performance_chart, name='performance_chart'),
-path('nifty_tracker', views.nifty_tracker, name='nifty_tracker'),
-path('get_52_week_data', views.get_52_week_data, name='get_52_week_data'),
-path('get_52_week_low_data', views.get_52_week_low_data, name='get_52_week_low_data'),
-path('only_buyers', views.only_buyers, name='only_buyers'),
-path('get_data_buildup/', views.get_data_buildup, name='get_data_buildup'),
-path('watch_list', views.watch_list, name='watch_list'),
-path('port_folio_management', views.port_folio_management, name='port_folio_management'),
-path('options_simulator', views.options_simulator, name='options_simulator'),
-path('new_options_data', views.new_options_data, name='new_options_data'),
+    path('performance_data', views.performance_chart, name='performance_chart'),
+    path('nifty_tracker', views.nifty_tracker, name='nifty_tracker'),
+    path('get_52_week_data', views.get_52_week_data, name='get_52_week_data'),
+    path('get_52_week_low_data', views.get_52_week_low_data,
+         name='get_52_week_low_data'),
+    path('only_buyers', views.only_buyers, name='only_buyers'),
+    path('get_data_buildup/', views.get_data_buildup, name='get_data_buildup'),
+    path('watch_list', views.watch_list, name='watch_list'),
+    path('port_folio_management', views.port_folio_management,
+         name='port_folio_management'),
+    path('options_simulator', views.options_simulator, name='options_simulator'),
+    path('new_options_data', views.new_options_data, name='new_options_data'),
+    path('admin_report', views.admin_report, name='admin_report'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
