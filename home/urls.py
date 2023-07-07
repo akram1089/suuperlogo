@@ -91,6 +91,8 @@ path('only_buyers', views.only_buyers, name='only_buyers'),
 path('get_data_buildup/', views.get_data_buildup, name='get_data_buildup'),
 path('watch_list', views.watch_list, name='watch_list'),
 path('port_folio_management', views.port_folio_management, name='port_folio_management'),
+path('options_simulator', views.options_simulator, name='options_simulator'),
+path('new_options_data', views.new_options_data, name='new_options_data'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

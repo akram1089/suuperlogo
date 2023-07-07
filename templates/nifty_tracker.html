@@ -133,6 +133,7 @@
                 url: "{% url 'performance_chart' %}?historical_symbols=" + historical_symbols + "&days=" + days,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data)
                     var dates = data['dates'];
                     var closes = data['closes'].map(function (value) {
                         return value.toFixed(2); // Convert to two decimal places
@@ -141,7 +142,7 @@
                         return value.toFixed(2); // Convert to two decimal places
                     });
                     var differences = data['differences'].map(function (value) {
-                        return value.toFixed(2); // Convert to two decimal places
+                        return Math.abs(value.toFixed(2));
                     });
 
                     if (performanceChart) {

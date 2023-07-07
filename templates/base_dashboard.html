@@ -1266,6 +1266,10 @@ color: #2470dc;
               <i class="bi bi-graph-up-arrow"></i><p>Futures Buildup  </p>
             </a>
             <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/options_simulator"  %} active_dash {% endif %}" href="{% url 'options_simulator' %}" style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-graph-up-arrow"></i><p>Option Simulator </p>
+            </a>
+            <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/port_folio_management"  %} active_dash {% endif %}" href="{% url 'port_folio_management' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-graph-up-arrow"></i><p>Portfolio Management  </p>
             </a>

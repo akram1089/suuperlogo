@@ -1,6 +1,12 @@
+import datetime
+from .models import Only_buyers
+from .models import Stock_Low_Data
+from .models import StockData
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 import logging
 import random
-from datetime import datetime
+# from datetime import datetime
 from collections import defaultdict
 from decimal import Decimal
 from .models import Entrance
@@ -9,7 +15,7 @@ from .models import TradedVolume
 from .models import Top_Loser
 from .models import Top_Gainer
 from bs4 import BeautifulSoup
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 import uuid
 import json
@@ -53,7 +59,6 @@ User = get_user_model()
 #     symbols = df.to_dict(orient='records')
 
 #     return render(request, 'home.html', {'symbols': symbols})
- 
 
 
 def contact_us(request):
@@ -89,10 +94,11 @@ def contact_us(request):
 #     return render(request, 'features.html', {'symbols': symbols})
 
 def home(request):
-    return render(request,'home.html')
+    return render(request, 'home.html')
+
+
 def features(request):
-    return render(request,'features.html')
-    
+    return render(request, 'features.html')
 
 
 def use_cases_strategy(request):
@@ -109,13 +115,20 @@ def Strategy_builder_straddle(request):
 
 def Futures_Buildup(request):
     return render(request, "Futures_Buildup.html")
+
+
 def financial_result(request):
     return render(request, "financial_result.html")
+
+
 def reports(request):
     return render(request, "reports.html")
 
+
 def stock_scanner(request):
     return render(request, "stock_scanner.html")
+
+
 def rocket_call(request):
     return render(request, "rocket_call.html")
 
@@ -290,8 +303,6 @@ def get_chart_data():
         symbols_volume = [str(volume) for volume in traded_volumes]
 
         return symbols_volume, [float(volume.trade_volume) for volume in traded_volumes]
-
-
 
 
 # def dashboard(request):
@@ -524,7 +535,8 @@ def Open_interest_analysis(request):
                         info['instrumentType'] = j
                         ocdata.append(info)
             dataopt = pd.DataFrame(ocdata)
-            filtered_data_open = dataopt[dataopt['expiryDate'] == str(expiry_dates)]
+            filtered_data_open = dataopt[dataopt['expiryDate'] == str(
+                expiry_dates)]
             if not filtered_data_open.empty:
                 print(filtered_data_open)
                 filtered_datas = filtered_data_open.head(100)
@@ -607,11 +619,12 @@ def login_user(request):
         if user is not None:
             login(request, user)
             if request.user.is_superuser:
-                messages.success(request, 'You are successfully logged in as Admin')
+                messages.success(
+                    request, 'You are successfully logged in as Admin')
                 return redirect("/admin_panel")
             else:
-             messages.success(request, 'You are successfully logged in')
-             return redirect("/")
+                messages.success(request, 'You are successfully logged in')
+                return redirect("/")
         else:
             messages.error(request, 'Invalid credential')
             return redirect("/")
@@ -881,11 +894,6 @@ def market_wide_position(request):
 
     return render(request, "market_wide_position.html", context)
 
-import datetime
-import requests
-import pandas as pd
-from collections import defaultdict
-from django.shortcuts import render
 
 def dii_fii(request):
     url = "https://webapi.niftytrader.in/webapi/Resource/fii-cash-month?Date=2023-06"
@@ -937,7 +945,7 @@ def dii_fii(request):
     # Prepare the data for Chart.js
     labels_fii = dfii["created_at"].tolist()
     values_fii = dfii["net_value"].tolist()
-    
+
     filtered_data_fii = [
         (datetime.datetime.strptime(
             item["created_at"], "%Y-%m-%dT%H:%M:%S").strftime("%Y-%m-%d"), item["net_value"])
@@ -967,9 +975,6 @@ def dii_fii(request):
     }
 
     return render(request, 'dii_fii.html', context)
-
-
-
 
 
 def base(request):
@@ -1046,7 +1051,7 @@ def strategy_builder(request):
 
 
 def dashboard(request):
-    
+
     url = "https://etmarketsapis.indiatimes.com/ET_Stats/gainers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=desc&marketcap=largecap&duration=1d"
 
     headers = {
@@ -1070,7 +1075,6 @@ def dashboard(request):
     # Prepare data for Chart.js
     top_gainer_labels = top_10["companyShortName"].tolist()
     top_gainer_values = top_10["percentChange"].tolist()
-  
 
     url = "https://etmarketsapis.indiatimes.com/ET_Stats/losers?pagesize=25&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=asc&marketcap=largecap&duration=1d"
 
@@ -1109,7 +1113,8 @@ def dashboard(request):
     data_oi = response_oi.json()
 
     # Extract the name and value data_oi
-    name_value_list = [(item[0]["name"], item[7]) for item in data_oi["tableData"]]
+    name_value_list = [(item[0]["name"], item[7])
+                       for item in data_oi["tableData"]]
 
     # Create a pandas DataFrame
     df_oi = pd.DataFrame(name_value_list, columns=["name", "value"])
@@ -1133,7 +1138,8 @@ def dashboard(request):
     data_oi_loser = response_oi_loser.json()
 
     # Extract the name and value data_oi_loser
-    name_value_list = [(item[0]["name"], item[7]) for item in data_oi_loser["tableData"]]
+    name_value_list = [(item[0]["name"], item[7])
+                       for item in data_oi_loser["tableData"]]
 
     # Create a pandas DataFrame
     df_oi_loser = pd.DataFrame(name_value_list, columns=["name", "value"])
@@ -1145,8 +1151,6 @@ def dashboard(request):
     labels_oi_loser = top_10_df_oi_loser["name"].tolist()
     values_oi_loser = top_10_df_oi_loser["value"].tolist()
 
-
-
     context = {
         "looser_labels": looser_labels,
         "looser_values": looser_values,
@@ -1154,19 +1158,16 @@ def dashboard(request):
         "top_gainer_values": top_gainer_values,
         "labels_oi_gainer": labels_oi_gainer,
         "values_oi_losers": values_oi_losers,
-         "labels_oi_loser": labels_oi_loser,
+        "labels_oi_loser": labels_oi_loser,
         "values_oi_loser": values_oi_loser,
     }
     print(context)
 
-    return render(request, 'dashboard.html',context)
-
-
+    return render(request, 'dashboard.html', context)
 
 
 def market_glance(request):
     return render(request, "market_glance.html")
-
 
 
 def holiday(request):
@@ -1198,7 +1199,8 @@ def holiday(request):
     context = {
         'table_data': table_data
     }
-    return render(request ,"holiday.html",context)
+    return render(request, "holiday.html", context)
+
 
 def lot_size(request):
     url = "https://webapi.niftytrader.in/webapi/Resource/fno-lot-size"
@@ -1219,32 +1221,22 @@ def lot_size(request):
         symbol = d["symbol"]
         month_data_str = d["month_data"]
         month_data = eval(month_data_str)
-        row_data = [underlying,symbol] + list(month_data.values())
+        row_data = [underlying, symbol] + list(month_data.values())
         table_data.append(row_data)
 
-    headers = ["Underlying","Symbol"] + list(month_data.keys())
+    headers = ["Underlying", "Symbol"] + list(month_data.keys())
 
     context = {
         "headers": headers,
         "table_data": table_data,
     }
 
-    return render(request,"lot_size.html",context)
+    return render(request, "lot_size.html", context)
 
 
 def market_heavy(request):
-    return  render(request,"market_heavy.html")
+    return render(request, "market_heavy.html")
 
-
-
-
-
-
-import requests
-from django.http import JsonResponse
-from datetime import datetime
-import pandas as pd
-import datetime
 
 def bulk_deal_data(request):
     if request.method == 'GET':
@@ -1260,35 +1252,29 @@ def bulk_deal_data(request):
         response = requests.get(url, headers=headers)
         data = response.json()
 
-   
-        deal_dates = pd.to_datetime(data["resultData"]['deal_dates']).strftime('%Y-%m-%d').tolist()
+        deal_dates = pd.to_datetime(
+            data["resultData"]['deal_dates']).strftime('%Y-%m-%d').tolist()
 
-        
         deal_data = pd.DataFrame(data["resultData"]['deal_data'])
 
-        
-        deal_data['created_at'] = pd.to_datetime(deal_data['created_at']).dt.strftime('%Y-%m-%d')
+        deal_data['created_at'] = pd.to_datetime(
+            deal_data['created_at']).dt.strftime('%Y-%m-%d')
 
         if selected_date:
-           
-            selected_date = datetime.datetime.strptime(selected_date, '%Y-%m-%d')
-            deal_data = deal_data[deal_data['created_at'] == selected_date.date().strftime('%Y-%m-%d')]
 
-        
+            selected_date = datetime.datetime.strptime(
+                selected_date, '%Y-%m-%d')
+            deal_data = deal_data[deal_data['created_at']
+                                  == selected_date.date().strftime('%Y-%m-%d')]
+
         deal_data = deal_data.to_dict(orient='records')
 
         return JsonResponse({'deal_dates': deal_dates, 'deal_data': deal_data}, json_dumps_params={'indent': 2})
 
 
-
-
-        
-
 def bulk_deal_data_page(request):
     return render(request, 'bulk_deal_data.html')
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
+
 
 def base_dashboard1(request):
     url = "https://webapi.niftytrader.in/webapi/symbol/stock-index-data"
@@ -1306,13 +1292,19 @@ def base_dashboard1(request):
     niftybank_data = data['resultData'].get('niftybank', '')
     finnity_data = data['resultData'].get('finnity', '')
 
-    nifty50_difference = nifty50_data.get('last_trade_price', 0) - nifty50_data.get('prev_price', 0)
-    niftybank_difference = niftybank_data.get('last_trade_price', 0) - niftybank_data.get('prev_price', 0)
-    finnity_difference = finnity_data.get('last_trade_price', 0) - finnity_data.get('prev_price', 0)
+    nifty50_difference = nifty50_data.get(
+        'last_trade_price', 0) - nifty50_data.get('prev_price', 0)
+    niftybank_difference = niftybank_data.get(
+        'last_trade_price', 0) - niftybank_data.get('prev_price', 0)
+    finnity_difference = finnity_data.get(
+        'last_trade_price', 0) - finnity_data.get('prev_price', 0)
 
-    nifty50_percentage = (nifty50_difference / nifty50_data.get('prev_price', 1)) * 100
-    niftybank_percentage = (niftybank_difference / niftybank_data.get('prev_price', 1)) * 100
-    finnity_percentage = (finnity_difference / finnity_data.get('prev_price', 1)) * 100
+    nifty50_percentage = (nifty50_difference /
+                          nifty50_data.get('prev_price', 1)) * 100
+    niftybank_percentage = (niftybank_difference /
+                            niftybank_data.get('prev_price', 1)) * 100
+    finnity_percentage = (finnity_difference /
+                          finnity_data.get('prev_price', 1)) * 100
 
     stock_data = {
         'nifty50_data': nifty50_data,
@@ -1327,12 +1319,6 @@ def base_dashboard1(request):
     }
     return JsonResponse(stock_data)
 
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
-
-from django.http import JsonResponse
-import requests
 
 def global_market(request):
     url = "https://webapi.niftytrader.in/webapi/usstock/global-market"
@@ -1366,15 +1352,9 @@ def global_market(request):
     return JsonResponse({'tables': tables_data})
 
 
-
 def dashboard1(request):
     return render(request, 'dashboard1.html')
 
-
-
-import pandas as pd
-import requests
-from django.http import JsonResponse
 
 def market_actions(request):
     url = "https://webapi.niftytrader.in/webapi/symbol/top-gainers-data"
@@ -1406,10 +1386,6 @@ def market_actions(request):
     else:
         return JsonResponse({"error": "No data found in the response."})
 
-from django.http import JsonResponse
-import requests
-
-import pandas as pd
 
 def ban_list_dashboard(request):
     url = "https://webapi.niftytrader.in/webapi/Resource/ban-list"
@@ -1463,7 +1439,7 @@ def ban_list_dashboard(request):
 #         data = response.json()
 
 #         sme_records = [record for record in data["data"] if record["instrument"] == "SME"]
-      
+
 #         equity_records = [record for record in data["data"] if record["instrument"] == "Equity"]
 
 #         # Update the StockListing model with new data
@@ -1485,8 +1461,11 @@ def ban_list_dashboard(request):
 
 #     return JsonResponse({"sme_records": sme_records, "equity_records": equity_records})
 
+
 def admin_login(request):
-    return render(request,"admin_login.html")
+    return render(request, "admin_login.html")
+
+
 def admin_signup(request):
     if request.method == "POST":
         fname = request.POST["name"]
@@ -1518,15 +1497,17 @@ def admin_signup(request):
             messages.success(
                 request, 'You have successfully signed up as Admin , please login with Admin credential')
             redirect('/admin_login')
-    return render(request,"admin_signup.html")
-
+    return render(request, "admin_signup.html")
 
 
 def admin_reset(request):
-    return render(request,"admin_reset.html")
+    return render(request, "admin_reset.html")
+
+
 def manage_user(request):
     User_check = User.objects.all()
-    return render(request,"manage_user.html",{"User_check": User_check})
+    return render(request, "manage_user.html", {"User_check": User_check})
+
 
 def delete_user(request, id):
     if request.method == "POST":
@@ -1567,17 +1548,6 @@ def delete_user(request, id):
 #     return JsonResponse(data_oi_loser)
 
 
-
-
-
-
-
-
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
-
-
 def volume_shocker(request):
     url = "https://etmarketsapis.indiatimes.com/ET_Stats/volumeshocker?pagesize=25&exchange=nse&pageno=1&sortby=volume&sortorder=desc&avgvolumeover=DAY_3&marketcap=largecap"
     headers = {
@@ -1594,8 +1564,6 @@ def volume_shocker(request):
 
 # views.py
 
-from django.http import JsonResponse
-import requests
 
 def oi_gainers(request):
     url = "https://trendlyne.com/futures-options/api-filter/futures/27-jul-2023-next/oi_gainers/"
@@ -1649,6 +1617,8 @@ def oi_gainers(request):
     }
 
     return JsonResponse(response_data)
+
+
 def oi_losers(request):
     url = "https://trendlyne.com/futures-options/api-filter/futures/27-jul-2023-next/oi_losers/"
 
@@ -1703,23 +1673,12 @@ def oi_losers(request):
     return JsonResponse(response_data)
 
 
-
-from django.shortcuts import render
-import requests
 # from datetime import datetime
-
 
 
 def admin_panel(request):
     User_check = User.objects.all()
-    return render(request,"admin_panel.html",{"User_check": User_check})
-
-
-import datetime
-import json
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
+    return render(request, "admin_panel.html", {"User_check": User_check})
 
 
 def put_call_ratio_chart(request):
@@ -1734,14 +1693,15 @@ def put_call_ratio_chart(request):
     }
     response = requests.get(url, headers=headers)
     data = response.json()
-    
+
     pcr_values = []
     index_close_values = []
     time_values = []
     for result in data['resultData']["oiDatas"]:
         pcr_values.append(result['pcr'])
         index_close_values.append(result['index_close'])
-        time_value = datetime.datetime.strptime(result['time'], "%Y-%m-%dT%H:%M:%S")
+        time_value = datetime.datetime.strptime(
+            result['time'], "%Y-%m-%dT%H:%M:%S")
         time_values.append(time_value.strftime("%H:%M"))
 
     context = {
@@ -1749,14 +1709,13 @@ def put_call_ratio_chart(request):
         'index_close_values': index_close_values,
         'time_values': time_values,
     }
-    
+
     return JsonResponse(context)
+
 
 def put_call_ratio(request):
     return render(request, "put_call_ratio.html")
 
-
-from django.shortcuts import get_object_or_404
 
 def Edit_user_data(request, id):
     user = get_object_or_404(User, id=id)
@@ -1768,14 +1727,14 @@ def Edit_user_data(request, id):
         edit_country = request.POST.get('edit_country', '')
         edit_state = request.POST.get('edit_state', '')
         edit_status = request.POST.get('edit_status', '')
-        
+
         if edit_status == 'Active':
             user.is_active = True
         elif edit_status == 'Inactive':
             user.is_active = False
-        
+
         user.save()
-        
+
         user.full_name = edit_fullname
         user.email = edit_email
         user.phone_code = phone_code_edit
@@ -1783,7 +1742,7 @@ def Edit_user_data(request, id):
         user.country = edit_country
         user.state = edit_state
         user.save()
-        
+
         messages.success(request, 'Data has been successfully edited')
         return redirect('admin_panel')
 
@@ -1791,34 +1750,27 @@ def Edit_user_data(request, id):
 
 
 def feedback_management(request):
-    return render(request,"feedback_management.html")
-def payments_details(request):
-    return render(request,"payments_details.html")
+    return render(request, "feedback_management.html")
 
+
+def payments_details(request):
+    return render(request, "payments_details.html")
 
 
 def stock_analysis(request):
-    return render(request,"stock_analysis.html")
-
-
-
-
+    return render(request, "stock_analysis.html")
 
 
 def admin_dashboard(request):
-    return render(request,"admin_dashboard.html")
+    return render(request, "admin_dashboard.html")
 
-
-import requests
-import datetime
-from django.http import JsonResponse
-import json
 
 def filtered_oi_data(request):
-    expiry_date = request.GET.get("expiry_date")  # Retrieve the selected expiry date
+    # Retrieve the selected expiry date
+    expiry_date = request.GET.get("expiry_date")
     arg = request.GET.get("arg")  # Retrieve the arg parameter
     print(arg)  # Print the value of arg to the console
-    
+
     nifty_value = None
     spot_value = None
 
@@ -1893,7 +1845,8 @@ def filtered_oi_data(request):
             for result in dates_data.get("resultData", {}).get("oiExpiryDates", []):
                 date_str = result.split("T")[0]
                 date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
-                formatted_date = datetime.datetime.strftime(date_obj, "%Y-%m-%d")
+                formatted_date = datetime.datetime.strftime(
+                    date_obj, "%Y-%m-%d")
                 dates.append(formatted_date)
 
             context = {
@@ -1910,18 +1863,12 @@ def filtered_oi_data(request):
     return JsonResponse({'message': 'Data not available'})
 
 
-
-
-import requests
-import datetime
-from django.http import JsonResponse
-import json
-
 def filtered_oi_change_data(request):
-    expiry_date = request.GET.get("expiry_date")  # Retrieve the selected expiry date
+    # Retrieve the selected expiry date
+    expiry_date = request.GET.get("expiry_date")
     arg = request.GET.get("arg")  # Retrieve the arg parameter
     print(arg)  # Print the value of arg to the console
-    
+
     nifty_value = None
     spot_value = None
 
@@ -1930,8 +1877,6 @@ def filtered_oi_change_data(request):
         nifty_value = arg_dict.get("nifty")
         spot_value = arg_dict.get("spot")
     oi_url = f"https://webapi.niftytrader.in/webapi/option/oi-change-data/?reqType={nifty_value}&reqDate={expiry_date}"
-
-
 
     dates_url = f"https://webapi.niftytrader.in/webapi/option/oi-change-data/?reqType={nifty_value}&reqDate="
 
@@ -1951,7 +1896,6 @@ def filtered_oi_change_data(request):
 
     spot_url = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol={spot_value}"
 
-
     spot_response = requests.get(spot_url, headers=headers)
     spot_data = spot_response.json()
 
@@ -1959,7 +1903,7 @@ def filtered_oi_change_data(request):
     if result_data is not None:
         spot_price = result_data.get("last_trade_price")
         change_value = result_data.get("change_value")  # Added change_value
-        change_per = result_data.get("change_per") 
+        change_per = result_data.get("change_per")
         if spot_price is not None:
             closest_prices = []
             calls_oi = []
@@ -1997,14 +1941,15 @@ def filtered_oi_change_data(request):
             for result in dates_data.get("resultData", {}).get("oiExpiryDates", []):
                 date_str = result.split("T")[0]
                 date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
-                formatted_date = datetime.datetime.strftime(date_obj, "%Y-%m-%d")
+                formatted_date = datetime.datetime.strftime(
+                    date_obj, "%Y-%m-%d")
                 dates.append(formatted_date)
 
             context = {
                 'spot_price': spot_price,
                 'closest_prices': closest_prices,
                 'change_value': change_value,  # Added change_value
-                'change_per': change_per,  # 
+                'change_per': change_per,  #
                 'calls_oi': calls_oi,
                 'puts_oi': puts_oi,
                 'dates': dates
@@ -2013,12 +1958,6 @@ def filtered_oi_change_data(request):
 
     return JsonResponse({'message': 'Data not available'})
 
-
-
-import requests
-import pandas as pd
-from django.http import JsonResponse
-from django.shortcuts import render
 
 def scale_stacking_chart(request):
     symbol_pain = request.GET.get('symbol', 'nifty')
@@ -2039,10 +1978,12 @@ def scale_stacking_chart(request):
     result_data = data.get("resultData", [])
     if result_data:
         df = pd.DataFrame(result_data)
-        df["strike_price"] = df["strike_price"].astype(str)  # Convert "strike_price" column to strings
+        df["strike_price"] = df["strike_price"].astype(
+            str)  # Convert "strike_price" column to strings
         df = df[df["strike_price"] != "pp"]  # Filter out "pp" values
         df = df[df["strike_price"] != "cp"]  # Filter out "cp" values
-        df = df[~df["strike_price"].str.startswith("strike_price")]  # Filter out "strike_price" headers
+        # Filter out "strike_price" headers
+        df = df[~df["strike_price"].str.startswith("strike_price")]
 
         labels = df["strike_price"].tolist()
         pp_values = df["pp"].tolist()
@@ -2059,19 +2000,8 @@ def scale_stacking_chart(request):
         return JsonResponse({'message': 'No data available'})
 
 
-
-
-
-def chart_topgainer(request):
-    return render(request,"chart_topgainer.html")
-
-
-from django.http import JsonResponse
-import requests
-
 def pcr_volume(request):
     pcr_args = request.GET.get('trade', 'niftyvolumepcr')
-    
 
     url = f"https://webapi.niftytrader.in/webapi/option/oi-volume-data?reqType={pcr_args}"
     headers = {
@@ -2090,7 +2020,8 @@ def pcr_volume(request):
 
     for pcrdata in data["resultData"]:
         timestamp = pcrdata["time"]
-        time_parts = timestamp.split("T")[1].split(":")[:2]  # Extract hours and minutes
+        time_parts = timestamp.split("T")[1].split(
+            ":")[:2]  # Extract hours and minutes
         formatted_time = ":".join(time_parts)
         timestamps.append(formatted_time)
         pcr.append(pcrdata["pcr"])
@@ -2104,33 +2035,38 @@ def pcr_volume(request):
 
     return JsonResponse(chart_data)
 
-def nifty_tracker(request):
-    return render(request,"nifty_tracker.html")
 
-import datetime
-import pandas as pd
+def nifty_tracker(request):
+    return render(request, "nifty_tracker.html")
+
 
 def performance_chart(request):
     today = datetime.datetime.now().date()
     yesterday = today - datetime.timedelta(days=0)
-    ts2 = str(int(datetime.datetime(yesterday.year, yesterday.month, yesterday.day).timestamp()))
+    ts2 = str(int(datetime.datetime(yesterday.year,
+              yesterday.month, yesterday.day).timestamp()))
 
-    d_days = int(request.GET.get('days', '20'))  # Get the 'days' parameter from the request, defaulting to 20 if not provided
-    ts1 = str(int((datetime.datetime.now() - datetime.timedelta(days=d_days+1)).timestamp()))
+    # Get the 'days' parameter from the request, defaulting to 20 if not provided
+    d_days = int(request.GET.get('days', '20'))
+    ts1 = str(
+        int((datetime.datetime.now() - datetime.timedelta(days=d_days+1)).timestamp()))
 
     interval = '1d'
     history_data = request.GET.get('historical_symbols', '%5ENSEI')
     events = 'history'
 
     url = 'https://query1.finance.yahoo.com/v7/finance/download/' + history_data + '?period1=' \
-          + ts1 + '&period2=' + ts2 + '&interval=' + interval + '&events=' + events + '&includeAdjustedClose=true'
+          + ts1 + '&period2=' + ts2 + '&interval=' + interval + \
+        '&events=' + events + '&includeAdjustedClose=true'
 
     try:
         stockdata = pd.read_csv(url)
-        stockdata['Date'] = pd.to_datetime(stockdata['Date'])  # Convert 'Date' column to datetime format
+        # Convert 'Date' column to datetime format
+        stockdata['Date'] = pd.to_datetime(stockdata['Date'])
         stockdata = stockdata.dropna()  # Remove rows with NaN values
 
-        dates = stockdata['Date'].dt.strftime('%b-%d').tolist()  # Update date format to '%b-%d'
+        dates = stockdata['Date'].dt.strftime(
+            '%b-%d').tolist()  # Update date format to '%b-%d'
         closes = stockdata['Close'].tolist()
         opens = stockdata['Open'].tolist()
 
@@ -2140,8 +2076,14 @@ def performance_chart(request):
             if i > 0:
                 difference = closes[i] - closes[i-1]
             else:
-                difference = 0  # For the first day, set the difference to 0
+                difference = None  # For the first day, set the difference to None
             differences.append(difference)
+
+        # Skip the first values in the lists
+        dates = dates[1:]
+        closes = closes[1:]
+        opens = opens[1:]
+        differences = differences[1:]
 
         data = {
             'dates': dates,
@@ -2155,12 +2097,6 @@ def performance_chart(request):
         return JsonResponse({'error': 'Failed to fetch stock data'})
 
 
-from django.shortcuts import render
-from django.http import JsonResponse
-from .models import StockData
-import requests
-import json
-
 def get_52_week_data(request):
     url = "https://www.nseindia.com/api/live-analysis-52Week?index=high"
     headers = {
@@ -2169,7 +2105,7 @@ def get_52_week_data(request):
         "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive"
     }
-    
+
     try:
         response = requests.get(url, headers=headers)
         data = response.json()
@@ -2214,13 +2150,6 @@ def get_52_week_data(request):
             return JsonResponse([], safe=False)
 
 
-
-from django.shortcuts import render
-from django.http import JsonResponse
-from .models import Stock_Low_Data
-import requests
-import json
-
 def get_52_week_low_data(request):
     url = "https://www.nseindia.com/api/live-analysis-52Week?index=low"
     headers = {
@@ -2229,7 +2158,7 @@ def get_52_week_low_data(request):
         "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive"
     }
-    
+
     try:
         response = requests.get(url, headers=headers)
         data = response.json()
@@ -2274,16 +2203,6 @@ def get_52_week_low_data(request):
             return JsonResponse([], safe=False)
 
 
-
-
-
-
-from django.shortcuts import render
-from django.http import JsonResponse
-from .models import Only_buyers
-import requests
-import json
-
 def only_buyers(request):
     url = "https://www.nseindia.com/api/live-analysis-price-band-hitter"
     headers = {
@@ -2292,7 +2211,7 @@ def only_buyers(request):
         "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive"
     }
-    
+
     try:
         response = requests.get(url, headers=headers)
         data = response.json()
@@ -2337,13 +2256,9 @@ def only_buyers(request):
             return JsonResponse([], safe=False)
 
 
-
-from django.shortcuts import render
-from django.http import JsonResponse
-import requests
-
 def index(request):
     return render(request, 'index.html')
+
 
 def get_data_buildup(request):
     buildup_type = request.GET.get('buildup_type', 'all')
@@ -2415,6 +2330,71 @@ def get_data_buildup(request):
 
 
 def watch_list(request):
-    return render(request,"watch_list.html") 
+    return render(request, "watch_list.html")
+
+
 def port_folio_management(request):
-    return render(request,"port_folio_management.html") 
+    return render(request, "port_folio_management.html")
+
+
+def chart_topgainer(request):
+    return render(request, "chart_topgainer.html")
+
+
+def new_options_data(request):
+    symbol_name_url = "https://webapi.niftytrader.in/webapi/symbol/psymbol-list"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    response_symbol = requests.get(symbol_name_url, headers=headers)
+    data_option_symbol_name = response_symbol.json()
+
+    all_symbol_names = ["nifty", "banknifty", "finifty", "---"] + [op_symbol_name["symbol_name"] for op_symbol_name in data_option_symbol_name["resultData"]]
+
+
+    symbol = request.GET.get("symbol_op", "nifty")
+
+    date = request.GET.get("date_op", "")
+    print(symbol)
+    print(date)
+
+    url = f"https://webapi.niftytrader.in/webapi/option/fatch-option-chain?symbol={symbol}&expiryDate={date}"
+    print(url)
+
+    response = requests.get(url, headers=headers)
+    data_option_chain = response.json()
+    Symbol_expiry_date_op = []
+    Symbol_data_op = []
+
+    for dates_all in data_option_chain["resultData"]["opExpiryDates"]:
+        formatted_date = dates_all[:10]
+        Symbol_expiry_date_op.append(formatted_date)
+
+    for symbol_data_all in data_option_chain["resultData"]["opDatas"]:
+        Symbol_data_op.append(symbol_data_all)
+
+    spot_url = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol=NIFTY+50"
+    spot_response = requests.get(spot_url, headers=headers)
+    spot_json = spot_response.json()
+    spot__price = spot_json["resultData"]["last_trade_price"]
+
+    data = {
+        "Symbol_expiry_date_op": Symbol_expiry_date_op,
+        "Symbol_data_op": Symbol_data_op,
+        "symbol_names": all_symbol_names,
+        "spot__price": spot__price,
+    }
+
+    # Change symbol_names to lowercase
+    data["symbol_names"] = [symbol.lower() for symbol in all_symbol_names]
+
+    return JsonResponse(data, safe=False)
+
+
+def options_simulator(request):
+    return render(request, "options_simulator.html")
