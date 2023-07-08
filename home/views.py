@@ -2337,8 +2337,6 @@ def port_folio_management(request):
     return render(request, "port_folio_management.html")
 
 
-def chart_topgainer(request):
-    return render(request, "chart_topgainer.html")
 
 
 def new_options_data(request):
@@ -2400,3 +2398,38 @@ def options_simulator(request):
     return render(request, "options_simulator.html")
 def admin_report(request):
     return render(request, "admin_report.html")
+def feedback(request):
+    return render(request, "feedback.html")
+
+
+
+def chart_topgainer(request):
+    return render(request, "chart_topgainer.html")
+
+
+from django.http import JsonResponse
+import requests
+
+def stock_list(request):
+    stock_url = "https://webapi.niftytrader.in/webapi/Symbol/stock-list"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    stock_data = requests.get(stock_url, headers=headers)
+    stock_json = stock_data.json()
+
+    All_stocks = []
+    for stock in stock_json["resultData"]:
+        stock_info = {
+            "symbol_name": stock["symbol_name"],
+            "today_close": stock["today_close"],
+            "change_percent": stock["change_percent"]
+        }
+        All_stocks.append(stock_info)
+
+    return JsonResponse(All_stocks, safe=False)

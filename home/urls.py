@@ -100,6 +100,8 @@ urlpatterns = [
     path('options_simulator', views.options_simulator, name='options_simulator'),
     path('new_options_data', views.new_options_data, name='new_options_data'),
     path('admin_report', views.admin_report, name='admin_report'),
+    path('feedback', views.feedback, name='feedback'),
+    path('stock_list', views.stock_list, name='stock_list'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

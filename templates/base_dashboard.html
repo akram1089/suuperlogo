@@ -1400,6 +1400,10 @@ color: #2470dc;
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/help_support"  %} active_dash {% endif %}" href=" {% url 'help_support' %} "  style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-info-circle"></i><p>Help & Support</p>
             </a>
+            <a
+              class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/feedback"  %} active_dash {% endif %}" href=" {% url 'feedback' %} "  style="   padding: 10px 0 0px 23px;">          
+              <i class="bi bi-info-circle"></i><p>Feedback</p>
+            </a>
             {% comment %} <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-gear"></i><p>Settings</p>
