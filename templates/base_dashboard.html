@@ -336,8 +336,9 @@
   </a>
 
 
- <div class="dashboard_left_nav d-flex ">
+ <div class="dashboard_left_nav d-flex align-items-center ">
 
+  <a class="me-2  text-dark" style="text-decoration: none;" href="{% url 'blog_news' %}">Blogs</a>
  
   <div class="resourses">
     <div class="dropdown">
@@ -1460,6 +1461,8 @@ color: #2470dc;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script typ src=" {% static './js/main.js' %} "></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js" integrity="sha256-IMCPPZxtLvdt9tam8RJ8ABMzn+Mq3SQiInbDmMYwjDg=" crossorigin="anonymous"></script>  
+
     <script>
        
     $(document).ready(function () {

@@ -1,0 +1,64 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% block dashboard_body %}
+<div class="container mt-3 d-flex justify-content-between">
+    <div class="grettings d-flex gap-3">
+        <h5 class="text-primary">India News</h5>
+        <h5>World News</h5>
+    </div>
+    <div class="date-times">
+        view By language
+        <i class="bi bi-grid-3x3-gap-fill border p-2" style='width: 2rem;
+        height: 2rem;'></i>
+        <i class="bi bi-list border p-2" style='width: 2rem;
+        height: 2rem;'></i>
+        
+    </div>
+ </div>
+
+ <div class="trending-news">
+    <div class="container my-2 d-flex flex-wrap justify-content-between gap-2">
+        <div id="news-container" class="my-2 d-flex flex-wrap justify-content-between gap-2"></div>
+    </div>
+</div>
+
+ {% comment %} <div class="banner pt-5">
+    <img src="{% static 'C:\Users\DEEPAK\Desktop\NiftyTrader\static\images\upper-footer-banner.webp' %}" alt="" width="100%">
+ </div> {% endcomment %}
+
+ <div class="trading text-center p-5">
+    <h5 class="fw-bold">Trading and Investment Terminology</h5>
+ </div>
+ <script>
+    $(document).ready(function() {
+        function Get_news(params) {
+            
+       
+        $.ajax({
+            url: "/blog_news_data",  // URL mapped to the Django view function that returns the news data
+            method: "GET",
+            success: function(response) {
+                var newsContainer = $("#news-container");
+                $.each(response, function(index, item) {
+                    var newsCard = $("<div>").addClass("card").css("width", "18rem");
+                    var cardBody = $("<div>").addClass("card-body");
+                    var title = $("<h5>").addClass("card-title").text(item.title);
+                    var subtitle = $("<h6>").addClass("card-subtitle mb-2 text-muted").text("Card subtitle");
+                    var desc = $("<p>").addClass("card-text").text(item.description);
+
+                    cardBody.append(title, subtitle, desc);
+                    newsCard.append(cardBody);
+                    newsContainer.append(newsCard);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+    Get_news()
+    setInterval(Get_news, 60000);
+});
+
+</script>
+{% endblock dashboard_body %}

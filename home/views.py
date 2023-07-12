@@ -2040,62 +2040,6 @@ def nifty_tracker(request):
     return render(request, "nifty_tracker.html")
 
 
-def performance_chart(request):
-    today = datetime.datetime.now().date()
-    yesterday = today - datetime.timedelta(days=0)
-    ts2 = str(int(datetime.datetime(yesterday.year,
-              yesterday.month, yesterday.day).timestamp()))
-
-    # Get the 'days' parameter from the request, defaulting to 20 if not provided
-    d_days = int(request.GET.get('days', '20'))
-    ts1 = str(
-        int((datetime.datetime.now() - datetime.timedelta(days=d_days+1)).timestamp()))
-
-    interval = '1d'
-    history_data = request.GET.get('historical_symbols', '%5ENSEI')
-    events = 'history'
-
-    url = 'https://query1.finance.yahoo.com/v7/finance/download/' + history_data + '?period1=' \
-          + ts1 + '&period2=' + ts2 + '&interval=' + interval + \
-        '&events=' + events + '&includeAdjustedClose=true'
-
-    try:
-        stockdata = pd.read_csv(url)
-        # Convert 'Date' column to datetime format
-        stockdata['Date'] = pd.to_datetime(stockdata['Date'])
-        stockdata = stockdata.dropna()  # Remove rows with NaN values
-
-        dates = stockdata['Date'].dt.strftime(
-            '%b-%d').tolist()  # Update date format to '%b-%d'
-        closes = stockdata['Close'].tolist()
-        opens = stockdata['Open'].tolist()
-
-        # Calculate the differences between today's close and the previous close
-        differences = []
-        for i in range(len(closes)):
-            if i > 0:
-                difference = closes[i] - closes[i-1]
-            else:
-                difference = None  # For the first day, set the difference to None
-            differences.append(difference)
-
-        # Skip the first values in the lists
-        dates = dates[1:]
-        closes = closes[1:]
-        opens = opens[1:]
-        differences = differences[1:]
-
-        data = {
-            'dates': dates,
-            'closes': closes,
-            'opens': opens,
-            'differences': differences,
-        }
-
-        return JsonResponse(data)
-    except:
-        return JsonResponse({'error': 'Failed to fetch stock data'})
-
 
 def get_52_week_data(request):
     url = "https://www.nseindia.com/api/live-analysis-52Week?index=high"
@@ -2433,3 +2377,95 @@ def stock_list(request):
         All_stocks.append(stock_info)
 
     return JsonResponse(All_stocks, safe=False)
+
+
+
+
+def performance_chart(request):
+    today = datetime.datetime.now().date()
+    yesterday = today - datetime.timedelta(days=0)
+    ts2 = str(int(datetime.datetime(yesterday.year,
+              yesterday.month, yesterday.day).timestamp()))
+
+    # Get the 'days' parameter from the request, defaulting to 20 if not provided
+    d_days = int(request.GET.get('days', '20'))
+    ts1 = str(
+        int((datetime.datetime.now() - datetime.timedelta(days=d_days+1)).timestamp()))
+
+    interval = '1d'
+    history_data = request.GET.get('historical_symbols', '%5ENSEI')
+    events = 'history'
+    url = 'https://query1.finance.yahoo.com/v7/finance/download/' + history_data + '?period1=' \
+          + ts1 + '&period2=' + ts2 + '&interval=' + interval + \
+        '&events=' + events + '&includeAdjustedClose=true'
+    try:
+        stockdata = pd.read_csv(url)
+        stockdata['Date'] = pd.to_datetime(stockdata['Date'])
+        stockdata = stockdata.dropna() 
+        dates = stockdata['Date'].dt.strftime('%b-%d').tolist()  
+        closes = stockdata['Close'].tolist()
+        opens = stockdata['Open'].tolist()
+        differences = []
+        prev_close_today_open_diff = []
+        prev_close_today_open_diff_minus_diff = []  
+        prev_open = opens[:-1]  # Store previous open values
+        prev_close = closes[:-1]
+        prev_close_today_close=[] 
+        prev_close_today_open_diff_minus_diff_main=[]
+         # Store previous close values
+
+        for i in range(len(closes)):
+            if i > 0:
+                difference = closes[i] - closes[i-1]
+                prev_close_today_open = closes[i-1] - opens[i]
+                prev_close_today_close_inner = closes[i-1] - closes[i]
+                prev_close_today_close.append(prev_close_today_close_inner)
+                if difference is not None and prev_close_today_open is not None:
+                    prev_close_today_open_diff.append(prev_close_today_open)
+                    prev_close_today_open_diff_minus_diff.append(prev_close_today_open)  
+                    prev_close_today_open_diff_minus_diff_main.append(abs(prev_close_today_open) - abs(difference))  
+            else:
+                difference = None  
+            differences.append(difference)      
+        dates = dates[1:]
+        closes = closes[1:]
+        opens = opens[1:]
+        differences = differences[1:]
+        data = {
+            'dates': dates,
+            'closes': closes,
+            'opens': opens,
+            'differences': differences,
+            'prev_close_today_open_diff': prev_close_today_open_diff,
+            'prev_close_today_open_diff_minus_diff': prev_close_today_open_diff_minus_diff,
+            'prev_open': prev_open,
+            'prev_close': prev_close,
+            'prev_dates': dates[1:],
+            'prev_close_today_close':(prev_close_today_close),
+            'prev_close_today_open_diff_minus_diff_main':prev_close_today_open_diff_minus_diff_main
+        }
+
+        return JsonResponse(data)
+    except:
+        return JsonResponse({'error': 'Failed to fetch stock data'})
+
+
+import requests
+from django.http import JsonResponse
+
+def blog_news_data(request):
+    url = "https://newsapi.org/v2/top-headlines?country=In&apiKey=71c44e5689f5421b99dc55f6217b25ca"
+    cricket_news = requests.get(url).json()
+    a = cricket_news['articles']
+    data = []
+    for i in range(len(a)):
+        f = a[i]
+        data.append({
+            'title': f['title'],
+            'description': f['description'],
+            'imageUrl': f['urlToImage']
+        })
+    return JsonResponse(data, safe=False)
+
+def blog_news(request):
+    return render(request,"blog_news.html")
