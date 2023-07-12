@@ -104,6 +104,8 @@ urlpatterns = [
     path('stock_list', views.stock_list, name='stock_list'),
     path('blog_news', views.blog_news, name='blog_news'),
     path('blog_news_data', views.blog_news_data, name='blog_news_data'),
+    path('contributor', views.contributor, name='contributor'),
+    path('contributors_data', views.contributors_data, name='contributors_data'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
