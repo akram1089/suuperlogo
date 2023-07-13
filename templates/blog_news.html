@@ -1,6 +1,25 @@
 {% extends "base_dashboard.html" %}
 {% load static %}
 {% block dashboard_body %}
+<style>
+    .card{
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .card:hover{
+        box-shadow: rgba(0, 157, 255, 0.325) 0px 0px 8px 0px;
+    }
+    .card:hover .card-title{
+        color: rgb(0, 157, 255);
+     
+        
+    }
+    .card:hover .card{
+        border-color: rgb(0, 157, 255) !important;
+     
+        
+    }
+</style>
 <div class="container mt-3 d-flex justify-content-between">
     <div class="grettings d-flex gap-3">
         <h5 class="text-primary">India News</h5>
@@ -29,26 +48,32 @@
  <div class="trading text-center p-5">
     <h5 class="fw-bold">Trading and Investment Terminology</h5>
  </div>
- <script>
+<script>
     $(document).ready(function() {
-        function Get_news(params) {
-            
-       
+    function Get_news(params) {
         $.ajax({
-            url: "/blog_news_data",  // URL mapped to the Django view function that returns the news data
+            url: "/blog_news_data",  
             method: "GET",
             success: function(response) {
+                console.log(response);
                 var newsContainer = $("#news-container");
+                newsContainer.empty(); 
+                
                 $.each(response, function(index, item) {
                     var newsCard = $("<div>").addClass("card").css("width", "18rem");
                     var cardBody = $("<div>").addClass("card-body");
-                    var title = $("<h5>").addClass("card-title").text(item.title);
-                    var subtitle = $("<h6>").addClass("card-subtitle mb-2 text-muted").text("Card subtitle");
+                    var title = $("<h5 >").addClass("card-title").text(item.title);
+                    // var subtitle = $("<h6>").addClass("card-subtitle mb-2 text-muted").text("Card subtitle");
                     var desc = $("<p>").addClass("card-text").text(item.description);
 
-                    cardBody.append(title, subtitle, desc);
+                    cardBody.append(title, desc);
                     newsCard.append(cardBody);
                     newsContainer.append(newsCard);
+                    
+                   
+                    newsCard.on("click", function() {
+                        window.open(item.url, "_blank"); 
+                    });
                 });
             },
             error: function(xhr, status, error) {
@@ -56,7 +81,8 @@
             }
         });
     }
-    Get_news()
+
+    Get_news();
     setInterval(Get_news, 60000);
 });
 

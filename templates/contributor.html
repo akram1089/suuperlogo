@@ -5,123 +5,123 @@
 
 
 
-    <style>
-        .filter-btn {
-            padding: 0px 10px;
-            cursor: pointer;
-            color: #2196f3 !important;
-            transition: prop time;
-        }
+<style>
+    .filter-btn {
+        padding: 0px 10px;
+        cursor: pointer;
+        color: #2196f3 !important;
+        transition: prop time;
+    }
 
-        .active {
-            color: #666 !important;
-        }
+    .active {
+        color: #666 !important;
+    }
 
-        .contributor_name {
-            color: #232222 !important;
-        }
+    .contributor_name {
+        color: #232222 !important;
+    }
 
-        .nifty50 .contributor_name {
-            color: blue;
-        }
+    .nifty50 .contributor_name {
+        color: blue;
+    }
 
-        .niftynext50 .contributor_name {
-            color: green;
-        }
+    .niftynext50 .contributor_name {
+        color: green;
+    }
 
-        .banknifty .contributor_name {
-            color: orange;
-        }
+    .banknifty .contributor_name {
+        color: orange;
+    }
 
-        .finnifty .contributor_name {
-            color: purple;
-        }
+    .finnifty .contributor_name {
+        color: purple;
+    }
 
-        .filter-btn:nth-child(-n+3) {
-            border-right: 2px solid #666 !important;
-        }
+    .filter-btn:nth-child(-n+3) {
+        border-right: 2px solid #666 !important;
+    }
 
-        .first_title_filter_auto_refresh {
-            display: flex;
-            margin: 1rem 0;
-            padding: 0 1rem;
-            gap: 35rem;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-        }
+    .first_title_filter_auto_refresh {
+        display: flex;
+        margin: 1rem 0;
+        padding: 0 1rem;
+        column-gap: 35rem;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .net_contrib_start_end_date {
-            padding: 0 1rem;
-            margin: 0 0 1rem 0;
-            align-items: center;
-            justify-content: center;
-            gap: 36rem;
-        }
+    .net_contrib_start_end_date {
+        padding: 0 1rem;
+        margin: 0 0 1rem 0;
+        align-items: center;
+        justify-content: center;
+        column-gap: 35rem;
+    }
 
-        .right_filter_auto {
-            font-size: 12px;
-            font-weight: 600;
-            flex-wrap: wrap;
-        }
+    .right_filter_auto {
+        font-size: 12px;
+        font-weight: 600;
+        flex-wrap: wrap;
+    }
 
-        .start_date_contrib,
-        .end_date_contrib {
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
+    .start_date_contrib,
+    .end_date_contrib {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+    }
 
-        .right_start_end_date {
-            gap: 1rem;
-            white-space: nowrap;
-        }
+    .right_start_end_date {
+        gap: 1rem;
+        white-space: nowrap;
+    }
 
-        .main_table_contrib {
-            justify-content: center;
-            gap: 7rem;
-        }
+    .main_table_contrib {
+        justify-content: center;
+        gap: 7rem;
+    }
 
-        .text-success {
-            color: rgb(7, 210, 7) !important;
-        }
+    .text-success {
+        color: rgb(7, 210, 7) !important;
+    }
 
-        #table_1_head_contrib,
-        #table_2_head_contrib {
-            padding: 12px 15px !important;
-            font-size: 12px !important;
-            text-transform: uppercase !important;
-            background: #4399eb !important;
-            color: #fff !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.586) !important;
-        }
+    #table_1_head_contrib,
+    #table_2_head_contrib {
+        padding: 12px 15px !important;
+        font-size: 12px !important;
+        text-transform: uppercase !important;
+        background: #4399eb !important;
+        color: #fff !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.586) !important;
+    }
 
-        .bi-graph-up {
-            border: 0.5px solid rgba(128, 128, 128, 0.441);
-            padding: 3px 6px 3px 7px;
-            height: 28px;
-            width: 28px;
-            border-radius: 7px;
-            position: relative;
-            transition: 0.3s;
-        }
+    .bi-graph-up {
+        border: 0.5px solid rgba(128, 128, 128, 0.441);
+        padding: 3px 6px 3px 7px;
+        height: 28px;
+        width: 28px;
+        border-radius: 7px;
+        position: relative;
+        transition: 0.3s;
+    }
 
-        .bi-graph-up:hover {
-            background-color: dodgerblue;
-            color: white;
-            border: none;
-        }
+    .bi-graph-up:hover {
+        background-color: dodgerblue;
+        color: white;
+        border: none;
+    }
 
-        .text-bg-success {
-            color: #fff !important;
-            background-color: lightseagreen !important;
-        }
+    .text-bg-success {
+        color: #fff !important;
+        background-color: lightseagreen !important;
+    }
 
-        .badge {
-            padding: 8px 14px 8px 15px !important;
-            border-radius: 14px !important;
-        }
-    </style>
+    .badge {
+        padding: 8px 14px 8px 15px !important;
+        border-radius: 14px !important;
+    }
+</style>
 
 
 <body>
@@ -172,7 +172,7 @@
 
     <div class="main_table_contrib d-flex flex-wrap">
 
-        <div class="left_positive_table ">
+        <div class="left_positive_table " style="    overflow: auto;">
             <div class="main_positive_contrib_value d-flex justify-content-between mb-3 align-items-center">
                 <div class="head_table_title_icon_up d-flex  text-success align-items-center ">
                     <i class='bx bx-trending-up fs-3'></i>
@@ -450,7 +450,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="right_negative">
+        <div class="right_negative" style="    overflow: auto;">
             <div class="main_positive_contrib_value d-flex justify-content-between mb-3 align-items-center">
                 <div class="head_table_title_icon_up d-flex  text-danger align-items-center ">
                     <i class='bx bx-trending-down fs-3'></i>
@@ -778,7 +778,7 @@
                 success: function (response) {
                     var allDates = response.all_dates;
                     var dropdownOptions = "";
-                    for (var i = 1; i < allDates.length; i++) {
+                    for (var i = 0; i < allDates.length; i++) {
                         var option = "<option value='" + allDates[i] + "'";
                         if (allDates[i] === selectedDate_contrib) {
                             option += " selected";
@@ -838,13 +838,54 @@
                         filter: selectedFilter_contrib
                     },
                     success: function (response) {
-                        displayPositiveData(response.positive_price_difference);
-                        displayNegativeData(response.negative_price_difference);
+                        console.log(response.stocks_data);
+                        var All_stocks_data = {};
+
+                        // Create an object to store all stock data
+                        var All_stocks_data = {};
+
+                        // Loop through stocks_data to calculate price difference and merge data
+                        for (var i = 0; i < response.stocks_data.length; i++) {
+                            var stock = response.stocks_data[i];
+                            var closingPrice = stock.closing_price || 0;
+                            var lastTradePrice = stock.last_trade_price || 0;
+                            var priceDifference = lastTradePrice - closingPrice;
+
+                            stock.price_difference = priceDifference;
+                            stock.price_difference_percent = closingPrice !== 0 ? (priceDifference / closingPrice) * 100 : 0;
+
+                            // Merge stock data into All_stocks_data using symbol_name as key
+                            All_stocks_data[stock.symbol_name] = stock;
+                        }
+
+                        console.log("All Stocks Data:", All_stocks_data);
+
+                        // Split data into positive and negative priceDifference
+                        var positiveData = [];
+                        var negativeData = [];
+
+                        for (var symbol in All_stocks_data) {
+                            if (All_stocks_data.hasOwnProperty(symbol)) {
+                                var stockData = All_stocks_data[symbol];
+                                if (stockData.price_difference >= 0) {
+                                    positiveData.push(stockData);
+                                } else {
+                                    negativeData.push(stockData);
+                                }
+                            }
+                        }
+
+                        console.log("Positive Data:", positiveData);
+                        console.log("Negative Data:", negativeData);
+
+
+                        displayPositiveData(positiveData);
+                        displayNegativeData(negativeData);
                         $("#end_date").val(response.date_max)
 
                         // Calculate and display index
-                        var positiveIndex = calculateIndex(response.positive_price_difference);
-                        var negativeIndex = calculateIndex(response.negative_price_difference);
+                        var positiveIndex = calculateIndex(positiveData);
+                        var negativeIndex = calculateIndex(negativeData);
 
                         $(".positive_contribution").text("Positive Contributors (" + positiveIndex + ")");
                         $(".negative_contribution").text("Negative Contributors (" + negativeIndex + ")");

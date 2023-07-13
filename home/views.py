@@ -2454,7 +2454,7 @@ import requests
 from django.http import JsonResponse
 
 def blog_news_data(request):
-    url = "https://newsapi.org/v2/top-headlines?country=In&apiKey=71c44e5689f5421b99dc55f6217b25ca"
+    url = "https://newsapi.org/v2/top-headlines?country=In&category=business&apiKey=71c44e5689f5421b99dc55f6217b25ca"
     cricket_news = requests.get(url).json()
     a = cricket_news['articles']
     data = []
@@ -2463,7 +2463,8 @@ def blog_news_data(request):
         data.append({
             'title': f['title'],
             'description': f['description'],
-            'imageUrl': f['urlToImage']
+            'imageUrl': f['urlToImage'],
+            'url': f['url']
         })
     return JsonResponse(data, safe=False)
 
@@ -2489,103 +2490,97 @@ def get_all_dates():
     
     return all_dates
 
+import requests
+from django.http import JsonResponse
 
 def contributors_data(request):
-    selected_date = request.GET.get('date')
-    selected_filter = request.GET.get('filter','nifty50')
-    if not selected_date:
-        # Set initial selected date
-        all_dates = get_all_dates()  # Replace this with your code to fetch all available dates
-        if all_dates:
-            selected_date = all_dates[1]
-
-    print("Selected Date:", selected_date)
-    print("Selected Filter:", selected_filter)
-
-    url = f'https://webapi.niftytrader.in/webapi/Resource/{selected_filter}-float-data?Date={selected_date}'
-    url_date = f"https://webapi.niftytrader.in/webapi/Resource/{selected_filter}-date-List"
-    print(url)
-    print(url_date)
-
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive"
-    }
-
     try:
-        response = requests.get(url, headers=headers)
-        data = response.json()
-        response_date = requests.get(url_date, headers=headers)
-        data_date = response_date.json()
+        selected_date = request.GET.get('date')
+        selected_filter = request.GET.get('filter', 'nifty50')
+        if not selected_date:
+            # Set initial selected date
+            all_dates = get_all_dates()  # Replace this with your code to fetch all available dates
+            if all_dates:
+                selected_date = all_dates[1]
 
-        all_dates = []
-        for date in data_date["resultData"]["date"]:
-            all_dates.append(date)
+        print("Selected Date:", selected_date)
+        print("Selected Filter:", selected_filter)
 
-       
+        url = f'https://webapi.niftytrader.in/webapi/Resource/{selected_filter}-float-data?Date={selected_date}'
+        url_date = f"https://webapi.niftytrader.in/webapi/Resource/{selected_filter}-date-List"
+        print(url)
+        print(url_date)
 
-        print(all_dates[1])
-
-
-        date_max = data_date["resultData"]["max_date"]
-
-        stocks_data = data["resultData"]["startdate"]
-        stocks_data_ltp = data["resultData"]["enddate"]
-
-        stocks_data_symbol = []
-        for i in stocks_data:
-            stocks_data_symbol.append(i["symbol_name"])
-
-      
-        filtered_data = []
-        for stock in stocks_data_ltp:
-            if stock["symbol_name"] in stocks_data_symbol:
-                filtered_data.append(stock)
-
-   
-        for stock in stocks_data:
-            for filtered_stock in filtered_data:
-                if stock["symbol_name"] == filtered_stock["symbol_name"]:
-                    stock["last_trade_price"] = filtered_stock["last_trade_price"]
-                    break
-
-        
-        for stock in stocks_data:
-            stock["price_difference"] = stock["last_trade_price"] - stock.get("closing_price", 0)
-            if stock.get("closing_price", 0) != 0:
-                stock["price_difference_percent"] = (stock["price_difference"] / stock["closing_price"]) * 100
-            else:
-                stock["price_difference_percent"] = 0
-
-     
-        positive_price_difference = []
-        negative_price_difference = []
-        for stock in stocks_data:
-            if stock["price_difference"] >= 0:
-                positive_price_difference.append(stock)
-            elif stock["price_difference"] < 0:
-                negative_price_difference.append(stock)
-
-        data_dict = {
-            "all_dates": all_dates,
-            "date_max": date_max,
-            "positive_price_difference": positive_price_difference,
-            "negative_price_difference": negative_price_difference
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive"
         }
 
-      
-        return JsonResponse(data_dict)
+        response = requests.get(url, headers=headers)
+        response_date = requests.get(url_date, headers=headers)
+
+        if response.status_code == 200 and response_date.status_code == 200:
+            data = response.json()
+            data_date = response_date.json()
+
+            all_dates = data_date.get("resultData", {}).get("date", [])
+            if not all_dates:
+                error_dict = {
+                    "error": "No dates available"
+                }
+                return JsonResponse(error_dict, status=500)
+
+            print(all_dates[1])
+
+            date_max = data_date.get("resultData", {}).get("max_date")
+
+            stocks_data = data.get("resultData", {}).get("startdate", [])
+            stocks_data_ltp = data.get("resultData", {}).get("enddate", [])
+            # print(date_max)
+    
+            # print(stocks_data_ltp)
+
+            stocks_data_symbol = [stock["symbol_name"] for stock in stocks_data]
+
+            filtered_data = [stock for stock in stocks_data_ltp if stock["symbol_name"] in stocks_data_symbol]
+
+            for stock in stocks_data:
+                for filtered_stock in filtered_data:
+                    if stock["symbol_name"] == filtered_stock["symbol_name"]:
+                        stock["last_trade_price"] = filtered_stock["last_trade_price"]
+                        break
+
+
+               
+
+            # positive_price_difference = [stock for stock in stocks_data if stock["price_difference"] >= 0]
+            # negative_price_difference = [stock for stock in stocks_data if stock["price_difference"] < 0]
+
+            data_dict = {
+                "all_dates": all_dates,
+                "date_max": date_max,
+                "stocks_data":stocks_data,
+                
+     
+            }
+            # print(stocks_data)
+
+            return JsonResponse(data_dict)
+
+        else:
+            error_dict = {
+                "error": "Invalid API response"
+            }
+            return JsonResponse(error_dict, status=500)
 
     except requests.exceptions.RequestException as e:
-        
         error_dict = {
             "error": str(e)
         }
         return JsonResponse(error_dict, status=500)
     except (KeyError, ValueError) as e:
-
         error_dict = {
             "error": "Invalid API response format"
         }
