@@ -441,6 +441,33 @@
       <div class="resources_head_ref">
         <h5 class="fs-6">
           <i class="bi bi-text-right"></i>
+          Futures Analysis
+        </h5>
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations"  href="{% url 'Futures_Buildup' %}">
+          <i class="bi bi-caret-right-fill"></i>
+        Future Buildup
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'dashboard' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Future Dashboard
+        </a>
+     
+  
+      </div>
+  
+  
+  
+  
+    </div>
+    <div class="col-3">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
           BankNifty
         </h5>
       </div>
@@ -532,21 +559,21 @@
             <hr class="m-1">
         
             <div class="inner_ref d-flex flex-column">
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
                 Nifty Open Interest
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
               Nifty Change in Open Interest
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
               Nifty Option Chain Put Call Ratio
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
-                Nifty Option Chain Put Call Ratio
+                Nifty Option Chain Put Call Ratio Volume
               </a>
         
               <a style="margin-bottom: auto;" class="drop_down_navigations">
@@ -594,17 +621,20 @@
            Option Strategies to Mint Money
               </a>
         
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'strategy_builder' %}">
                 <i class="bi bi-caret-right-fill"></i>
-           Option Strategy Optimizer
+           Option Strategy Builder
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'options_simulator' %}">
                 <i class="bi bi-caret-right-fill"></i>
            Options Simulators <span class="bg-primary text-light"  style="    padding: 2px;
            font-size: 10px;
            border-radius: 50px;">Beta</span>
               </a>
-        
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'Open_interest_analysis' %}">
+                <i class="bi bi-caret-right-fill"></i>
+           Open Interest Analysis
+          </a>
             </div>
         
         
@@ -622,19 +652,19 @@
             <hr class="m-1">
         
             <div class="inner_ref d-flex flex-column">
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
               Bank Nifty Open Interest Live Chart 
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
                 Bank Nifty  Change in Open Interest
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
               Bank Nifty PCR in Live Chart
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
               Bank Nifty Volume PCR Live Chart
               </a>
@@ -670,19 +700,19 @@
             <hr class="m-1">
         
             <div class="inner_ref d-flex flex-column">
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
                 Fin Nifty Open Interest Tracker
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
                Fin Nifty Change in Open Interest
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
                Fin Nifty Option Put Call Ratio
               </a>
-              <a style="margin-bottom: auto;" class="drop_down_navigations">
+              <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
                 <i class="bi bi-caret-right-fill"></i>
               Fin Nifty Option Chain Put Call Ratio Volume
               </a>
@@ -906,11 +936,11 @@ color: #2470dc;
         <i class="bi bi-caret-right-fill"></i>
         FII Activity F&O & cash
       </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
+      <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'dii_fii' %}">
         <i class="bi bi-caret-right-fill"></i>
         FII DII Activity
       </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
+      <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'lot_size' %}">
         <i class="bi bi-caret-right-fill"></i>
        NSE F&O Lot Size | Nifty Trader
       </a>
@@ -944,11 +974,11 @@ color: #2470dc;
     <hr class="m-1">
 
     <div class="inner_ref d-flex flex-column">
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
+      <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'bulk_deal_data_page' %}">
         <i class="bi bi-caret-right-fill"></i>
        NSE Bulk Deals Data
       </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
+      <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'dashboard1' %}#ban-lists">
         <i class="bi bi-caret-right-fill"></i>
       Ban List
       </a>
@@ -1023,8 +1053,14 @@ color: #2470dc;
     <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="#">Account Details</a></li>
       <!-- <li><a class="dropdown-item" href="{% url 'holiday' %}">Holiday</a></li> -->
-      <li><a class="dropdown-item" href="#">Support</a></li>
+      <!-- <li><a class="dropdown-item" href="#">Support</a></li> -->
       <li><a class="dropdown-item" href="#">Notifications</a></li>
+      <li><a class="dropdown-item" href="{% url 'my_portfolio' %}">My portfolio</a></li>
+      <li><a class="dropdown-item" href=" {% url 'watch_list' %} ">My Watchlist</a></li>
+
+      <li><a class="dropdown-item" href=" {% url 'reports' %} ">Profit & Loss</a></li>
+      <li><a class="dropdown-item" href="{% url 'my_strategies' %}">My Statergies</a></li>
+
       <!-- <li><a class="dropdown-item" href="#">About Us</a></li> -->
       <!-- <li><a class="dropdown-item" href="#">What's New</a></li> -->
       <!-- <li><a class="dropdown-item" href="#">Help & FAQ</a></li> -->
@@ -1103,10 +1139,14 @@ color: #2470dc;
                     <li><a class="dropdown-item" href="{% url 'holiday' %}">Holiday</a></li>
                     <li><a class="dropdown-item" href="#">Support</a></li>
                     <li><a class="dropdown-item" href="#">Notifications</a></li>
-                    <li><a class="dropdown-item" href="#">About Us</a></li>
+                    <li><a class="dropdown-item" href="ur ">Watchlist</a></li>
+                    <li><a class="dropdown-item" href="#">Profit & Loss</a></li>
+                    <li><a class="dropdown-item" href="#">My Statergies</a></li>
+                    <li><a class="dropdown-item" href="#">My Portfolio</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">About Us</a></li>
                     <li><a class="dropdown-item" href="#">What's New</a></li>
                     <li><a class="dropdown-item" href="#">Help & FAQ</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li> -->
                     
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout_user' %}">Logout </a></li>
@@ -1124,10 +1164,14 @@ color: #2470dc;
                       <li><a class="dropdown-item" href="{% url 'holiday' %}">Holiday</a></li>
                       <li><a class="dropdown-item" href="#">Support</a></li>
                       <li><a class="dropdown-item" href="#">Notifications</a></li>
-                      <li><a class="dropdown-item" href="#">About Us</a></li>
+                      <li><a class="dropdown-item" href="#">Watchlist</a></li>
+                      <li><a class="dropdown-item" href="#">Profit & Loss</a></li>
+                      <li><a class="dropdown-item" href="#">My Statergies</a></li>
+                      <li><a class="dropdown-item" href="#">My Portfolio</a></li>
+                      <!-- <li><a class="dropdown-item" href="#">About Us</a></li>
                       <li><a class="dropdown-item" href="#">What's New</a></li>
                       <li><a class="dropdown-item" href="#">Help & FAQ</a></li>
-                      <li><a class="dropdown-item" href="#">Settings</a></li>
+                      <li><a class="dropdown-item" href="#">Settings</a></li> -->
                       
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="{% url 'logout_user' %}">Logout </a></li>
@@ -1152,12 +1196,12 @@ color: #2470dc;
               
                 <a
                 class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/dashboard1"  %} active_dash {% endif %} " href=" {% url 'dashboard1' %}" style="   padding: 10px 0 0px 23px;">          
-                <i class="bi bi-house-door"></i><p>Dashboard 1</p>
+                <i class="bi bi-house-door"></i><p>Dashboard </p>
               </a>
-                <a
+                <!-- <a
                 class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/dashboard"  %} active_dash {% endif %} " href=" {% url 'dashboard' %}" style="   padding: 10px 0 0px 23px;">          
                 <i class="bi bi-house-door"></i><p>Dashboard</p>
-              </a>
+              </a> -->
 
               {% if request.user.is_superuser %}
           
@@ -1172,23 +1216,23 @@ color: #2470dc;
           {% endif %}
         
 
-
+<!-- 
               <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/watch_list"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'watch_list' %}">          
               <i class="bi bi-hdd-stack"></i><p>Watchlist</p>
-            </a>
+            </a> -->
               <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/stock_analysis"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'stock_analysis' %}">          
               <i class="bi bi-hdd-stack"></i><p>Stock Analysis</p>
             </a>
-              <a
+              <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/put_call_ratio"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'put_call_ratio' %}">          
               <i class="bi bi-hdd-stack"></i><p>Put Call Ratio</p>
-            </a>
-              <a
+            </a> -->
+              <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/my_strategies"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'my_strategies' %}">          
               <i class="bi bi-hdd-stack"></i><p>My Strategies</p>
-            </a>
+            </a> -->
               <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/nifty_tracker"  %} active_dash {% endif %} " style="   padding: 10px 0 0px 23px;" href="{% url 'nifty_tracker' %}">          
               <i class="bi bi-hdd-stack"></i><p>Nifty Tracker</p>
@@ -1201,34 +1245,34 @@ color: #2470dc;
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/market_heavy"  %} active_dash {% endif %}"  href="{% url 'market_heavy' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-shop"></i><p>Market Heavyweight</p>
             </a>
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/my_portfolio"  %} active_dash {% endif %}" href="{% url 'my_portfolio' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-graph-up-arrow"></i><p>My portfolio </p>
-            </a>
-            <a
+            </a> -->
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/Futures_Buildup"  %} active_dash {% endif %}" href="{% url 'Futures_Buildup' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-graph-up-arrow"></i><p>Futures Buildup  </p>
-            </a>
-            <a
+            </a> -->
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/options_simulator"  %} active_dash {% endif %}" href="{% url 'options_simulator' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-graph-up-arrow"></i><p>Option Simulator </p>
-            </a>
+            </a> -->
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/port_folio_management"  %} active_dash {% endif %}" href="{% url 'port_folio_management' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-graph-up-arrow"></i><p>Portfolio Management  </p>
             </a>
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/lot_size"  %} active_dash {% endif %}"  href="{% url 'lot_size' %}" style="padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>NSE F&O Lot Size  </p>
-            </a>
+            </a> -->
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>Vix @ Index  </p>
             </a>
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/dii_fii"  %} active_dash {% endif %}" href="{% url 'dii_fii' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>FII and DII Activity  </p>
-            </a>
+            </a> -->
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-shop-window"></i><p>Pre-open market  </p>
@@ -1242,10 +1286,10 @@ color: #2470dc;
               <i class="bi bi-people-fill"></i><p>Community  </p>
             </a>
 
-            <a
+            <!-- <a
             class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/strategy_builder"  %} active_dash {% endif %} " href={% url 'strategy_builder' %} style="   padding: 10px 0 0px 23px;">          
             <i class="bi bi-lock"></i><p>Strategy Builder  </p>
-          </a>
+          </a> -->
             <a
             class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/stock_scanner"  %} active_dash {% endif %} " href={% url 'stock_scanner' %} style="   padding: 10px 0 0px 23px;">          
             <i class="bi bi-search"></i><p>Stock Scanner  </p>
@@ -1266,14 +1310,14 @@ color: #2470dc;
 
 
 
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2
               
               {% if request.path == "/Open_interest_analysis"  %} active_dash {% endif %} "
               href=" {% url 'Open_interest_analysis' %}
               " href="{% url 'Open_interest_analysis' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-pie-chart"></i><p>Open Interest Analysis   </p>
-            </a>
+            </a> -->
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/Algo_market_place"  %} active_dash {% endif %}" href="{% url 'Algo_market_place' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-map"></i><p>Algo Market Place   </p>
@@ -1333,18 +1377,18 @@ color: #2470dc;
 
 
 
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/reports"  %} active_dash {% endif %}" href=" {% url 'reports' %} "  style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-flag"></i><p>Profit & Loss </p>
-            </a>
-            <a
+            </a> -->
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/help_support"  %} active_dash {% endif %}" href=" {% url 'help_support' %} "  style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-info-circle"></i><p>Help & Support</p>
             </a>
             <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2   {% if request.path == "/feedback"  %} active_dash {% endif %}" href=" {% url 'feedback' %} "  style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-info-circle"></i><p>Feedback</p>
-            </a>
+            </a> -->
             {% comment %} <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-gear"></i><p>Settings</p>

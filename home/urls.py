@@ -106,6 +106,7 @@ urlpatterns = [
     path('blog_news_data', views.blog_news_data, name='blog_news_data'),
     path('contributor', views.contributor, name='contributor'),
     path('contributors_data', views.contributors_data, name='contributors_data'),
+    path('future_data_chart', views.future_data_chart, name='future_data_chart'),
 #     path('contrib_test', views.contrib_test, name='contrib_test'),
 
 

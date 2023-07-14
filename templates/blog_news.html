@@ -2,24 +2,43 @@
 {% load static %}
 {% block dashboard_body %}
 <style>
-    .card{
+    .card {
         cursor: pointer;
         transition: 0.3s;
     }
-    .card:hover{
+
+    .card:hover {
         box-shadow: rgba(0, 157, 255, 0.325) 0px 0px 8px 0px;
     }
-    .card:hover .card-title{
+
+    .card:hover .card-title {
         color: rgb(0, 157, 255);
-     
-        
     }
-    .card:hover .card{
+
+    .card:hover .card {
         border-color: rgb(0, 157, 255) !important;
-     
-        
+    }
+
+    .placeholder-glow {
+        background: linear-gradient(to right, #f0f0f0 0%, #f8f8f8 20%, #f0f0f0 40%, #f0f0f0 100%);
+        background-size: 1000px 100%;
+        display: inline-block;
+        position: relative;
+        animation: placeholderGlow 1.5s infinite linear;
+        width: 100%;
+    }
+
+    @keyframes placeholderGlow {
+        0% {
+            background-position: -500px 0;
+        }
+
+        100% {
+            background-position: 500px 0;
+        }
     }
 </style>
+
 <div class="container mt-3 d-flex justify-content-between">
     <div class="grettings d-flex gap-3">
         <h5 class="text-primary">India News</h5>
@@ -27,64 +46,154 @@
     </div>
     <div class="date-times">
         view By language
-        <i class="bi bi-grid-3x3-gap-fill border p-2" style='width: 2rem;
-        height: 2rem;'></i>
-        <i class="bi bi-list border p-2" style='width: 2rem;
-        height: 2rem;'></i>
-        
+        <i class="bi bi-grid-3x3-gap-fill border p-2" style='width: 2rem; height: 2rem;'></i>
+        <i class="bi bi-list border p-2" style='width: 2rem; height: 2rem;'></i>
     </div>
- </div>
+</div>
 
- <div class="trending-news">
-    <div class="container my-2 d-flex flex-wrap justify-content-between gap-2">
+<div class="trending-news">
+    <div class="container my-2 d-flex flex-wrap justify-content-between gap-2 align-items-center">
         <div id="news-container" class="my-2 d-flex flex-wrap justify-content-between gap-2"></div>
     </div>
 </div>
 
- {% comment %} <div class="banner pt-5">
-    <img src="{% static 'C:\Users\DEEPAK\Desktop\NiftyTrader\static\images\upper-footer-banner.webp' %}" alt="" width="100%">
- </div> {% endcomment %}
+<div class="main_news_placeholder d-flex">
+    <div class="card border-0" style="width: 18rem; height: 300px;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+    <div class="card border-0" style="width: 18rem; ;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+    <div class="card border-0" style="width: 18rem; ;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+    <div class="card border-0" style="width: 18rem; ;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
 
- <div class="trading text-center p-5">
+</div>
+<div class="main_news_placeholder d-flex">
+    <div class="card border-0" style="width: 18rem; height: 300px;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+    <div class="card border-0" style="width: 18rem; ;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+    <div class="card border-0" style="width: 18rem; ;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+    <div class="card border-0" style="width: 18rem; ;">
+        <div class="card-body">
+            <p class="card-text placeholder-glow mb-1col-12" style="height: 7rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 5rem;"></p>
+            <p class="card-text placeholder-glow mb-1 col-4"></p>
+            <p class="card-text placeholder-glow mb-1 col-12" style="height: 6rem;"></p>
+        </div>
+    </div>
+
+</div>
+
+<div class="trading text-center p-5">
     <h5 class="fw-bold">Trading and Investment Terminology</h5>
- </div>
+</div>
+
 <script>
-    $(document).ready(function() {
-    function Get_news(params) {
-        $.ajax({
-            url: "/blog_news_data",  
-            method: "GET",
-            success: function(response) {
-                console.log(response);
-                var newsContainer = $("#news-container");
-                newsContainer.empty(); 
-                
-                $.each(response, function(index, item) {
-                    var newsCard = $("<div>").addClass("card").css("width", "18rem");
-                    var cardBody = $("<div>").addClass("card-body");
-                    var title = $("<h5 >").addClass("card-title").text(item.title);
-                    // var subtitle = $("<h6>").addClass("card-subtitle mb-2 text-muted").text("Card subtitle");
-                    var desc = $("<p>").addClass("card-text").text(item.description);
+    $(document).ready(function () {
+        function Get_news(params) {
+            var newsContainer = $("#news-container");
+            newsContainer.empty();
+            $(".main_news_placeholder").removeClass("d-none");
 
-                    cardBody.append(title, desc);
-                    newsCard.append(cardBody);
-                    newsContainer.append(newsCard);
-                    
-                   
-                    newsCard.on("click", function() {
-                        window.open(item.url, "_blank"); 
+            $.ajax({
+                url: "/blog_news_data",
+                method: "GET",
+                success: function (response) {
+                    console.log(response);
+
+                    $.each(response, function (index, item) {
+                        var newsCard = $("<div>").addClass("card").css("width", "18rem");
+                        var cardBody = $("<div>").addClass("card-body");
+                        var title = $("<h5>").addClass("card-title").text(item.title);
+                        var clock = $("<i>").addClass("bi bi-clock");
+                        var publishedAt = $("<p>").addClass("card-text d-flex").text(formatPublishedAt(item.publishedAt) + " / " + formatSourceName(item.source.name)).css("margin-bottom", "auto");
+                        var desc = $("<p>").addClass("card-text").text(item.description);
+                        var image = $("<img>").addClass("card-img-top").attr("alt", "News Image");
+
+                        if (item.imageUrl) {
+                            image.attr("src", item.imageUrl);
+                            image.on("load", function () {
+                                hidePlaceholder();
+                            });
+                        } else {
+                            image.addClass("d-none")
+                            hidePlaceholder();
+                        }
+
+                        cardBody.append(title, $("<div>").addClass("d-flex gap-1 text-center").append(clock, publishedAt).css("font-size", "10px"), desc);
+                        newsCard.append(image, cardBody);
+                        newsContainer.append(newsCard);
+
+                        newsCard.on("click", function () {
+                            window.open(item.url, "_blank");
+                        });
                     });
-                });
-            },
-            error: function(xhr, status, error) {
-                console.log(error);
-            }
-        });
-    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
 
-    Get_news();
-    setInterval(Get_news, 60000);
-});
+        function formatPublishedAt(publishedAt) {
+            var date = publishedAt.split("T")[0];
+            return date;
+        }
 
+        function formatSourceName(sourceName) {
+            return sourceName.split(".")[0];
+        }
+
+        function hidePlaceholder() {
+            $(".main_news_placeholder").addClass("d-none");
+        }
+
+        Get_news();
+        setInterval(Get_news, 60000);
+    });
 </script>
 {% endblock dashboard_body %}

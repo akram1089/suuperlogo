@@ -2464,7 +2464,9 @@ def blog_news_data(request):
             'title': f['title'],
             'description': f['description'],
             'imageUrl': f['urlToImage'],
-            'url': f['url']
+            'url': f['url'],
+            'source': f['source'],
+            'publishedAt': f['publishedAt']
         })
     return JsonResponse(data, safe=False)
 
@@ -2585,3 +2587,76 @@ def contributors_data(request):
             "error": "Invalid API response format"
         }
         return JsonResponse(error_dict, status=500)
+
+
+
+
+
+
+from django.http import JsonResponse
+
+def future_data_chart(request):
+    selected_symbol = request.GET.get('symbol',"NIFTY")
+    print(selected_symbol)
+    psymbol_url = "https://webapi.niftytrader.in/webapi/symbol/psymbol-list"
+    future_url = f"https://webapi.niftytrader.in/webapi/symbol/future-expiry-data?symbol={selected_symbol}"
+    spot_url = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol={selected_symbol}"
+    chart_url = f"https://webapi.niftytrader.in/webapi/symbol/future-expiry-chart-data?symbol={selected_symbol}"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive"
+    }
+
+    psymbol_response = requests.get(psymbol_url, headers=headers)
+    future_response = requests.get(future_url, headers=headers)
+    spot_response = requests.get(spot_url, headers=headers)
+    chart_response = requests.get(chart_url, headers=headers)
+
+    psymbol_data = psymbol_response.json()
+    future_data = future_response.json()
+    spot_data = spot_response.json()
+    chart_data = chart_response.json()
+
+    All_symbol = []
+    for psymbol in psymbol_data["resultData"]:
+        All_symbol.append(psymbol["symbol_name"])
+
+    future_expiry_list = []
+    for future in future_data["resultData"]:
+        future_expiry_list.append({
+            "expiry": future["expiry"],
+            "oi": future["oi"],
+            "change_oi": future["oi"] - future["prev_oi"],
+            "last_price": future["last_price"],
+            "change_price": future["last_price"] - future["prev_close"],
+            "high": future["high"],
+            "low": future["low"]
+        })
+
+    spot_symbol_list = spot_data["resultData"]["symbol_name"]
+    spot_price_list = spot_data["resultData"]["last_trade_price"]
+    spot_change_list = spot_data["resultData"]["change_per"]
+
+    chart_symbol_list = []
+    chart_expiry_list = []
+    chart_data_list = []
+    for chart in chart_data["resultData"]:
+        chart_symbol_list.append(chart["symbol_name"])
+        chart_expiry_list.append(chart["expiry_date"])
+        chart_data_list.append(chart["chart_data"])
+    
+    data = {
+        "All_symbol": All_symbol,
+        "future_expiry_list": future_expiry_list,
+        "spot_symbol_list": spot_symbol_list,
+        "spot_price_list": spot_price_list,
+        "spot_change_list": spot_change_list,
+        "chart_symbol_list": chart_symbol_list,
+        "chart_expiry_list": chart_expiry_list,
+        "chart_data_list": chart_data_list,
+    }
+
+    return JsonResponse(data)

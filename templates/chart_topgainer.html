@@ -1,92 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contributors Data</title>
-</head>
-<body>
-    <form id="contributorsForm">
-        <label for="filter">Filter:</label>
-        <select name="filter" id="filter">
-            <option value="nifty50">Nifty50</option>
-            <option value="niftynext50">NiftyNext50</option>
-            <option value="banknifty">BankNifty</option>
-            <option value="finnifty">FinNifty</option>
-        </select>
-        <br><br>
-        <label for="date">Date:</label>
-        <select name="date" id="date">
-            <!-- Populate with dates from backend -->
-        </select>
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
-
-    <div id="resultContainer">
-        <!-- Display result from backend here -->
-    </div>
-
+    <title>Data Display</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Fetch dates on page load
-            fetchDates();
-
-            // Fetch dates on filter change
-            $('#filter').on('change', function () {
-                fetchDates();
+        $(document).ready(function() {
+            // Fetch initial data from Django view using AJAX
+            fetchData();
+        
+            // Handle dropdown change event
+            $('#symbolDropdown').on('change', function() {
+                var selectedSymbol = $(this).val();
+                saveSelectedSymbol(selectedSymbol);
+                fetchData(selectedSymbol);
             });
-
-            // Submit form data
-            $('#contributorsForm').on('submit', function (event) {
-                event.preventDefault();
-                var filter = $('#filter').val();
-                var date = $('#date').val();
-
+        
+            // On page load, retrieve the selected symbol from local storage and fetch data
+            var selectedSymbol = getSelectedSymbol();
+            if (selectedSymbol) {
+                $('#symbolDropdown').val(selectedSymbol);
+            }
+            fetchData(selectedSymbol);
+        
+            function fetchData(symbol) {
                 $.ajax({
-                    url: 'contrib_test',
-                    method: 'GET',
-                    data: {
-                        'filter': filter,
-                        'date': date
-                    },
-                    success: function (response) {
-                        // Handle success response and update the result container
-                        $('#resultContainer').text(JSON.stringify(response));
-                    },
-                    error: function (error) {
-                        // Handle error response and update the result container
-                        $('#resultContainer').text(JSON.stringify(error.responseJSON));
-                    }
-                });
-            });
-
-            // Function to fetch dates from backend
-            function fetchDates() {
-                var filter = $('#filter').val();
-
-                $.ajax({
-                    url: 'contrib_test',
-                    method: 'GET',
-                    data: {
-                        'filter': filter
-                    },
-                    success: function (response) {
-                        // Update the date dropdown with fetched dates
-                        var dates = response.all_dates;
-                        var dateDropdown = $('#date');
-                        dateDropdown.empty();
-
-                        for (var i = 0; i < dates.length; i++) {
-                            dateDropdown.append($('<option>').val(dates[i]).text(dates[i]));
+                    url: '/future_data_chart',
+                    type: 'GET',
+                    data: { symbol: symbol },
+                    dataType: 'json',
+                    success: function(data) {
+                        // Update dropdown
+                        
+                        var dropdown = $('#symbolDropdown');
+                        dropdown.empty();
+        
+                        // Filter NIFTY, BANKNIFTY, and FINIFTY from All_symbol and move them to the top
+                        var filteredSymbols = ['NIFTY', 'BANKNIFTY', 'FINNIFTY'];
+                        var remainingSymbols = data.All_symbol.filter(function(symbol) {
+                            return !filteredSymbols.includes(symbol);
+                        });
+        
+                        // Add filtered symbols to the dropdown
+                        $.each(filteredSymbols, function(index, symbol) {
+                            dropdown.append($('<option></option>').text(symbol));
+                        });
+        
+                        // Add remaining symbols to the dropdown
+                        $.each(remainingSymbols, function(index, symbol) {
+                            dropdown.append($('<option></option>').text(symbol));
+                        });
+        
+                        // Update spot data
+                        $('#spotSymbol').text(data.spot_symbol_list);
+                        $('#spotPrice').text(data.spot_price_list);
+                        $('#spotChange').text(data.spot_change_list);
+        
+                        // Retrieve selected symbol from local storage
+                        var selectedSymbol = getSelectedSymbol();
+                        if (selectedSymbol) {
+                            dropdown.val(selectedSymbol);
                         }
-                    },
-                    error: function (error) {
-                        // Handle error response
-                        console.log(error);
+        
+                        // Update future expiry data
+                        var table = $('#futureTable');
+                        table.empty();
+                        $.each(data.future_expiry_list, function(index, future) {
+                            var row = $('<tr></tr>');
+                            row.append($('<td></td>').text(future.expiry));
+                            row.append($('<td></td>').text(future.oi));
+                            row.append($('<td></td>').text(future.change_oi));
+                            row.append($('<td></td>').text(future.last_price));
+                            row.append($('<td></td>').text(future.change_price));
+                            row.append($('<td></td>').text(future.high));
+                            row.append($('<td></td>').text(future.low));
+                            table.append(row);
+                        });
+        
+                        // Update chart using chart_data_list
+                        // Add your Chart.js code here
                     }
                 });
             }
+        
+            function saveSelectedSymbol(symbol) {
+                localStorage.setItem('future_symbol', symbol);
+            }
+        
+            function getSelectedSymbol() {
+                return localStorage.getItem('future_symbol');
+            }
         });
+        
+        
     </script>
+</head>
+<body>
+    <h1>Data Display</h1>
+
+    <h2>All Symbols</h2>
+    <select id="symbolDropdown">
+        <!-- Options will be populated using JavaScript -->
+    </select>
+
+    <h2>Spot Data</h2>
+    <p><strong>Symbol: </strong><span id="spotSymbol"></span></p>
+    <p><strong>Price: </strong><span id="spotPrice"></span></p>
+    <p><strong>Change: </strong><span id="spotChange"></span></p>
+
+    <h2>Future Expiry Data</h2>
+    <table id="futureTable">
+        <thead>
+            <tr>
+                <th>Expiry</th>
+                <th>OI</th>
+                <th>Change in OI</th>
+                <th>Last Price</th>
+                <th>Change in Price</th>
+                <th>High</th>
+                <th>Low</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be populated using JavaScript -->
+        </tbody>
+    </table>
 </body>
 </html>
