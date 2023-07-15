@@ -39,7 +39,7 @@
     .chart2,
     .chart3,
     .chart4 {
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       padding: 34px;
 
     }
@@ -57,6 +57,17 @@
       text-align: center;
     }
   </style>
+  <style>
+    #chart_nifty_tracker {
+      width: 88vw;
+    }
+
+    @media screen and (max-width: 700px) {
+      #chart_nifty_tracker {
+        width: 75vw;
+      }
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -69,7 +80,7 @@
     <div class="main_chart_history">
       <div class="chart1">
         <div class="last_updated_main d-flex justify-content-end">
-          <p>Everyday Updates at  : 3:30PM</p>
+          <p>Everyday Updates at : 3:30PM</p>
         </div>
         <div class="select_days_main">
           <h4>COMPARISON BETWEEN PREVIOUS DAY CLOSE & TODAY CLOSE</h4>
@@ -90,35 +101,35 @@
           <h5 data-symbol="NIFTY_FIN_SERVICE.NS">Fin Nifty</h5>
         </div>
 
-        <div style="width: 72vw; height: 65vh">
+        <div style="height: 65vh" id="chart_nifty_tracker">
           <canvas id="performanceChart"></canvas>
         </div>
       </div>
       <div class="chart2 my-4">
         <div class="last_updated_main d-flex justify-content-end">
-          <p>Everyday Updates at  : 9:15AM</p>
+          <p>Everyday Updates at : 9:15AM</p>
         </div>
 
         <h4>COMPARISON BETWEEN DAY OPENS & DAY CLOSES</h4>
-        <div style="width: 72vw; height: 65vh" class="mt-4">
+        <div style="height: 65vh" class="mt-4" id="chart_nifty_tracker">
           <canvas id="performanceChart2"></canvas>
         </div>
       </div>
       <div class="chart3">
         <div class="last_updated_main d-flex justify-content-end">
-          <p>Everyday Updates at  : 9:15AM</p>
+          <p>Everyday Updates at : 9:15AM</p>
         </div>
         <h4>COMPARISON BETWEEN PREVIOUS CLOSE & TODAY OPEN</h4>
-        <div style="width: 72vw; height: 65vh" class="mt-4">
+        <div style="height: 65vh" class="mt-4" id="chart_nifty_tracker">
           <canvas id="performanceChart3"></canvas>
         </div>
       </div>
       <div class="chart4 mt-4">
         <div class="last_updated_main d-flex justify-content-end">
-          <p>Everyday Updates at  : 9:15AM to 3:30PM</p>
+          <p>Everyday Updates at : 9:15AM to 3:30PM</p>
         </div>
         <h4>COMPARISON BETWEEN PREVIOUS DAY CLOSES & TODAY CLOSES - PREVIOUS CLOSE & TODAY OPEN </h4>
-        <div style="width: 72vw; height: 65vh" class="mt-4">
+        <div style="height: 65vh" class="mt-4" id="chart_nifty_tracker">
           <canvas id="performanceChart4"></canvas>
         </div>
       </div>

@@ -242,7 +242,10 @@
   opacity: 1;
 }
 
-
+#resources_dropdown_dashboard_markets{
+  left: -8rem  !important;
+    width: 16rem !important;
+}
 
     </style>
   
@@ -339,7 +342,156 @@
   </a>
 
 
- <div class="dashboard_left_nav d-flex align-items-center ">
+ <div class="dashboard_left_nav d-flex align-items-center  ">
+
+  <div class="resourses">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
+        Services
+      </a>
+    
+      <ul class="dropdown-menu" id="resources_dropdown_dashboard_markets">
+        
+<div class="item_resources">
+  <div class="row px-2">
+        
+    <div class="col-12">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
+          Other Services
+    
+       
+          
+        
+    
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'port_folio_management' %}">
+          <i class="bi bi-caret-right-fill"></i>
+        Portfilio Management
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations"  >
+          <i class="bi bi-caret-right-fill"></i>
+          Pre-Open Market
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'market_wide_position' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Market-Wide Positions
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'stock_scanner' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Stock Scanner
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'rocket_call' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Rocker Call
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'broking_details' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Broking Details
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'Algo_market_place' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Algo Market Place
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations"   href= 'https://www.screener.in/' target="_blank" >
+          <i class="bi bi-caret-right-fill"></i>
+          Financial Result
+        </a>
+      
+  
+      </div>
+  
+  
+  
+  
+    </div>
+
+  
+  
+  
+  
+  </div>
+    
+
+</div>        
+    
+       
+      </ul>
+    </div>
+  </div>
+  <div class="resourses">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
+        Quick Glances
+      </a>
+    
+      <ul class="dropdown-menu" id="resources_dropdown_dashboard_markets">
+        
+<div class="item_resources">
+  <div class="row px-2">
+        
+    <div class="col-12">
+  
+      <div class="resources_head_ref">
+        <h5 class="fs-6">
+          <i class="bi bi-text-right"></i>
+          Dashboard & Markets
+    
+       
+          
+        
+    
+      </div>
+      <hr class="m-1">
+  
+      <div class="inner_ref d-flex flex-column">
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'dashboard1' %}">
+          <i class="bi bi-caret-right-fill"></i>
+        dashboard
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations"  href="{% url 'stock_analysis'  %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Stock Analysis
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'nifty_tracker' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Nifty Tracker
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'market_glance' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Market Glance
+        </a>
+        <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'market_heavy' %}">
+          <i class="bi bi-caret-right-fill"></i>
+          Market Heady Weight
+        </a>
+      
+  
+      </div>
+  
+  
+  
+  
+    </div>
+
+  
+  
+  
+  
+  </div>
+    
+
+</div>        
+    
+       
+      </ul>
+    </div>
+  </div>
 
   <a class="me-2  text-dark" style="text-decoration: none;" href="{% url 'blog_news' %}">Blogs</a>
  
@@ -978,7 +1130,7 @@ color: #2470dc;
         <i class="bi bi-caret-right-fill"></i>
        NSE Bulk Deals Data
       </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'dashboard1' %}#ban-lists">
+      <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'market_wide_position' %}">
         <i class="bi bi-caret-right-fill"></i>
       Ban List
       </a>
@@ -1075,7 +1227,7 @@ color: #2470dc;
  </div>
 
   
-  <ul class="navbar-nav flex-row d-md-none">
+  <ul class="navbar-nav flex-row d-md-none ">
     {% comment %} <li class="nav-item text-nowrap">
       <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search">
         <svg class="bi"><use xlink:href="#search"></use></svg>
@@ -1117,7 +1269,7 @@ color: #2470dc;
   
   <div class="container-fluid">
   <div class="row">
-    <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary " style="    position: fixed;
+    <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary d-none" style="    position: fixed;
     width: 16.6%;
     overflow-y: scroll;
     top: 61px;
@@ -1265,10 +1417,10 @@ color: #2470dc;
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/lot_size"  %} active_dash {% endif %}"  href="{% url 'lot_size' %}" style="padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>NSE F&O Lot Size  </p>
             </a> -->
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>Vix @ Index  </p>
-            </a>
+            </a> -->
             <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2  {% if request.path == "/dii_fii"  %} active_dash {% endif %}" href="{% url 'dii_fii' %}" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-activity"></i><p>FII and DII Activity  </p>
@@ -1281,10 +1433,10 @@ color: #2470dc;
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2 {% if request.path == "/market_wide_position"  %} active_dash {% endif %}" href="{% url 'market_wide_position' %} " style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-shop-window"></i><p> Market-Wide Position </p>
             </a>
-            <a
+            <!-- <a
               class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2" style="   padding: 10px 0 0px 23px;">          
               <i class="bi bi-people-fill"></i><p>Community  </p>
-            </a>
+            </a> -->
 
             <!-- <a
             class="list-group-item list-group-item-action list-group-item-light  d-flex gap-2    {% if request.path == "/strategy_builder"  %} active_dash {% endif %} " href={% url 'strategy_builder' %} style="   padding: 10px 0 0px 23px;">          
@@ -1430,7 +1582,7 @@ color: #2470dc;
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
  {% block dashboard_body %}{% endblock dashboard_body %}
 
     </main>

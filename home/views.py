@@ -2040,7 +2040,6 @@ def nifty_tracker(request):
     return render(request, "nifty_tracker.html")
 
 
-
 def get_52_week_data(request):
     url = "https://www.nseindia.com/api/live-analysis-52Week?index=high"
     headers = {
@@ -2281,8 +2280,6 @@ def port_folio_management(request):
     return render(request, "port_folio_management.html")
 
 
-
-
 def new_options_data(request):
     symbol_name_url = "https://webapi.niftytrader.in/webapi/symbol/psymbol-list"
 
@@ -2296,8 +2293,8 @@ def new_options_data(request):
     response_symbol = requests.get(symbol_name_url, headers=headers)
     data_option_symbol_name = response_symbol.json()
 
-    all_symbol_names = ["nifty", "banknifty", "finifty", "---"] + [op_symbol_name["symbol_name"] for op_symbol_name in data_option_symbol_name["resultData"]]
-
+    all_symbol_names = ["nifty", "banknifty", "finifty", "---"] + [op_symbol_name["symbol_name"]
+                                                                   for op_symbol_name in data_option_symbol_name["resultData"]]
 
     symbol = request.GET.get("symbol_op", "nifty")
 
@@ -2340,19 +2337,19 @@ def new_options_data(request):
 
 def options_simulator(request):
     return render(request, "options_simulator.html")
+
+
 def admin_report(request):
     return render(request, "admin_report.html")
+
+
 def feedback(request):
     return render(request, "feedback.html")
-
 
 
 def chart_topgainer(request):
     return render(request, "chart_topgainer.html")
 
-
-from django.http import JsonResponse
-import requests
 
 def stock_list(request):
     stock_url = "https://webapi.niftytrader.in/webapi/Symbol/stock-list"
@@ -2379,8 +2376,6 @@ def stock_list(request):
     return JsonResponse(All_stocks, safe=False)
 
 
-
-
 def performance_chart(request):
     today = datetime.datetime.now().date()
     yesterday = today - datetime.timedelta(days=0)
@@ -2401,18 +2396,18 @@ def performance_chart(request):
     try:
         stockdata = pd.read_csv(url)
         stockdata['Date'] = pd.to_datetime(stockdata['Date'])
-        stockdata = stockdata.dropna() 
-        dates = stockdata['Date'].dt.strftime('%b-%d').tolist()  
+        stockdata = stockdata.dropna()
+        dates = stockdata['Date'].dt.strftime('%b-%d').tolist()
         closes = stockdata['Close'].tolist()
         opens = stockdata['Open'].tolist()
         differences = []
         prev_close_today_open_diff = []
-        prev_close_today_open_diff_minus_diff = []  
+        prev_close_today_open_diff_minus_diff = []
         prev_open = opens[:-1]  # Store previous open values
         prev_close = closes[:-1]
-        prev_close_today_close=[] 
-        prev_close_today_open_diff_minus_diff_main=[]
-         # Store previous close values
+        prev_close_today_close = []
+        prev_close_today_open_diff_minus_diff_main = []
+        # Store previous close values
 
         for i in range(len(closes)):
             if i > 0:
@@ -2422,11 +2417,13 @@ def performance_chart(request):
                 prev_close_today_close.append(prev_close_today_close_inner)
                 if difference is not None and prev_close_today_open is not None:
                     prev_close_today_open_diff.append(prev_close_today_open)
-                    prev_close_today_open_diff_minus_diff.append(prev_close_today_open)  
-                    prev_close_today_open_diff_minus_diff_main.append(abs(prev_close_today_open) - abs(difference))  
+                    prev_close_today_open_diff_minus_diff.append(
+                        prev_close_today_open)
+                    prev_close_today_open_diff_minus_diff_main.append(
+                        abs(prev_close_today_open) - abs(difference))
             else:
-                difference = None  
-            differences.append(difference)      
+                difference = None
+            differences.append(difference)
         dates = dates[1:]
         closes = closes[1:]
         opens = opens[1:]
@@ -2441,17 +2438,14 @@ def performance_chart(request):
             'prev_open': prev_open,
             'prev_close': prev_close,
             'prev_dates': dates[1:],
-            'prev_close_today_close':(prev_close_today_close),
-            'prev_close_today_open_diff_minus_diff_main':prev_close_today_open_diff_minus_diff_main
+            'prev_close_today_close': (prev_close_today_close),
+            'prev_close_today_open_diff_minus_diff_main': prev_close_today_open_diff_minus_diff_main
         }
 
         return JsonResponse(data)
     except:
         return JsonResponse({'error': 'Failed to fetch stock data'})
 
-
-import requests
-from django.http import JsonResponse
 
 def blog_news_data(request):
     url = "https://newsapi.org/v2/top-headlines?country=In&category=business&apiKey=71c44e5689f5421b99dc55f6217b25ca"
@@ -2470,10 +2464,13 @@ def blog_news_data(request):
         })
     return JsonResponse(data, safe=False)
 
+
 def blog_news(request):
-    return render(request,"blog_news.html")
+    return render(request, "blog_news.html")
+
+
 def contributor(request):
-    return render(request,"contributor.html")
+    return render(request, "contributor.html")
 
 
 def get_all_dates():
@@ -2489,11 +2486,9 @@ def get_all_dates():
     all_dates = []
     for date in data_date["resultData"]["date"]:
         all_dates.append(date)
-    
+
     return all_dates
 
-import requests
-from django.http import JsonResponse
 
 def contributors_data(request):
     try:
@@ -2501,7 +2496,8 @@ def contributors_data(request):
         selected_filter = request.GET.get('filter', 'nifty50')
         if not selected_date:
             # Set initial selected date
-            all_dates = get_all_dates()  # Replace this with your code to fetch all available dates
+            # Replace this with your code to fetch all available dates
+            all_dates = get_all_dates()
             if all_dates:
                 selected_date = all_dates[1]
 
@@ -2541,12 +2537,14 @@ def contributors_data(request):
             stocks_data = data.get("resultData", {}).get("startdate", [])
             stocks_data_ltp = data.get("resultData", {}).get("enddate", [])
             # print(date_max)
-    
+
             # print(stocks_data_ltp)
 
-            stocks_data_symbol = [stock["symbol_name"] for stock in stocks_data]
+            stocks_data_symbol = [stock["symbol_name"]
+                                  for stock in stocks_data]
 
-            filtered_data = [stock for stock in stocks_data_ltp if stock["symbol_name"] in stocks_data_symbol]
+            filtered_data = [
+                stock for stock in stocks_data_ltp if stock["symbol_name"] in stocks_data_symbol]
 
             for stock in stocks_data:
                 for filtered_stock in filtered_data:
@@ -2554,18 +2552,15 @@ def contributors_data(request):
                         stock["last_trade_price"] = filtered_stock["last_trade_price"]
                         break
 
-
-               
-
             # positive_price_difference = [stock for stock in stocks_data if stock["price_difference"] >= 0]
             # negative_price_difference = [stock for stock in stocks_data if stock["price_difference"] < 0]
 
             data_dict = {
                 "all_dates": all_dates,
                 "date_max": date_max,
-                "stocks_data":stocks_data,
-                
-     
+                "stocks_data": stocks_data,
+
+
             }
             # print(stocks_data)
 
@@ -2589,14 +2584,8 @@ def contributors_data(request):
         return JsonResponse(error_dict, status=500)
 
 
-
-
-
-
-from django.http import JsonResponse
-
 def future_data_chart(request):
-    selected_symbol = request.GET.get('symbol',"NIFTY")
+    selected_symbol = request.GET.get('symbol', "NIFTY")
     print(selected_symbol)
     psymbol_url = "https://webapi.niftytrader.in/webapi/symbol/psymbol-list"
     future_url = f"https://webapi.niftytrader.in/webapi/symbol/future-expiry-data?symbol={selected_symbol}"
@@ -2619,6 +2608,7 @@ def future_data_chart(request):
     future_data = future_response.json()
     spot_data = spot_response.json()
     chart_data = chart_response.json()
+    # print(chart_data)
 
     All_symbol = []
     for psymbol in psymbol_data["resultData"]:
@@ -2640,23 +2630,31 @@ def future_data_chart(request):
     spot_price_list = spot_data["resultData"]["last_trade_price"]
     spot_change_list = spot_data["resultData"]["change_per"]
 
-    chart_symbol_list = []
-    chart_expiry_list = []
     chart_data_list = []
+
     for chart in chart_data["resultData"]:
-        chart_symbol_list.append(chart["symbol_name"])
-        chart_expiry_list.append(chart["expiry_date"])
-        chart_data_list.append(chart["chart_data"])
-    
+        chart_data_list.append(chart)
+
+    # Assuming you have three dictionaries in chart_data_list
+    if len(chart_data_list) >= 3:
+        chart1 = chart_data_list[0]
+        chart2 = chart_data_list[1]
+        chart3 = chart_data_list[2]
+
+    print(chart1)
+    print(chart2)
+    print(chart3)
+
     data = {
         "All_symbol": All_symbol,
         "future_expiry_list": future_expiry_list,
         "spot_symbol_list": spot_symbol_list,
         "spot_price_list": spot_price_list,
         "spot_change_list": spot_change_list,
-        "chart_symbol_list": chart_symbol_list,
-        "chart_expiry_list": chart_expiry_list,
         "chart_data_list": chart_data_list,
+        "chart1": chart1,
+        "chart2": chart2,
+        "chart3": chart3,
     }
 
     return JsonResponse(data)

@@ -209,6 +209,9 @@
   </div>
 </div>
 <script>
+  $("#symbol_stocks").on('click', function () {
+    window.open("/stock_analysis")
+});
   document.getElementById("first_symbol_id").style.display = "flex"
   document.getElementById("second_symbol_id").style.display = "none"
   document.getElementById("third_symbol_id").style.display = "none"

@@ -3,68 +3,72 @@
 <head>
     <title>Data Display</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Fetch initial data from Django view using AJAX
             fetchData();
-        
+
+            var chart; // Variable to store the chart instance
+
             // Handle dropdown change event
-            $('#symbolDropdown').on('change', function() {
+            $('#symbolDropdown').on('change', function () {
                 var selectedSymbol = $(this).val();
                 saveSelectedSymbol(selectedSymbol);
                 fetchData(selectedSymbol);
+                Filter_spot_future()
             });
-        
+
             // On page load, retrieve the selected symbol from local storage and fetch data
             var selectedSymbol = getSelectedSymbol();
             if (selectedSymbol) {
                 $('#symbolDropdown').val(selectedSymbol);
             }
             fetchData(selectedSymbol);
-        
+
             function fetchData(symbol) {
                 $.ajax({
                     url: '/future_data_chart',
                     type: 'GET',
                     data: { symbol: symbol },
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         // Update dropdown
-                        
+                        Filter_spot_future(data.chart_data_list);
                         var dropdown = $('#symbolDropdown');
                         dropdown.empty();
-        
+
                         // Filter NIFTY, BANKNIFTY, and FINIFTY from All_symbol and move them to the top
                         var filteredSymbols = ['NIFTY', 'BANKNIFTY', 'FINNIFTY'];
-                        var remainingSymbols = data.All_symbol.filter(function(symbol) {
+                        var remainingSymbols = data.All_symbol.filter(function (symbol) {
                             return !filteredSymbols.includes(symbol);
                         });
-        
+
                         // Add filtered symbols to the dropdown
-                        $.each(filteredSymbols, function(index, symbol) {
+                        $.each(filteredSymbols, function (index, symbol) {
                             dropdown.append($('<option></option>').text(symbol));
                         });
-        
+
                         // Add remaining symbols to the dropdown
-                        $.each(remainingSymbols, function(index, symbol) {
+                        $.each(remainingSymbols, function (index, symbol) {
                             dropdown.append($('<option></option>').text(symbol));
                         });
-        
+
                         // Update spot data
                         $('#spotSymbol').text(data.spot_symbol_list);
                         $('#spotPrice').text(data.spot_price_list);
                         $('#spotChange').text(data.spot_change_list);
-        
+
                         // Retrieve selected symbol from local storage
                         var selectedSymbol = getSelectedSymbol();
                         if (selectedSymbol) {
                             dropdown.val(selectedSymbol);
                         }
-        
+
                         // Update future expiry data
                         var table = $('#futureTable');
                         table.empty();
-                        $.each(data.future_expiry_list, function(index, future) {
+                        $.each(data.future_expiry_list, function (index, future) {
                             var row = $('<tr></tr>');
                             row.append($('<td></td>').text(future.expiry));
                             row.append($('<td></td>').text(future.oi));
@@ -75,25 +79,115 @@
                             row.append($('<td></td>').text(future.low));
                             table.append(row);
                         });
-        
+
                         // Update chart using chart_data_list
-                        // Add your Chart.js code here
+                        if (data.chart_data_list.length > 0) {
+                            createChart(data.chart_data_list[0]);
+                        }
                     }
                 });
             }
-        
+
             function saveSelectedSymbol(symbol) {
                 localStorage.setItem('future_symbol', symbol);
             }
-        
+
             function getSelectedSymbol() {
                 return localStorage.getItem('future_symbol');
             }
+
+            function Filter_spot_future(get_chart_data) {
+                var filterContainer1 = $('.filter1');
+                var filterContainer2 = $('.filter2');
+                var filterContainer3 = $('.filter3');
+
+                filterContainer1.empty();
+                filterContainer2.empty();
+                filterContainer3.empty();
+
+                var button1 = $('<button class="filterBtn"></button>').text(get_chart_data[0].expiry_date);
+                var button2 = $('<button class="filterBtn"></button>').text(get_chart_data[1].expiry_date);
+                var button3 = $('<button class="filterBtn"></button>').text(get_chart_data[2].expiry_date);
+
+                filterContainer1.append(button1);
+                filterContainer2.append(button2);
+                filterContainer3.append(button3);
+
+                button1.on('click', function () {
+                    if (get_chart_data.length > 0) {
+                        createChart(get_chart_data[0]);
+                    }
+                });
+
+                button2.on('click', function () {
+                    if (get_chart_data.length > 1) {
+                        createChart(get_chart_data[1]);
+                    }
+                });
+
+                button3.on('click', function () {
+                    if (get_chart_data.length > 2) {
+                        createChart(get_chart_data[2]);
+                    }
+                });
+
+                if (get_chart_data.length > 0) {
+                    createChart(get_chart_data[0]);
+                }
+            }
+
+            function createChart(chartData) {
+                if (chart) {
+                    chart.destroy(); // Destroy the existing chart if it exists
+                }
+                
+                console.log(chartData);
+                var ctx = document.getElementById('myChart').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: chartData.created_at,
+                        datasets: [
+                            {
+                                label: 'Spot Price',
+                                data: chartData.spot_price_chart_data,
+                                borderColor: 'blue',
+                                fill: false
+                            },
+                            {
+                                label: 'Future Price',
+                                data: chartData.future_price_chart_data,
+                                borderColor: 'red',
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Created At'
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: 'Price'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            Filter_spot_future();
         });
-        
-        
     </script>
 </head>
+
 <body>
     <h1>Data Display</h1>
 
@@ -124,5 +218,13 @@
             <!-- Rows will be populated using JavaScript -->
         </tbody>
     </table>
+
+    <div class="filter_date d-flex">
+        <div class="filter1"></div>
+        <div class="filter2"></div>
+        <div class="filter3"></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
 </body>
 </html>
