@@ -1,630 +1,371 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <title>Data Display</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-    <style>
-        .text-success {
-            color: rgb(5, 255, 13) !important;
-        }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-        .bi.bi-graph-up {
-            border: 1px solid #80808030;
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
+    <style>
+        .filter-button {
+            padding: 5px 10px;
+            border: none;
+            margin-right: 10px;
+            cursor: pointer;
+            font-weight: 600;
             border-radius: 7px;
-            padding: 2px 9px;
-            width: 33px;
-            display: block;
-            color: gray;
+            background-color: transparent;
+            color: rgba(0, 0, 0, 0.6);
             transition: 0.3s;
         }
 
-        .bi.bi-graph-up:hover {
-            background-color: rgb(0, 132, 255);
-            border: none;
-            color: white;
-        }
 
-        .table-info {
-            background-color: #f1f5fa !important;
-        }
-
-        .chart1,
-        .chart2,
-        .chart3 {
+        #language-dropdown {
             display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
-            right: -68px;
-            position: relative;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .news-column {
+            display: flex;
+            flex-direction: column;
+            min-width: 33%;
+        }
+
+        .news-container {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            cursor: pointer;
+        }
+
+
+        .card-text {
+            display: flex;
+            align-items: center;
+        }
+
+        .card-text i {
+            margin-right: 5px;
+        }
+
+        .main_pub_source_icon {
+            display: flex;
+        }
+
+        .main_icon_trim_expand {
+            display: flex;
+            align-items: center;
         }
 
         .active {
-            color: rgb(0, 132, 255) !important;
-            border-bottom: 2px solid !important;
+            background: #eef7fe !important;
+            color: #2196f3 !important;
 
         }
 
-        .filterBtn {
-            border: none;
-            background: transparent;
-            color: #2c2b2b;
-            font-size: 18px;
-            font-weight: 500;
-            transition: 0.3s
+        .activek {
+            background: #eef7fe !important;
+            color: #2196f3 !important;
+        }
+
+        .grid_icon {
+            font-size: 23px;
+            border: 1px solid;
+            padding: 3px;
+            border-radius: 6px;
+            color: rgba(0, 0, 0, 0.637);
+            cursor: pointer;
+
+        }
+
+        .list_icon {
+            font-size: 21px;
+            border: 1px solid !important;
+            padding: 4px 4px !important;
+            border-radius: 6px !important;
+            color: rgba(0, 0, 0, 0.637);
+            cursor: pointer;
         }
     </style>
     <script>
         $(document).ready(function () {
-            // Fetch initial data from Django view using AJAX
-            fetchData();
-
-            var chart; // Variable to store the chart instance
-            var chart1; // Variable to store the chart instance
-            var chart2; // Variable to store the chart instance
-            var chart3; // Variable to store the chart instance
-
-            // Handle dropdown change event
-            $('#symbolDropdown').on('change', function () {
-                var selectedSymbol = $(this).val();
-                saveSelectedSymbol(selectedSymbol);
-                fetchData(selectedSymbol);
-                Filter_spot_future()
+            // Handler for filter button click
+            $('#filter-indian').click(function () {
+                var filter = 'IndianNews';
+                $('#filter-indian').addClass('active');
+                $('#filter-world').removeClass('active');
+                $('#language-dropdown').show();
+                var language = $('#language-select').val();
+                var url = '/get-news-data/?filter=' + filter + '&language=' + language;
+                saveSettings(filter, language, 'grid');
+                getNewsData(url);
             });
 
-            // On page load, retrieve the selected symbol from local storage and fetch data
-            var selectedSymbol = getSelectedSymbol();
-            if (selectedSymbol) {
-                $('#symbolDropdown').val(selectedSymbol);
-            }
-            fetchData(selectedSymbol);
+            // Handler for filter button click
+            $('#filter-world').click(function () {
+                var filter = 'WorldNews';
+                $('#filter-indian').removeClass('active');
+                $('#filter-world').addClass('active');
+                $('#language-dropdown').hide();
+                var url = '/get-news-data/?filter=' + filter + '&language=' + 'English';
+                saveSettings(filter, 'English', 'grid');
+                getNewsData(url);
+            });
 
-            function fetchData(symbol) {
+            // Handler for language selection change
+            $('#language-select').change(function () {
+                var filter = 'IndianNews';
+                var language = $(this).val();
+                var url = '/get-news-data/?filter=' + filter + '&language=' + language;
+                saveSettings(filter, language, 'grid');
+                getNewsData(url);
+            });
+
+            // Function to save settings in local storage
+            function saveSettings(filter, language, displayMode) {
+                localStorage.setItem('newsFilter', filter);
+                localStorage.setItem('newsLanguage', language);
+                localStorage.setItem('displayMode', displayMode);
+            }
+
+            // Function to fetch news data using AJAX
+            function getNewsData(url) {
                 $.ajax({
-                    url: '/future_data_chart',
+                    url: url,
                     type: 'GET',
-                    data: { symbol: symbol },
-                    dataType: 'json',
+                    beforeSend: function () {
+                        $('#news-container').html('<div class="text-center py-5 w-100 h-100"><div class="spinner-border text-info" role="status"></div></div>');
+                    },
                     success: function (data) {
-                        // Update dropdown
-                        // console.log(data.chart1);
-
-                        chart1_future(data.chart1, data.future_expiry_list[0].change_price)
-                        chart2_future(data.chart2, data.future_expiry_list[1].change_price)
-                        chart3_future(data.chart3, data.future_expiry_list[2].change_price)
-                        // chart3_future(data.chart3)
-                        Filter_spot_future(data.chart_data_list);
-                        var dropdown = $('#symbolDropdown');
-                        dropdown.empty();
-
-                        // Filter NIFTY, BANKNIFTY, and FINIFTY from All_symbol and move them to the top
-                        var filteredSymbols = ['NIFTY', 'BANKNIFTY', 'FINNIFTY'];
-                        var remainingSymbols = data.All_symbol.filter(function (symbol) {
-                            return !filteredSymbols.includes(symbol);
-                        });
-
-                        // Add filtered symbols to the dropdown
-                        $.each(filteredSymbols, function (index, symbol) {
-                            dropdown.append($('<option></option>').text(symbol));
-                        });
-
-                        // Add remaining symbols to the dropdown
-                        $.each(remainingSymbols, function (index, symbol) {
-                            dropdown.append($('<option></option>').text(symbol));
-                        });
-
-                        // Update spot data
-                        $('#spotSymbol').empty().text(data.spot_symbol_list + ":");
-                        $(".icon_charts").empty().append($('<a><i class="bi bi-graph-up"></i></a>').attr('href', 'https://www.tradingview.com/chart/MgiGDMYM/?symbol=' + data.spot_symbol_list + '&aff_id=113877').attr('target', '_blank'));
-                        var spot_change_list_clr = data.spot_change_list > 0 ? "text-success" : "text-danger";
-                        var spotPriceElement = $('#spotPrice');
-                        var spotChangeElement = $('#spotChange');
-
-                        spotPriceElement.empty().text(data.spot_price_list).removeClass("text-success text-danger").addClass(spot_change_list_clr);
-                        spotChangeElement.empty().text("(" + data.spot_change_list + "%)").removeClass("text-success text-danger").addClass(spot_change_list_clr);
-
-
-                        // Retrieve selected symbol from local storage
-                        var selectedSymbol = getSelectedSymbol();
-                        if (selectedSymbol) {
-                            dropdown.val(selectedSymbol);
-                        }
-
-                        // Update future expiry data
-                        $('#expiry1').text(data.future_expiry_list[0].expiry);
-                        $('#oi1').text(data.future_expiry_list[0].oi);
-                        $('#changeOi1').text(data.future_expiry_list[0].change_oi);
-                        $('#lastPrice1').text(data.future_expiry_list[0].last_price);
-                        $('#changePrice1').text(data.future_expiry_list[0].change_price.toFixed(2));
-                        $('#high1').text(data.future_expiry_list[0].high);
-                        $('#low1').text(data.future_expiry_list[0].low);
-
-                        $('#expiry2').text(data.future_expiry_list[1].expiry);
-                        $('#oi2').text(data.future_expiry_list[1].oi);
-                        $('#changeOi2').text(data.future_expiry_list[1].change_oi);
-                        $('#lastPrice2').text(data.future_expiry_list[1].last_price);
-                        $('#changePrice2').text(data.future_expiry_list[1].change_price.toFixed(2));
-                        $('#high2').text(data.future_expiry_list[1].high);
-                        $('#low2').text(data.future_expiry_list[1].low);
-
-                        $('#expiry3').text(data.future_expiry_list[2].expiry);
-                        $('#oi3').text(data.future_expiry_list[2].oi);
-                        $('#changeOi3').text(data.future_expiry_list[2].change_oi);
-                        $('#lastPrice3').text(data.future_expiry_list[2].last_price);
-                        $('#changePrice3').text(data.future_expiry_list[2].change_price.toFixed(2));
-                        $('#high3').text(data.future_expiry_list[2].high);
-                        $('#low3').text(data.future_expiry_list[2].low);
-
-                        // Update chart using chart_data_list
-                        if (data.chart_data_list.length > 0) {
-                            createChart(data.chart_data_list[0]);
-                        }
-                    }
-                });
-            }
-
-            function saveSelectedSymbol(symbol) {
-                localStorage.setItem('future_symbol', symbol);
-            }
-
-            function getSelectedSymbol() {
-                return localStorage.getItem('future_symbol');
-            }
-
-            function Filter_spot_future(get_chart_data) {
-                var filterContainer1 = $('.filter1');
-                var filterContainer2 = $('.filter2');
-                var filterContainer3 = $('.filter3');
-
-                filterContainer1.empty();
-                filterContainer2.empty();
-                filterContainer3.empty();
-
-                var button1 = $('<button class="filterBtn"></button>').text(get_chart_data[0].expiry_date);
-                var button2 = $('<button class="filterBtn"></button>').text(get_chart_data[1].expiry_date);
-                var button3 = $('<button class="filterBtn"></button>').text(get_chart_data[2].expiry_date);
-
-                filterContainer1.append(button1);
-                filterContainer2.append(button2);
-                filterContainer3.append(button3);
-
-                // Click event handler for filter buttons
-                button1.on('click', function () {
-                    if (get_chart_data.length > 0) {
-                        createChart(get_chart_data[0]);
-                        // Add/remove 'active' class on click
-                        $(this).addClass('active');
-                        button2.removeClass('active');
-                        button3.removeClass('active');
-                    }
-                });
-
-                button2.on('click', function () {
-                    if (get_chart_data.length > 1) {
-                        createChart(get_chart_data[1]);
-                        // Add/remove 'active' class on click
-                        $(this).addClass('active');
-                        button1.removeClass('active');
-                        button3.removeClass('active');
-                    }
-                });
-
-                button3.on('click', function () {
-                    if (get_chart_data.length > 2) {
-                        createChart(get_chart_data[2]);
-                        // Add/remove 'active' class on click
-                        $(this).addClass('active');
-                        button1.removeClass('active');
-                        button2.removeClass('active');
-                    }
-                });
-
-                // Set the initial active filter button
-                button1.addClass('active');
-
-                if (get_chart_data.length > 0) {
-                    createChart(get_chart_data[0]);
-                }
-            }
-
-            function createChart(chartData) {
-                if (chart) {
-                    chart.destroy(); // Destroy the existing chart if it exists
-                }
-
-                // console.log(chartData);
-                // console.log(parseFloat(chartData.spot_price_chart_data));
-
-                var ctx = document.getElementById('myChart').getContext('2d');
-
-                // Convert future_price_chart_data to integers
-                var futurePriceData = [];
-                var spotPriceData = [];
-                // console.log(futurePriceData);
-                // console.log(spotPriceData);
-
-                var futurePriceValues = chartData.future_price_chart_data.split(',');
-                var spotPriceValues = chartData.spot_price_chart_data.split(',');
-
-                for (var i = 0; i < futurePriceValues.length; i++) {
-                    futurePriceData.push(parseFloat(futurePriceValues[i].replace(/'/g, "")));
-                }
-
-                for (var j = 0; j < spotPriceValues.length; j++) {
-                    spotPriceData.push(parseFloat(spotPriceValues[j].replace(/'/g, "")));
-                }
-
-                var labels = chartData.created_at.replace(/"/g, "").split(',').map(function (label) {
-                    return label.slice(0, -3);
-                });
-
-
-                var maxFuturePrice = Math.max(...futurePriceData) + 40;
-                var minFuturePrice = Math.min(...futurePriceData) - 30;
-                var difference = 10;
-
-                var final_min = Math.floor(minFuturePrice / difference) * difference;
-                var final_max = Math.ceil(maxFuturePrice / difference) * difference;
-
-                chart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Spot Price',
-                                data: spotPriceData,
-
-                                borderColor: 'rgba(255, 70, 70, 0.8)',
-                                fill: false
-                            },
-                            {
-                                label: 'Future Price',
-                                data: futurePriceData,
-                                borderColor: 'rgba(81, 252, 127, 0.8)',
-                                fill: false
-                            }
-                        ]
+                        updateNewsData(data); // Update the page with the received data
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: 'Created At'
-                                },
-                                grid: {
-                                    offset: true // Add padding to the inner x-axis
-                                }
-                            },
-                            y: {
-                                display: true,
-                                title: {
-                                    display: true,
-                                    text: 'Price'
-                                },
-                                ticks: {
-                                    min: final_min,
-                                    max: final_max,
-                                    stepSize: difference
-                                }
-                            }
-                        }
+                    error: function (error) {
+                        console.log(error);
                     }
                 });
             }
 
-            function chart1_future(chart1_args, chart1_oi) {
+            function updateNewsData(data) {
+                var newsContainer = $('#news-container');
+                newsContainer.empty(); // Clear previous news data
 
-                if (chart1) {
-                    chart1.destroy(); // Destroy the existing chart if it exists
-                }
+                // Sort the news data by publish date in descending order
+                var sortedData = data.resultData.sort(function (a, b) {
+                    var dateA = new Date(a.publishDate);
+                    var dateB = new Date(b.publishDate);
+                    return dateB - dateA;
+                });
 
-                var Chart1PriceData = [];
-                var Chart1Values = chart1_args.chart_data.split(',');
+                // Create three independent news columns
+                var column1 = $('<div class="news-column"></div>');
+                var column2 = $('<div class="news-column"></div>');
+                var column3 = $('<div class="news-column"></div>');
 
-                for (var i = 0; i < Chart1Values.length; i++) {
-                    Chart1PriceData.push(parseFloat(Chart1Values[i].replace(/'/g, "")));
-                }
-                // console.log(Chart1PriceData);
+                // Iterate over the sorted news data
+                $.each(sortedData, function (index, newsData) {
+                    var newsItem = $('<div class="card mb-2"></div>');
+                    var cardBody = $('<div class="card-body"></div>');
 
-                var ctx1 = document.getElementById('myChart1').getContext('2d');
+                    var title = $('<h5 class="card-title"></h5>').text(newsData.title);
 
-                chart1 = new Chart(ctx1, {
-                    type: 'line',
-                    data: {
-                        labels: Chart1PriceData, // Provide the labels for the x-axis
-                        datasets: [{
-                            data: Chart1PriceData,
-                            borderColor: chart1_oi > 0 ? 'rgba(81, 252, 127, 0.8)' : 'rgba(255, 70, 70, 0.8)',
-                            backgroundColor: chart1_oi > 0 ? 'rgba(81, 252, 127, 0.2)' : 'rgba(255, 70, 70, 0.2)',
-                            fill: true,
-                            pointRadius: 0,
+                    // Check if image URL is available
+                    if (newsData.imageUrl) {
+                        var image = newsData.imageUrl;
+                        var imageElement = $('<img class="card-img-top">').attr('src', image);
+                        cardBody.append(imageElement);
+                    }
 
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                display: false // Hide x-axis
-                            },
-                            y: {
-                                display: false,
-                                ticks: {
-                                    min: 0, // Set the minimum value for the y-axis
-                                    max: 100, // Set the maximum value for the y-axis
-                                    stepSize: 20 // Set the step size for the y-axis
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                enabled: false // Disable tooltips
-                            },
-                            legend: {
-                                display: false // Hide legend
-                            }
+                    var clockIcon = $('<i class="bi bi-clock"></i>');
+                    // Function to calculate time ago
+                    function getTimeAgo(publishDate) {
+                        var currentDate = new Date();
+                        var newsDate = new Date(publishDate);
+
+                        var timeDiff = Math.abs(currentDate.getTime() - newsDate.getTime());
+                        var minutesDiff = Math.floor(timeDiff / (1000 * 60));
+                        var hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+                        var daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+                        if (minutesDiff < 60) {
+                            return minutesDiff + ' minutes ago';
+                        } else if (hoursDiff < 24) {
+                            return hoursDiff + ' hours ago';
+                        } else {
+                            return daysDiff + ' days ago';
                         }
                     }
+
+                    // Update the publishDate with time ago
+                    var publishDate = $('<p style="margin-bottom:auto"  class="card-text d-flex align-items-center"></p>').append(clockIcon).append(' ' + getTimeAgo(newsData.publishDate));
+
+                    var source = $('<p style="margin-bottom:auto" class="card-text d-flex align-items-center"></p>').append(newsData.source);
+                    var main_pub_source_icon = $('<p class="main_pub_source_icon"></p>').append(publishDate).append(' / ').append(source);
+
+                    var description = $('<p class="card-text description"></p>').text(newsData.description);
+                    if (description.text().split(' ').length > 50) {
+                        var shortDescription = description.text().split(' ').slice(0, 50).join(' ') + '...';
+                        description.text(shortDescription);
+                    }
+
+                    cardBody.append(title, main_pub_source_icon, description);
+                    newsItem.append(cardBody);
+
+                    // Add click event to open news details in a new tab
+                    newsItem.click(function () {
+                        window.open(newsData.url, '_blank');
+                    });
+
+                    // Determine the appropriate column to append the news card
+                    if (index % 3 === 0) {
+                        column1.append(newsItem);
+                    } else if (index % 3 === 1) {
+                        column2.append(newsItem);
+                    } else {
+                        column3.append(newsItem);
+                    }
                 });
+
+                // Append the news columns to the container
+                newsContainer.append(column1, column2, column3);
+            }
+
+            // Function to hide/show descriptions based on display mode
+            function updateDisplayMode() {
+                var displayMode = localStorage.getItem('displayMode');
+                if (displayMode === 'list') {
+                    $('.description').hide();
+                } else {
+                    $('.description').show();
+                }
+            }
+
+            // Load saved settings on page load
+            var savedFilter = localStorage.getItem('newsFilter');
+            var savedLanguage = localStorage.getItem('newsLanguage');
+            if (savedFilter && savedLanguage) {
+                $('#language-select').val(savedLanguage);
+                if (savedFilter === 'IndianNews') {
+                    $('#filter-indian').addClass('active');
+                    $('#filter-world').removeClass('active');
+                    $('#language-dropdown').show();
+                } else {
+                    $('#filter-indian').removeClass('active');
+                    $('#filter-world').addClass('active');
+                    $('#language-dropdown').hide();
+                }
+                var url = '/get-news-data/?filter=' + savedFilter + '&language=' + savedLanguage;
+                getNewsData(url);
+            }
+
+            // Set initial display mode
+            var savedDisplayMode = localStorage.getItem('displayMode');
+            if (!savedDisplayMode) {
+                savedDisplayMode = 'grid';
+                $('.list_icon').removeClass('activek');
+                $('.grid_icon').addClass('activek');
+                localStorage.setItem('displayMode', savedDisplayMode);
             }
 
 
-            function chart2_future(chart2_args, chart1_oi) {
-                if (chart2) {
-                    chart2.destroy(); // Destroy the existing chart if it exists
-                }
+            // Update display mode
+            updateDisplayMode();
 
-                var Chart2PriceData = [];
-                var Chart2Values = chart2_args.chart_data.split(',');
+            // Toggle display mode on click
 
-                for (var i = 0; i < Chart2Values.length; i++) {
-                    Chart2PriceData.push(parseFloat(Chart2Values[i].replace(/'/g, "")));
-                }
-                // console.log(Chart2PriceData);
 
-                var ctx2 = document.getElementById('myChart2').getContext('2d');
+            $('.list_icon').on('click', function () {
+                $('.list_icon').addClass('activek');
+                $('.grid_icon').removeClass('activek');
+                $('.description').hide();
+            })
 
-                chart2 = new Chart(ctx2, {
-                    type: 'line',
-                    data: {
-                        labels: Chart2PriceData, // Provide the labels for the x-axis
-                        datasets: [{
-                            data: Chart2PriceData,
-                            borderColor: chart1_oi > 0 ? 'rgba(81, 252, 127, 0.8)' : 'rgba(255, 70, 70, 0.8)',
-                            backgroundColor: chart1_oi > 0 ? 'rgba(81, 252, 127, 0.2)' : 'rgba(255, 70, 70, 0.2)',
-                            fill: true,
-                            pointRadius: 0,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                display: false // Hide x-axis
-                            },
-                            y: {
-                                display: false,
-                                ticks: {
-                                    min: 0, // Set the minimum value for the y-axis
-                                    max: 100, // Set the maximum value for the y-axis
-                                    stepSize: 20 // Set the step size for the y-axis
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                enabled: false // Disable tooltips
-                            },
-                            legend: {
-                                display: false // Hide legend
-                            }
-                        }
-                    }
-                });
-            }
-            function chart3_future(chart3_args, chart1_oi) {
-                if (chart3) {
-                    chart3.destroy(); // Destroy the existing chart if it exists
-                }
-
-                var Chart3PriceData = [];
-                var Chart3Values = chart3_args.chart_data.split(',');
-
-                for (var i = 0; i < Chart3Values.length; i++) {
-                    Chart3PriceData.push(parseFloat(Chart3Values[i].replace(/'/g, "")));
-                }
-                // console.log(Chart3PriceData);
-
-                var ctx3 = document.getElementById('myChart3').getContext('2d');
-
-                chart3 = new Chart(ctx3, {
-                    type: 'line',
-                    data: {
-                        labels: Chart3PriceData, // Provide the labels for the x-axis
-                        datasets: [{
-                            data: Chart3PriceData,
-                            borderColor: chart1_oi > 0 ? 'rgba(81, 252, 127, 0.8)' : 'rgba(255, 70, 70, 0.8)',
-                            backgroundColor: chart1_oi > 0 ? 'rgba(81, 252, 127, 0.2)' : 'rgba(255, 70, 70, 0.2)',
-                            fill: true,
-                            pointRadius: 0,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                display: false // Hide x-axis
-                            },
-                            y: {
-                                display: false,
-                                ticks: {
-                                    min: 0, // Set the minimum value for the y-axis
-                                    max: 100, // Set the maximum value for the y-axis
-                                    stepSize: 20 // Set the step size for the y-axis
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                enabled: false // Disable tooltips
-                            },
-                            legend: {
-                                display: false // Hide legend
-                            }
-                        }
-                    }
-                });
-            }
-            // Set initial active filter
-            $('.filterBtn:first').addClass('active');
-
-            // Handle filter click events
-            $('.filterBtn').click(function () {
-                $('.filterBtn').removeClass('active');
-                $(this).addClass('active');
-
-                // Get the selected filter value
-                var selectedFilter = $(this).text();
-
-                // Perform any desired actions based on the selected filter value
-                // Example: Display the selected filter in the console
-                console.log('Selected Filter:', selectedFilter);
-            });
-
-            Filter_spot_future();
+            $('.grid_icon').on('click', function () {
+                $('.list_icon').removeClass('activek');
+                $('.grid_icon').addClass('activek');
+                $('.description').show();
+            })
+            $('.grid_icon').addClass('activek');
+            getNewsData('/get-news-data/?filter=IndianNews&language=English');
         });
     </script>
 </head>
+<style>
+    .card-body:hover .card-title{
+        color: #2196f3;
+    }
+    .card:hover {
+        --bs-card-border-color: #2196f3 !important;
+        box-shadow: rgba(3, 115, 171, 0.388) 0px 1px 4px;
+    }
+    .main_top_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-<body class="container mt-3">
+    .right_news_head {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
 
-    <h4>Stock Futures</h4>
-    <div class="main_container mt-2">
-        <div class="future_head_title d-flex align-items-center gap-2">
-            <select id="symbolDropdown" class="form-select" style="width: fit-content;">
-                <!-- King OF NYC -->
-            </select>
-            <div class="icon_charts ps-3">
+    }
+    .main_icon_trim_expand{
+        gap: 0.3rem;
+        transition: 0.3s;
+    }
+</style>
+
+<body>
+    <div class="container py-4">
+        <div class="main_top_header">
+            <div class="left_news_head">
+                <div class="mb-3">
+                    <button id="filter-indian" class="filter-button active">Indian News</button>
+                    <button id="filter-world" class="filter-button">World News</button>
+                </div>
+            </div>
+            <div class="right_news_head">
+
+                <div id="language-dropdown">
+                    <label for="language-select" style="white-space: nowrap; font-size: small;">View by
+                        Language:</label>
+                    <select id="language-select" class="form-select form-select-sm ">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                    </select>
+                </div>
+
+
+                <div class="main_icon_trim_expand">
+                    <div class="grid_icon">
+                        <i class='bx bxs-grid'></i>
+                    </div>
+                    <div class="list_icon">
+                        <i class="bi bi-list"></i>
+                    </div>
+                </div>
+
+
+
+
+
+
 
             </div>
-            <div class="symbol_details_top d-flex gap-1">
-                <h6 id="spotSymbol" class="fw-bolder"></h6>
-                <h6 id="spotPrice"></h6>
-                <h6 id="spotChange"></h6>
-            </div>
+
         </div>
 
+
+
+
+
+        <div id="news-container" class="d-flex gap-2"></div>
     </div>
-
-    <div class="table_main_three_futures mt-3">
-        <table id="futureTable" class="table" style="white-space: nowrap;">
-            <thead class="table-light">
-                <tr>
-                    <th class="text-start">Expiry</th>
-                    <th class="text-end">OI</th>
-                    <th class="text-end">Change in OI</th>
-                    <th class="text-end">Last Price</th>
-                    <th class="text-end">Change in Price</th>
-                    <th class="text-end">High</th>
-                    <th class="text-end">Low</th>
-                    <th class="text-end">Chart</th>
-                </tr>
-            </thead>
-            <tbody id="futureTableBody">
-                <!-- Rows will be populated using JavaScript -->
-                <tr>
-                    <td id="expiry1" style="vertical-align: middle;" class="text-start"></td>
-                    <td id="oi1" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="changeOi1" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="lastPrice1" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="changePrice1" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="high1" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="low1" style="vertical-align: middle;" class="text-end"></td>
-                    <td style="vertical-align:baseline ;">
-
-                        <div class="chart1" style="width:6vw;height: 10vh;">
-
-                            <canvas id="myChart1"></canvas>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="expiry2" style="vertical-align: middle;" class="text-start"></td>
-                    <td id="oi2" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="changeOi2" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="lastPrice2" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="changePrice2" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="high2" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="low2" style="vertical-align: middle;" class="text-end"></td>
-                    <td style="vertical-align:baseline ;" class="text-end">
-                        <div class="chart2" style="width:6vw;height: 10vh;">
-
-                            <canvas id="myChart2"></canvas>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="expiry3" style="vertical-align: middle;" class="text-start"></td>
-                    <td id="oi3" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="changeOi3" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="lastPrice3" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="changePrice3" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="high3" style="vertical-align: middle;" class="text-end"></td>
-                    <td id="low3" style="vertical-align: middle;" class="text-end"></td>
-                    <td style="vertical-align:baseline ;">
-                        <div class="chart3" style="width:6vw;height: 10vh;">
-
-                            <canvas id="myChart3"></canvas>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="Compare_Future_and_Spot_Price mt-4">
-        <h4>Compare Future and Spot Price</h4>
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-    <div class="filter_date d-flex mt-3">
-        <div class="filter1"></div>
-        <div class="filter2"></div>
-        <div class="filter3"></div>
-    </div>
-    <div class="chart_main_future_spiot" style="width: 80vw; height: 70vh;">
-        <canvas id="myChart"></canvas>
-    </div>
-
 </body>
-
 
 </html>

@@ -2668,3 +2668,24 @@ def future_data_chart(request):
 
 def stock_future(request):
     return render(request,"stock_future.html")
+
+
+
+
+def get_news_data(request):
+    filter = request.GET.get('filter', 'WorldNews')
+    language = request.GET.get('language', 'English')
+
+    url = f"https://webapi.niftytrader.in/webapi/Other/rss-feeds-data?NewsType={filter}&lanType={language}"
+    print(url)
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    return JsonResponse(data)

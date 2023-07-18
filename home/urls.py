@@ -109,6 +109,7 @@ urlpatterns = [
     path('future_data_chart', views.future_data_chart, name='future_data_chart'),
     path('stock_future', views.stock_future, name='stock_future'),
 #     path('contrib_test', views.contrib_test, name='contrib_test'),
+    path('get-news-data/', views.get_news_data, name='get_news_data'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
