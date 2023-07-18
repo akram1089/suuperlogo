@@ -2613,18 +2613,25 @@ def future_data_chart(request):
     All_symbol = []
     for psymbol in psymbol_data["resultData"]:
         All_symbol.append(psymbol["symbol_name"])
-
     future_expiry_list = []
     for future in future_data["resultData"]:
+        oi_change = future["oi"] - future["prev_oi"]
+        oi_percent_change = (oi_change / future["prev_oi"]) * 100
+        change_price = future["last_price"] - future["prev_close"]
+        change_percent = (change_price / future["prev_close"]) * 100
         future_expiry_list.append({
             "expiry": future["expiry"],
             "oi": future["oi"],
-            "change_oi": future["oi"] - future["prev_oi"],
+            "prev_oi": future["prev_oi"],
+            "oi_change": oi_change,
+            "oi_percent_change": oi_percent_change,
             "last_price": future["last_price"],
-            "change_price": future["last_price"] - future["prev_close"],
+            "change_price": change_price,
+            "change_percent": change_percent,
             "high": future["high"],
             "low": future["low"]
         })
+
 
     spot_symbol_list = spot_data["resultData"]["symbol_name"]
     spot_price_list = spot_data["resultData"]["last_trade_price"]
@@ -2658,3 +2665,6 @@ def future_data_chart(request):
     }
 
     return JsonResponse(data)
+
+def stock_future(request):
+    return render(request,"stock_future.html")

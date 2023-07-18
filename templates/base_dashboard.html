@@ -59,13 +59,23 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.3/js/bootstrap-datetimepicker.min.js"></script>
   <meta name="theme-color" content="#712cf9">
   <style>
+.dropdown-toggle{
+  transition: 0.3s;
+}
+.dropdown-toggle::after {
+    display: none !important;
+
+}
+.dropdown-toggle:hover{
+  color: #2470dc;
+}
     .dropdown:hover .dropdown-menu {
       display: block;
   
     }
     .dropdown:hover #resources_dropdown {
       display: block;
-    left: -52rem !important;
+    left: -54rem !important;
     width: 68rem !important;
 
     }
@@ -218,11 +228,16 @@
       
 
 
-      #dashboard_nav_dropdown{
+      #dashboard_nav_dropdown,#Blog_news,#dashboard_nav_dropdown_user{
         background-color: transparent !important;
-        color: black !important;
+        color: black ;
         border: none !important;
+        font-size:15px ;
+        font-weight: 600;
     
+    }
+    #dashboard_nav_dropdown:hover,#Blog_news:hover{
+      color: #0d6efd;
     }
     .dropdown-menu.show {
     display: block;
@@ -246,7 +261,10 @@
   left: -8rem  !important;
     width: 16rem !important;
 }
+.drop_down_navigations{
+  font-size: 14px !important;
 
+}
     </style>
   
     
@@ -371,35 +389,35 @@
   
       <div class="inner_ref d-flex flex-column">
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'port_folio_management' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Portfilio Management
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations"  >
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Pre-Open Market
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'market_wide_position' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Market-Wide Positions
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'stock_scanner' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Stock Scanner
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'rocket_call' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Rocker Call
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'broking_details' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Broking Details
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'Algo_market_place' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Algo Market Place
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations"   href= 'https://www.screener.in/' target="_blank" >
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Financial Result
         </a>
       
@@ -451,23 +469,23 @@
   
       <div class="inner_ref d-flex flex-column">
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'dashboard1' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         dashboard
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations"  href="{% url 'stock_analysis'  %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Stock Analysis
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'nifty_tracker' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Nifty Tracker
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'market_glance' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Market Glance
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'market_heavy' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Market Heady Weight
         </a>
       
@@ -493,7 +511,8 @@
     </div>
   </div>
 
-  <a class="me-2  text-dark" style="text-decoration: none;" href="{% url 'blog_news' %}">Blogs</a>
+  <a class="me-2  " id="Blog_news" style="text-decoration: none;    font-size:15px ;
+  font-weight: 600;" href="{% url 'blog_news' %}">Blogs</a>
  
   <div class="resourses">
     <div class="dropdown">
@@ -522,15 +541,15 @@
   
       <div class="inner_ref d-flex flex-column">
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'holiday' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Holiday
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations"  href="{% url 'rocket_call'  %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Rocket Call
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'bulk_deal_data_page' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           NSE Bulk Deals Data
         </a>
       
@@ -553,30 +572,30 @@
   
       <div class="inner_ref d-flex flex-column">
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Stock Option Chart
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Stock Option Chain <span class="bg-primary text-light" style="    padding: 2px;
           font-size: 10px;
           border-radius: 50px;">Updated</span>
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Live Max Pain Chart For Derivative Stocks
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
      Option Strategies to Mint Money
         </a>
   
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
      Option Strategy Optimizer
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
      Options Simulators <span class="bg-primary text-light"  style="    padding: 2px;
      font-size: 10px;
      border-radius: 50px;">Beta</span>
@@ -600,11 +619,11 @@
   
       <div class="inner_ref d-flex flex-column">
         <a style="margin-bottom: auto;" class="drop_down_navigations"  href="{% url 'Futures_Buildup' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Future Buildup
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'dashboard' %}">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Future Dashboard
         </a>
      
@@ -627,27 +646,27 @@
   
       <div class="inner_ref d-flex flex-column">
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Bank Nifty Open Interest Live Chart 
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Bank Nifty  Change in Open Interest
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Bank Nifty PCR in Live Chart
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Bank Nifty Volume PCR Live Chart
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
           Bank Nifty Live Analysis
         </a>
         <a style="margin-bottom: auto;" class="drop_down_navigations">
-          <i class="bi bi-caret-right-fill"></i>
+          <i class='bx bx-chevron-right fw-bolder'></i>
         Bank Nifty Multi Strike Comparison
         </a>
   
@@ -691,11 +710,11 @@
               transition: 0.3s;
               margin-bottom: auto;
               text-decoration: none;
-              color: black;
+              color: #000000b8;
           cursor: pointer;
             }
             .drop_down_navigations:hover{
-        color: #2470dc;
+        color: #2470dc !important;
             }
           </style>
         <div class="row px-2">
@@ -712,28 +731,28 @@
         
             <div class="inner_ref d-flex flex-column">
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Nifty Open Interest
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Nifty Change in Open Interest
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Nifty Option Chain Put Call Ratio
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Nifty Option Chain Put Call Ratio Volume
               </a>
         
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Nifty Live Analysis
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Nifty Multi Strike Comparison
               </a>
         
@@ -755,36 +774,36 @@
         
             <div class="inner_ref d-flex flex-column">
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Stock Option Chart
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Stock Option Chain <span class="bg-primary text-light" style="    padding: 2px;
                 font-size: 10px;
                 border-radius: 50px;">Updated</span>
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Live Max Pain Chart For Derivative Stocks
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
            Option Strategies to Mint Money
               </a>
         
               <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'strategy_builder' %}">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
            Option Strategy Builder
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'options_simulator' %}">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
            Options Simulators <span class="bg-primary text-light"  style="    padding: 2px;
            font-size: 10px;
            border-radius: 50px;">Beta</span>
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'Open_interest_analysis' %}">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
            Open Interest Analysis
           </a>
             </div>
@@ -805,27 +824,27 @@
         
             <div class="inner_ref d-flex flex-column">
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Bank Nifty Open Interest Live Chart 
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Bank Nifty  Change in Open Interest
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Bank Nifty PCR in Live Chart
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Bank Nifty Volume PCR Live Chart
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Bank Nifty Live Analysis
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Bank Nifty Multi Strike Comparison
               </a>
         
@@ -853,27 +872,27 @@
         
             <div class="inner_ref d-flex flex-column">
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                 Fin Nifty Open Interest Tracker
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                Fin Nifty Change in Open Interest
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                Fin Nifty Option Put Call Ratio
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'put_call_ratio' %} ">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
               Fin Nifty Option Chain Put Call Ratio Volume
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
                Fin Nifty Live Analysis
               </a>
               <a style="margin-bottom: auto;" class="drop_down_navigations">
-                <i class="bi bi-caret-right-fill"></i>
+                <i class='bx bx-chevron-right fw-bolder'></i>
           Fin Nifty Multi Strike Comparison
               </a>
         
@@ -908,6 +927,20 @@
         
 <div class="item_resources">
   <style>
+    .bx {
+    font-family: boxicons!important;
+    font-weight: 600;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    display: inline-block;
+    font-size: 16px;
+    text-transform: none;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
     .drop_down_navigations{
       margin-bottom: auto;
       font-size: 12px;
@@ -916,8 +949,10 @@
       transition: 0.3s;
       margin-bottom: auto;
       text-decoration: none;
-      color: black;
+      color: rgba(0, 0, 0, 0.64);
   cursor: pointer;
+  display: flex;
+    align-items: center;
     }
     .drop_down_navigations:hover{
 color: #2470dc;
@@ -925,36 +960,7 @@ color: #2470dc;
   </style>
 <div class="row px-2">
 
-  <div class="col-3">
 
-    <div class="resources_head_ref">
-      <h5 class="fs-6">
-        <i class="bi bi-text-right"></i>
-        Reference
-      </h5>
-    </div>
-    <hr class="m-1">
-
-    <div class="inner_ref d-flex flex-column">
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-        Trading and Investment Terminology
-      </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-        Investing Books
-      </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-        Candlestick Patterns
-      </a>
-
-    </div>
-
-
-
-
-  </div>
   <div class="col-3">
 
     <div class="resources_head_ref">
@@ -967,15 +973,15 @@ color: #2470dc;
 
     <div class="inner_ref d-flex flex-column">
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'learning_center' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Learning Center
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'option_strategies' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        Option Strategies
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'blog' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Blogs
       </a>
 
@@ -997,27 +1003,27 @@ color: #2470dc;
 
     <div class="inner_ref d-flex flex-column">
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        Volume Shockers
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Intraday Breakouts
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Gap Up,Gap Up Down Stocks
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Opening Price Clues
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Top Gainers Stocks
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Top Loser Stocks
       </a>
 
@@ -1027,51 +1033,6 @@ color: #2470dc;
 
 
   </div>
-  <div class="col-3">
-
-    <div class="resources_head_ref">
-      <h5 class="fs-6">
-        <i class="bi bi-text-right"></i>
-        Calculators
-      </h5>
-    </div>
-    <hr class="m-1">
-
-    <div class="inner_ref d-flex flex-column">
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-        Option Pricing Calculators
-      </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-        Fibonacci Calculators
-      </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-       Pivot Calculators
-      </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-       Developing Pivot Calculators
-      </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
-       Elliott Wave Fibonacci Clustor Calculators
-      </a>
-
-    </div>
-
-
-
-
-  </div>
-
-
-
-
-</div>
-<div class="row px-2 mt-3">
-
 
   <div class="col-3">
 
@@ -1085,27 +1046,27 @@ color: #2470dc;
 
     <div class="inner_ref d-flex flex-column">
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         FII Activity F&O & cash
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href=" {% url 'dii_fii' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         FII DII Activity
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'lot_size' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        NSE F&O Lot Size | Nifty Trader
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'holiday' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        BSE NSE Hoidays List
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        Commodity Trading Holidays
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        Praticipant Wise OI
       </a>
 
@@ -1127,19 +1088,19 @@ color: #2470dc;
 
     <div class="inner_ref d-flex flex-column">
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'bulk_deal_data_page' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        NSE Bulk Deals Data
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'market_wide_position' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
       Ban List
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
       Derivatives Summary 
       </a>
-      <a style="margin-bottom: auto;" class="drop_down_navigations">
-        <i class="bi bi-caret-right-fill"></i>
+      <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'stock_future' %}">
+        <i class='bx bx-chevron-right fw-bolder'></i>
       Stock Futures
       </a>
 
@@ -1150,6 +1111,13 @@ color: #2470dc;
 
 
   </div>
+
+</div>
+<div class="row px-2 mt-3">
+
+
+
+
   <div class="col-3">
 
     <div class="resources_head_ref">
@@ -1162,19 +1130,19 @@ color: #2470dc;
 
     <div class="inner_ref d-flex flex-column">
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'contributor' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Nifty 50 Contributors
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'contributor' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
         Nifty Next 50 Contributors
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'contributor' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        Bank Nifty Contributors
       </a>
       <a style="margin-bottom: auto;" class="drop_down_navigations" href="{% url 'contributor' %}">
-        <i class="bi bi-caret-right-fill"></i>
+        <i class='bx bx-chevron-right fw-bolder'></i>
        Fin Nifty Contributors
       </a>
    
@@ -1198,8 +1166,24 @@ color: #2470dc;
     </div>
   </div>
   <div class="dropdown">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown">
-      <i class="bi bi-person-circle fs-3" style="margin-right: 1rem;"></i>{{user.full_name}}
+    <a class="btn btn-secondary dropdown-toggle-user" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dashboard_nav_dropdown_user" style="display: flex;
+    gap: 0.5rem;
+    align-items: center;">
+      <h5 style="    margin-bottom: auto;     margin-bottom: auto;
+      min-width: 30px!important;
+      min-height: 30px!important;
+      text-align: center;
+      background-color: rgba(33,150,243,.2);
+      color: #2196f3!important;
+      font-size: 16px!important;
+      padding: 4px 5px!important;
+      border: 1px solid transparent!important;
+      border-radius: 51%;">
+        {% with first_letter=user.full_name|slice:":1"|upper %}
+  {{ first_letter }}
+{% endwith %}
+
+      </h5 >{{user.full_name}}
     </a>
   
     <ul class="dropdown-menu">
@@ -1500,7 +1484,7 @@ color: #2470dc;
               </div>
    
           <div class="second_finance_collapse"  style="align-items: baseline !important;">
-           <i class="bi bi-caret-right-fill"></i>
+           <i class='bx bx-chevron-right fw-bolder'></i>
           </div>
              </div>      
           
