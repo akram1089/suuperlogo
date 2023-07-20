@@ -112,6 +112,7 @@ urlpatterns = [
     path('get-news-data/', views.get_news_data, name='get_news_data'),
     path('get-news-data/', views.get_news_data, name='get_news_data'),
     path('stock_option_chain', views.stock_option_chain, name='stock_option_chain'),
+    path('option_dashboard', views.option_dashboard, name='option_dashboard'),
 
 
 

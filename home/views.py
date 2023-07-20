@@ -2796,3 +2796,6 @@ def fetch_option_data_with_spot_price(request):
 
 def stock_option_chain(request):
     return render(request,'stock_option_chain.html')
+
+def option_dashboard(request):
+    return render(request,'option_dashboard.html')
