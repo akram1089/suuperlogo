@@ -110,7 +110,12 @@ urlpatterns = [
     path('stock_future', views.stock_future, name='stock_future'),
 #     path('contrib_test', views.contrib_test, name='contrib_test'),
     path('get-news-data/', views.get_news_data, name='get_news_data'),
+    path('get-news-data/', views.get_news_data, name='get_news_data'),
+    path('stock_option_chain', views.stock_option_chain, name='stock_option_chain'),
 
+
+
+    path('fetch_option_data_with_spot_price', views.fetch_option_data_with_spot_price, name='fetch_option_data_with_spot_price'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

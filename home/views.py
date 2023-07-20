@@ -2347,8 +2347,6 @@ def feedback(request):
     return render(request, "feedback.html")
 
 
-def chart_topgainer(request):
-    return render(request, "chart_topgainer.html")
 
 
 def stock_list(request):
@@ -2689,3 +2687,112 @@ def get_news_data(request):
     data = response.json()
 
     return JsonResponse(data)
+
+
+
+
+def chart_topgainer(request):
+    return render(request, "chart_topgainer.html")
+
+
+
+
+from django.http import JsonResponse
+import requests
+import datetime
+
+def fetch_option_data_with_spot_price(request):
+    selected_symbol = request.GET.get('symbol')
+    selectedDate = request.GET.get('selectedDate')
+    print(selected_symbol)
+    print(selectedDate)
+
+ 
+    url = f"https://webapi.niftytrader.in/webapi/option/fatch-option-chain?symbol={selected_symbol}&expiryDate={selectedDate}"
+    url_symbol_list = "https://webapi.niftytrader.in/webapi/symbol/psymbol-list"
+    url_india_vix = "https://webapi.niftytrader.in/webapi/Other/other-symbol-spot-data?symbol=INDIA+VIX" 
+    url_spot_data = f"https://webapi.niftytrader.in/webapi/symbol/today-spot-data?symbol={'NIFTY+50' if selected_symbol == 'nifty' else selected_symbol}"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+    }
+
+    response = requests.get(url, headers=headers)
+    response_url = requests.get(url_symbol_list, headers=headers)
+    response_india_vix = requests.get(url_india_vix, headers=headers)
+    response_spot_data = requests.get(url_spot_data, headers=headers)
+
+    data = response.json()
+    symbol_data = response_url.json()
+    india_vix_data = response_india_vix.json()
+    india_spot_data = response_spot_data.json()
+
+    total_put_volume = 0
+    total_call_volume = 0
+    All_option_data = []
+    All_dates = []
+    All_symbols = []
+    India_vix_data = india_vix_data["resultData"]
+    india_spot_data = india_spot_data["resultData"]
+   
+
+    for symbol in symbol_data['resultData']:
+        All_symbols.append(symbol["symbol_name"])
+
+    for options_date in data['resultData']["opExpiryDates"]:
+        date_str = options_date.split("T")[0]
+        date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+        formatted_date = datetime.datetime.strftime(
+            date_obj, "%Y-%m-%d")
+        All_dates.append(formatted_date)
+
+    total_puts_change_oi= 0
+    total_calls_change_oi = 0
+
+
+    for options_data in data['resultData']["opDatas"]:
+        All_option_data.append(options_data)
+        put_volume = options_data["puts_volume"]
+        call_volume = options_data["calls_volume"]
+        puts_change_oi = options_data["puts_change_oi"]
+        calls_change_oi = options_data["calls_change_oi"]
+
+        total_put_volume += put_volume
+        total_call_volume += call_volume
+
+        total_puts_change_oi += puts_change_oi
+        total_calls_change_oi += calls_change_oi
+
+    # Check if total_put_volume is zero to avoid division by zero
+    if total_put_volume != 0:
+        put_call_ratio = total_call_volume / total_put_volume
+    else:
+        put_call_ratio = 0  # Set a default value or handle it differently
+
+    if total_puts_change_oi != 0:
+        oi_pcr = total_calls_change_oi / total_puts_change_oi
+    else:
+        oi_pcr = 0  # Set a default value or handle it differently
+
+    print(oi_pcr)
+    response_data = {
+        "india_spot_data": india_spot_data,
+        "India_vix_data": India_vix_data,
+        "All_symbols": All_symbols,
+        "All_dates": All_dates,
+        "All_option_data": All_option_data,
+        "total_put_volume": total_put_volume,
+        "total_call_volume": total_call_volume,
+        "put_call_ratio": put_call_ratio,
+        "oi_pcr": oi_pcr,
+    
+    }
+
+    return JsonResponse(response_data)
+
+
+
+def stock_option_chain(request):
+    return render(request,'stock_option_chain.html')

@@ -1,370 +1,47 @@
-{% extends "base_dashboard.html" %} {% load static %} {% block dashboard_body %}
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Stock Performance Chart</title>
-    <style>
-      #performanceChart {
-          width: 100%;
-          height: 75%;
-      }
-
-      .select_days {
-          display: flex;
-          width: fit-content;
-          gap: 1rem;
-          white-space: nowrap;
-          align-items: center;
-
-      }
-
-      .select_days_main {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-      }
-
-      .symbol_main_history {
-          display: flex;
-          justify-content: center;
-          gap: 5rem;
-          color: dimgray;
-          border-top: 1px solid lightgray;
-      }
-
-      .main_inner_body {
-          {% comment %} box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; {% endcomment %}
-          padding: 34px;
-
-      }
-
-      .symbol_main_history h5.active {
-          color: cornflowerblue;
-
-          border-top: 3px solid;
-      }
-
-      .symbol_main_history h5 {
-          cursor: pointer;
-          width: 12rem;
-          transition: 0.3s;
-          text-align: center;
-      }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  </head>
-
-  <body>
-    <div class="main_inner_body my-3">
-      <div class="select_days_main">
-        <h4>NIFTY TRACKER</h4>
-        <div class="select_days">
-          <label for="#daysDropdown">Select Days</label>
-          <select id="daysDropdown" class="form-select my-3">
-            <option value="10">10 days</option>
-            <option value="20" selected>20 days</option>
-            <option value="30">30 days</option>
-            <option value="40">40 days</option>
-            <option value="60">60 days</option>
-          </select>
-        </div>
-      </div>
-      <div class="main_chart_history">
-        <div class="symbol_main_history">
-          <h5 data-symbol="%5ENSEI">Nifty</h5>
-          <h5 data-symbol="%5ENSEBANK">Bank Nifty</h5>
-          <h5 data-symbol="NIFTY_FIN_SERVICE.NS">Fin Nifty</h5>
-        </div>
-
-        <div style="width: 72vw; height: 65vh">
-          <canvas id="performanceChart"></canvas>
-        </div>
-        <div style="width: 72vw; height: 65vh">
-          <canvas id="performanceChart2"></canvas>
-        </div>
-      </div>
-    </div>
-    <script>
-      var performanceChart;
-      var performanceChart2;
-      var selectedSymbol_history = null;
-
-      $(document).ready(function () {
-        // Retrieve saved symbol and days from local storage
-        var savedSymbol = localStorage.getItem("selectedSymbol_history");
-        var savedDays = localStorage.getItem("selectedDays");
-
-        if (savedSymbol && savedDays) {
-          Historical_Data(savedSymbol, parseInt(savedDays));
-          $("h5[data-symbol='" + savedSymbol + "']").addClass("active"); // Add active class to saved symbol
-        } else {
-          Historical_Data("%5ENSEI", 20); // Set a default symbol and number of days
-          $("h5[data-symbol='%5ENSEI']").addClass("active"); // Add active class to default symbol
-        }
-
-        // Attach click event listeners to the symbols
-        $("h5").click(function () {
-          var symbol = $(this).attr("data-symbol");
-          selectedSymbol_history = symbol;
-          Historical_Data(symbol, parseInt($("#daysDropdown").val()));
-          $("h5").removeClass("active"); // Remove active class from all symbols
-          $(this).addClass("active"); // Add active class to clicked symbol
-        });
-
-        // Attach change event listener to the days dropdown
-        $("#daysDropdown").change(function () {
-          var symbol = selectedSymbol_history || "%5ENSEI";
-          var days = parseInt($(this).val());
-          Historical_Data(symbol, days);
-        });
-      });
-
-      function Historical_Data(historical_symbols, days) {
-        selectedSymbol_history = historical_symbols; // Update the selected symbol
-
-        // Save symbol and days to local storage
-        localStorage.setItem("selectedSymbol_history", historical_symbols);
-        localStorage.setItem("selectedDays", days);
-
-        $.ajax({
-          url:
-            "{% url 'performance_chart' %}?historical_symbols=" +
-            historical_symbols +
-            "&days=" +
-            days,
-          dataType: "json",
-          success: function (data) {
-            console.log(data);
-            var dates = data["dates"];
-            var closes = data["closes"].map(function (value) {
-              return value.toFixed(2); // Convert to two decimal places
-            });
-            var opens = data["opens"].map(function (value) {
-              return value.toFixed(2); // Convert to two decimal places
-            });
-            var differences = data["differences"].map(function (value) {
-              return Math.abs(value.toFixed(2));
-            });
-            var prev_close_today_open_diff = data[
-              "prev_close_today_open_diff"
-            ].map(function (value) {
-              return Math.abs(value.toFixed(2));
-            });
-            var prev_close_today_open_diff_minus_diff = data[
-              "prev_close_today_open_diff_minus_diff"
-            ].map(function (value) {
-              return Math.abs(value.toFixed(2));
-            });
-            console.log(prev_close_today_open_diff_minus_diff);
-            if (performanceChart) {
-              performanceChart.destroy();
-            }
-            if (performanceChart2) {
-              performanceChart2.destroy();
-            }
-            var ctx = document
-              .getElementById("performanceChart")
-              .getContext("2d");
-            var ctx2 = document
-              .getElementById("performanceChart2")
-              .getContext("2d");
-            var max = historical_symbols === "%5ENSEBANK" ? 850 : 500; // Set max value based on symbol
-
-            performanceChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Prev Close - Today Close',
-                        data: differences,
-                        borderWidth: 1,
-                        borderColor: function (context) {
-                            return (closes[context.dataIndex] > opens[context.dataIndex]) ? 'green' : 'red';
-                        },
-                        backgroundColor: function (context) {
-                            return (closes[context.dataIndex] > opens[context.dataIndex]) ? 'rgba(87, 255, 26, 0.42)' : 'rgba(255, 12, 26, 0.42)';
-                        },
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            min: 0,
-                            max: max, // Set dynamic max value
-                            ticks: {
-                                stepSize: 25,
-                                callback: function (value, index, values) {
-                                    return (index % 1 === 0) ? value : '';
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                usePointStyle: true,
-                                fontColor: 'black',
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    var label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += context.parsed.y;
-                                    return label;
-                                },
-                                title: function (context) {
-                                    var title = '';
-                                    if (context.length > 0) {
-                                        var dataIndex = context[0].dataIndex;
-                                        title = 'Date: ' + dates[dataIndex]
-                                            + '\nOpen: ' + opens[dataIndex] +
-                                            '\nClose: ' + closes[dataIndex] +
-                                            '\nToday: ' + differences[dataIndex] +
-                                            '\nPrev close - Today Open:  ' + prev_close_today_open_diff[dataIndex];
-                                    }
-                                    return title;
-                                }
-                            }
-                        },
-                        datalabels: {
-                            display: true,
-                            align: 'end',
-                            anchor: 'start',
-                            color: 'black',
-                            formatter: function (value, context) {
-                                return value;
-                            }
-                        }
-                    },
-                    animation: {
-                        onComplete: function (animation) {
-                            setTimeout(function () {
-                                performanceChart.options.animation.easing = 'linear';
-                                performanceChart.update();
-                            }, 1000);
-                        }
-                    }
-                }
-            });
+var pcr_value = data.put_call_ratio
+$(".pcr_value").text(pcr_value.toFixed(4))
+// console.log(data.india_spot_data);
+$('.chart_tracking_view').empty()
+$('.chart_tracking_view').append("<a href='https://www.tradingview.com/chart/MgiGDMYM/?symbol=" + data.india_spot_data.symbol_name + "&aff_id=113877' target='_blank'><i class='bx bx-line-chart'></i></a>");
+var oi_pcr = data.oi_pcr
+$(".oi_value").text(oi_pcr.toFixed(4))
+var lot_size_value = data.india_spot_data.lot_size
+$(".lot_size_value").text(lot_size_value)
+var india_vix_value = data.India_vix_data.last_trade_price
+$(".india_vix_value").text(india_vix_value)
+var max_pain_value = data.india_spot_data.max_pain
+$(".max_pain_value").text(max_pain_value)
+var high_round= data.india_spot_data.high
+var low_round= data.india_spot_data.low
+console.log(high_round,low_round);
+var expected_values =data
+$(".expected_values").text(expected_values)
 
 
-            
-            performanceChart2 = new Chart(ctx2, {
-              type: "bar",
-              data: {
-                labels: dates,
-                datasets: [
-                  {
-                    label: "Opens",
-                    data: opens,
-                    borderWidth: 1,
-                    backgroundColor: "rgba(54, 162, 235, 0.5)",
-                  },
-                  {
-                    label: "Closes",
-                    data: closes,
-                    borderWidth: 1,
-                    backgroundColor: "rgba(255, 99, 132, 0.5)",
-                  },
-                  {
-                    label: "Open - Close",
-                    data: prev_close_today_open_diff,
-                    borderWidth: 1,
-                    backgroundColor: "rgba(255, 206, 86, 0.5)",
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  y: {
-                    min: 0,
-                    max: max, // Set dynamic max value
-                    ticks: {
-                      stepSize: 25,
-                      callback: function (value, index, values) {
-                        return index % 1 === 0 ? value : "";
-                      },
-                    },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    labels: {
-                      usePointStyle: true,
-                      fontColor: "black",
-                    },
-                  },
-                  tooltip: {
-                    callbacks: {
-                      label: function (context) {
-                        var label = context.dataset.label || "";
-                        if (label) {
-                          label += ": ";
-                        }
-                        label += context.parsed.y;
-                        return label;
-                      },
-                      title: function (context) {
-                        var title = "";
-                        if (context.length > 0) {
-                          var dataIndex = context[0].dataIndex;
-                          title =
-                            "Date: " +
-                            dates[dataIndex] +
-                            "\nOpen: " +
-                            opens[dataIndex] +
-                            "\nClose: " +
-                            closes[dataIndex] +
-                            "\nToday: " +
-                            differences[dataIndex] +
-                            +"\nPrev close - Today Open:  " +
-                            prev_close_today_open_diff[dataIndex];
-                        }
-                        return title;
-                      },
-                    },
-                  },
-                  datalabels: {
-                    display: true,
-                    align: "end",
-                    anchor: "start",
-                    color: "black",
-                    formatter: function (value, context) {
-                      return value;
-                    },
-                  },
-                },
-                animation: {
-                  onComplete: function (animation) {
-                    setTimeout(function () {
-                      performanceChart2.options.animation.easing = "linear";
-                      performanceChart2.update();
-                    }, 1000);
-                  },
-                },
-              },
-            });
-          },
-          error: function () {
-            console.log("Error fetching stock data.");
-          },
-        });
-      }
-    </script>
-  </body>
-</html>
 
-{% endblock dashboard_body %}
+
+<div class="pcr_main">
+  <p>PCR</p>
+  <p class="pcr_value"></p>
+</div>
+<div class="oi_pcr">
+  <p>CHG OI PCR</p>
+  <p class="oi_value"></p>
+</div>
+<div class="lot_size">
+  <p>Lot Size</p>
+  <p class="lot_size_value"></p>
+</div>
+<div class="india_vix">
+  <p>India Vix</p>
+  <p class="india_vix_value"></p>
+</div>
+<div class="max_pain">
+<p>Max Pain</p>
+<p class="max_pain_value"></p>
+</div>
+
+<div class="expected_range">
+<p>Expected Range</p>
+<p class="expected_values"></p>
+</div>
