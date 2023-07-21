@@ -556,14 +556,14 @@
         $('#auto-refresh-switch').on('change', toggleAutoRefresh);
 
 
-        function updateDateDropdown(selectedSymbol, prevSelectedDate) {
+        function updateDateDropdown(symbol_Option_chain, prevSelectedDate) {
             var selectedDate = $('#date-dropdown').val();
             if (prevSelectedDate) {
                 selectedDate = prevSelectedDate;
             }
             $.ajax({
                 url: '/fetch_option_data_with_spot_price',
-                data: { symbol: selectedSymbol, selectedDate: selectedDate },
+                data: { symbol: symbol_Option_chain, selectedDate: selectedDate },
                 dataType: 'json',
                 success: function (data) {
 
@@ -722,7 +722,7 @@
                         }
 
 
-                        var prevSelectedSymbol = localStorage.getItem('selectedSymbol');
+                        var prevSelectedSymbol = localStorage.getItem('symbol_Option_chain');
                         if (prevSelectedSymbol && data.All_symbols.includes(prevSelectedSymbol)) {
                             symbolDropdown.val(prevSelectedSymbol);
                         }
@@ -741,32 +741,32 @@
 
 
             $('#symbol-dropdown').change(function () {
-                var selectedSymbol = $(this).val();
+                var symbol_Option_chain = $(this).val();
 
 
                 localStorage.removeItem('selectedDate');
 
-                updateDateDropdown(selectedSymbol);
+                updateDateDropdown(symbol_Option_chain);
 
-                localStorage.setItem('selectedSymbol', selectedSymbol);
+                localStorage.setItem('symbol_Option_chain', symbol_Option_chain);
             });
 
 
             $('#date-dropdown').change(function () {
-                var selectedSymbol = $('#symbol-dropdown').val();
+                var symbol_Option_chain = $('#symbol-dropdown').val();
                 var selectedDate = $(this).val();
 
 
                 localStorage.setItem('selectedDate', selectedDate);
 
-                updateDateDropdown(selectedSymbol, selectedDate);
+                updateDateDropdown(symbol_Option_chain, selectedDate);
             });
         });
 
 
         document.addEventListener('DOMContentLoaded', function () {
 
-            var prevSelectedSymbol = localStorage.getItem('selectedSymbol');
+            var prevSelectedSymbol = localStorage.getItem('symbol_Option_chain');
             var prevSelectedDate = localStorage.getItem('selectedDate');
 
             if (prevSelectedSymbol) {

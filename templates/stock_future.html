@@ -326,13 +326,15 @@
                     maintainAspectRatio: false,
                     scales: {
                         x: {
-                            display: true,
+                           
+                         
                             title: {
                                 display: true,
                                 text: 'Created At'
                             },
                             grid: {
-                                offset: true // Add padding to the inner x-axis
+                                offset: true,
+                                display: false, // Hide // Add padding to the inner x-axis
                             }
                         },
                         y: {
@@ -387,6 +389,9 @@
                     maintainAspectRatio: false,
                     scales: {
                         x: {
+                            grid: {
+                                display: false, // Hide y-axis background border
+                              },
                             display: false // Hide x-axis
                         },
                         y: {
@@ -444,6 +449,9 @@
                     maintainAspectRatio: false,
                     scales: {
                         x: {
+                            grid: {
+                                display: false, // Hide y-axis background border
+                              },
                             display: false // Hide x-axis
                         },
                         y: {
@@ -499,6 +507,9 @@
                     maintainAspectRatio: false,
                     scales: {
                         x: {
+                            grid: {
+                                display: false, // Hide y-axis background border
+                              },
                             display: false // Hide x-axis
                         },
                         y: {

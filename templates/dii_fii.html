@@ -62,14 +62,14 @@
     </div>
   </div>
   <div id="chartContainer " style="height: 100%">
-    <div class="dii_fii" id="dii_fii" style="width: 100%; height: 80%">
+    <div class="dii_fii" id="dii_fii" style="width: 100%; height: 70vh">
       <canvas id="fii_diiChart" style="display: block; box-sizing: border-box; height: 487px; width: 974px;"></canvas>
     </div>
-    <div class="fii" id="fii" style="width: 100%; height: 80%">
+    <div class="fii" id="fii" style="width: 100%; height: 70vh">
       <canvas id="fiiChart" style="display: block; box-sizing: border-box; height: 487px; width: 974px;"></canvas>
     </div>
 
-    <div class="dii" id="dii" style="width: 100%; height: 80%">
+    <div class="dii" id="dii" style="width: 100%; height: 70vh">
       <canvas id="diiChart" style="display: block; box-sizing: border-box; height: 487px; width: 974px;"></canvas>
     </div>
   </div>
@@ -83,27 +83,81 @@
 
     var ctx = document.getElementById('diiChart').getContext('2d');
     var chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels_dii,
-            datasets: [{
-                label: 'Net Value',
-                data: values_dii,
-                backgroundColor: colors,
-                borderColor: borderColors,
-                borderWidth: 1
-            }]
+      type: 'bar',
+      data: {
+        labels: labels_dii,
+        datasets: [{
+          label: 'Net Value',
+          data: values_dii,
+          backgroundColor: colors,
+          borderColor: borderColors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y', // Display labels on the y-axis
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: {
+              display: false, // Hide y-axis background border
+            },
+          }
         },
-        options: {
-            indexAxis: 'y', // Display labels on the y-axis
-            scales: {
-                x: {
-                    beginAtZero: true
+        plugins: {
+          legend: {
+            labels: {
+              usePointStyle: true,
+              fontColor: "black",
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                var label = context.dataset.label || "";
+                if (label) {
+                  label += ": ";
                 }
-            }
-        }
+                label += context.parsed.y;
+                return label;
+              },
+              title: function (context) {
+                var title = "";
+                if (context.length > 0) {
+                  var dataIndex = context[0].dataIndex;
+                  title =
+                    "Date: " +
+                    dates[dataIndex] +
+                    "\nToday Close: " +
+                    closes[dataIndex] +
+                    "\nPrev Close: " +
+                    prev_close[dataIndex] +
+                    "\nToday: " +
+                    differences[dataIndex];
+                }
+                return title;
+              },
+            },
+          },
+          datalabels: {
+            display: true,
+            align: "end",
+            anchor: "end",
+            color: "black",
+            rotation: 270,
+            font: {
+              weight: "bold",
+            },
+            formatter: function (value, context) {
+              return value;
+            },
+          },
+        },
+      },
     });
-
+    
 
     var labels_fii = {{ labels_fii|safe }};
     var values_fii = {{ values_fii|safe }};
@@ -124,9 +178,15 @@
             }]
         },
         options: {
+          responsive: true,
+
+          maintainAspectRatio: false,
             indexAxis: 'y', // Display labels on the y-axis
             scales: {
                 x: {
+                  grid: {
+                    display: false, // Hide y-axis background border
+                  },
                     beginAtZero: true
                 }
             }
@@ -152,10 +212,19 @@
                 }]
             },
             options: {
+              responsive: true,
+
+              maintainAspectRatio: false,
                 indexAxis: 'y', // Display labels on the y-axis
                 scales: {
+               
+                    
+              
                     x: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        grid: {
+                          display: false, // Hide y-axis background border
+                        },
                     }
                 }
             }

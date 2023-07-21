@@ -278,26 +278,29 @@
                   data: differences,
                   borderWidth: 1,
                   borderColor: function (context) {
-                    return closes[context.dataIndex] >
-                      opens[context.dataIndex]
+                    return closes[context.dataIndex] > opens[context.dataIndex]
                       ? "green"
                       : "red";
                   },
                   backgroundColor: function (context) {
-                    return closes[context.dataIndex] >
-                      opens[context.dataIndex]
+                    return closes[context.dataIndex] > opens[context.dataIndex]
                       ? "rgba(87, 255, 26, 0.42)"
                       : "rgba(255, 12, 26, 0.42)";
                   },
                 },
-
               ],
             },
             options: {
               responsive: true,
               maintainAspectRatio: false,
               scales: {
+                x:{
+                  grid: {
+                    display: false, // Hide y-axis background border
+                  },
+                },
                 y: {
+             
                   min: 0,
                   max: max, // Set dynamic max value
                   ticks: {
@@ -337,7 +340,7 @@
                           "\nPrev Close: " +
                           prev_close[dataIndex] +
                           "\nToday: " +
-                          differences[dataIndex]
+                          differences[dataIndex];
                       }
                       return title;
                     },
@@ -368,7 +371,7 @@
             },
             plugins: [ChartDataLabels],
           });
-
+          
           performanceChart2 = new Chart(ctx2, {
             type: "bar",
             data: {
@@ -399,6 +402,11 @@
               responsive: true,
               maintainAspectRatio: false,
               scales: {
+                x:{
+                  grid: {
+                    display: false, // Hide y-axis background border
+                  },
+                },
                 y: {
                   min: 0,
                   max: max_chart2, // Set dynamic max value
@@ -500,6 +508,11 @@
               responsive: true,
               maintainAspectRatio: false,
               scales: {
+                x:{
+                  grid: {
+                    display: false, // Hide y-axis background border
+                  },
+                },
                 y: {
                   min: 0,
                   max: max_chart3, // Set dynamic max value
@@ -616,6 +629,11 @@
               responsive: true,
               maintainAspectRatio: false,
               scales: {
+                x:{
+                  grid: {
+                    display: false, // Hide y-axis background border
+                  },
+                },
                 y: {
                   min: 0,
                   max: max_chart2, // Set dynamic max value
