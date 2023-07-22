@@ -53,7 +53,6 @@ MarkupSafe==2.1.2
 matplotlib==3.7.1
 matplotlib-inline==0.1.6
 multidict==6.0.4
-mysqlclient==2.1.1
 nest-asyncio==1.5.6
 nsepy==0.8
 nsetools==1.0.11
