@@ -880,7 +880,7 @@ def market_wide_position(request):
     for d in data["resultData"]["all_list_result"]:
         all_list.append(d)
 
-    df = pd.DataFrame(all_list).head(25)
+    df = pd.DataFrame(all_list).head(50)
     # Select only "symbol_name" and "current_percent" columns
     df = df[["symbol_name", "current_percent"]]
 
