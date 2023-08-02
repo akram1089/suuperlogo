@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Derivative Data Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Derivative Data Charts</h1>
+    <div id="charts-container">
+        <!-- Individual canvas elements for each chart will be created here -->
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Function to create horizontal bar chart
+            function createHorizontalBarChart(ctx, filterData, filterName) {
+                if (!Array.isArray(filterData)) {
+                    console.error(`Invalid data for ${filterName}: ${JSON.stringify(filterData)}`);
+                    return;
+                }
+
+                var labels = filterData.map(item => item.symbol_name);
+                var dataOI = filterData.map(item => item.percentage_change_in_OI || 0);
+                var dataLTP = filterData.map(item => item.percentage_change_in_LTP || 0);
+
+                new Chart(ctx.getContext('2d'), {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: '% Change in OI',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1,
+                                data: dataOI
+                            },
+                            {
+                                label: '% Change in LTP',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1,
+                                data: dataLTP
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            }
+                        },
+                        responsive: true
+                    }
+                });
+
+                var container = document.getElementById('charts-container');
+                var chartTitle = document.createElement('h2');
+                chartTitle.textContent = filterName;
+                container.appendChild(chartTitle);
+                container.appendChild(ctx);
+            }
+
+            // Function to fetch data from the API
+            function fetchData() {
+                $.ajax({
+                    type: "GET",
+                    url: "/get_derivative_data", // Replace with your API endpoint
+                    success: function (data) {
+                        // Create charts for each filter
+                        for (const [filterName, filterData] of Object.entries(data)) {
+                            var ctx = document.createElement('canvas');
+                            ctx.width = 400;
+                            ctx.height = 300;
+                            createHorizontalBarChart(ctx, filterData, filterName);
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error("Error fetching data: " + errorThrown);
+                    }
+                });
+            }
+
+            // Fetch data and create charts on page load
+            fetchData();
+        });
+    </script>
+</body>
+</html>

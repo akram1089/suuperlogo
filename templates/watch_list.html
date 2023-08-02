@@ -1,0 +1,487 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% block dashboard_body %}
+
+<style>
+    .text-success {
+        color: rgb(3, 170, 0) !important;
+    }
+
+    .bi.bi-graph-up {
+        border: 1px solid #80808030;
+        border-radius: 7px;
+        padding: 6px 9px;
+        width: 33px;
+        display: block;
+        height: 29px;
+        color: gray;
+        transition: 0.3s;
+        display: inline;
+    }
+
+    .bi.bi-graph-up:hover {
+        background-color: rgb(0, 132, 255);
+        border: none;
+        color: white;
+    }
+
+    .canvas_watchlist {
+        position: relative;
+        width: 166px;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    .delete-button {
+
+        position: absolute;
+        right: 9px;
+        display: none;
+        top: 1.5rem;
+
+
+    }
+
+    tr:hover .delete-button {
+        display: block;
+
+
+    }
+
+    tr:hover .symbol_name_watchlist {
+        color: #2196f3;
+
+
+    }
+
+    tbody tr:hover canvas {
+        display: none !important;
+    }
+
+    tr:hover {
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        cursor: pointer;
+    }
+
+    .bi-trash-fill {
+        width: 36px;
+        padding: 7px;
+        border-radius: 8px;
+        height: 36px;
+        border: 2px solid #81899254;
+        color: #818992;
+        font-size: 21px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        transition: 0.3s;
+    }
+
+    .bi-trash-fill:hover {
+        border: 2px solid #ff0000be;
+        color: #ff0000be;
+    }
+
+    td {
+        font-weight: 500;
+    }
+    .dataTables_length,.dataTables_filter{
+        padding: 10px 0 !important;
+        display: flex;
+    justify-content: flex-start;
+    
+    
+    
+    }
+    .main_watch_list_table{
+        margin: 12px 0;
+        padding: 24px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+    .placeholder{
+        height:2rem !important;
+    }
+</style>
+<div class="alert alert-dismissible" role="alert" id="alert-watchlist" style="display: none;
+z-index: 100000000009 !important;
+position: fixed !important;
+right: 0;">
+
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div>
+    <h4 class="my-3">Watchlist</h4>
+    <div class="main_watch_list_table" style="    overflow: auto;">
+    <table class="table" id="watchlist-table">
+        <thead class="table-light">
+            <tr>
+                <th>Symbol</th>
+                <th>Open</th>
+                <th>Current Price</th>
+                <th>Volume</th>
+                <th>Change</th>
+                <th>% Change</th>
+                <th>Prev.Close</th>
+                <!-- <th>Action</th> -->
+                <th style="text-align: end;">Chart</th>
+            </tr>
+        </thead>
+        <tbody id="watchlist-table-body">
+            <!-- Watchlist data will be populated here dynamically using JavaScript -->
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+            <tr >
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+                <td  class="text-center"><p class="placeholder-glow">
+                    <span class="placeholder col-12"></span>
+                  </p></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var chart;
+        function fetchWatchlistData() {
+            $.ajax({
+                url: "/get_watchlist_data",
+                method: "GET",
+                dataType: "json",
+                success: function (response) {
+                    var watchlistData = response.watchlist_data;
+                    $("#watchlist-table-body").empty();
+                    watchlistData.forEach(function (item) {
+
+                        var watchlist_chart_data = item.chart_data[0].chart_data
+                        //   console.log(watchlist_chart_data);
+
+
+
+                        var Chart1PriceData = [];
+                        var Chart1Values = watchlist_chart_data.split(',');
+
+                        for (var i = 0; i < Chart1Values.length; i++) {
+                            Chart1PriceData.push(parseFloat(Chart1Values[i].replace(/'/g, "")));
+                        }
+                        //   console.log(Chart1PriceData);
+                        var canvasId = `chart-${item.watch_list.symbol_name}`;
+                        var change_value_color = item.watch_list.change_value < 0 ? "text-danger" : "text-success"
+                        var change_per_color = item.watch_list.change_per < 0 ? "text-danger" : "text-success"
+                        var change_per_color_icon = item.watch_list.change_per > 0 ? "up" : "down"
+
+
+
+                        $("#watchlist-table-body").append(
+                            `<tr>
+                        <td >
+                            <span><a href="https://www.tradingview.com/chart/MgiGDMYM/?symbol=${item.watch_list.symbol_name}'&aff_id=113877" target='_blank'><i class="bi bi-graph-up"></i></a></span>
+                            <span class="symbol_name_watchlist"> ${item.watch_list.symbol_name}</span>
+                           </td>
+                        <td>${item.watch_list.open}</td>
+                        <td>${item.watch_list.last_trade_price}</td>
+                        <td >${item.watch_list.volume}</td>
+                        <td class="${change_value_color}">${item.watch_list.change_value}</td>
+                        <td class="${change_per_color} ">
+                
+                            <i class="bi bi-caret-${change_per_color_icon}-fill"></i>
+                            <span>     ${item.watch_list.change_per}%</span>
+                            </td>
+                        <td>${item.watch_list.close}</td>
+                      
+                        <td class="canvas_watchlist">
+                            <div class="chart1" style="width: 157px;height: 59px;">
+                                 <canvas id="${canvasId}"  ></canvas>
+                            </div>
+                             <i class="bi bi-trash-fill delete-button" style=" vertical-align: middle;" data-id="${item.watch_list.symbol_name}"></i>
+
+                            
+                            </td>
+             
+                 
+                      </tr>`
+                        );
+
+
+                        var ctx = document.getElementById(canvasId).getContext('2d');
+
+                        chart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: Chart1PriceData, 
+                                datasets: [{
+                                    data: Chart1PriceData,
+                                    borderColor: item.watch_list.change_per > 0 ? 'rgba(81, 252, 127, 0.8)' : 'rgba(255, 70, 70, 0.8)',
+                                    backgroundColor: item.watch_list.change_per > 0 ? 'rgba(81, 252, 127, 0.2)' : 'rgba(255, 70, 70, 0.2)',
+                                    fill: true,
+                                    pointRadius: 0,
+
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        grid: {
+                                            display: false, 
+                                        },
+                                        display: false 
+                                    },
+                                    y: {
+                                        display: false,
+                                        ticks: {
+                                            min: 0, 
+                                            max: 100, 
+                                            stepSize: 20
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    tooltip: {
+                                        enabled: false 
+                                    },
+                                    legend: {
+                                        display: false 
+                                    }
+                                }
+                            }
+                        });
+                        
+                    });
+
+
+                    $("#watchlist-table").DataTable();
+
+
+
+                    function getCSRFToken() {
+                        const cookieValue = document.cookie.match(/csrftoken=([^;]+)/);
+                        return cookieValue ? cookieValue[1] : "";
+                    }
+         
+                    $(".delete-button").on("click", function () {
+                        var itemId = $(this).data("id");
+                   
+                        $.ajax({
+                            url: `/delete_watchlist_item/${itemId}`, 
+                            method: "POST",
+                            headers: { "X-CSRFToken": getCSRFToken() },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response.message) {
+                    $("#alert-watchlist").text(response.message).addClass('alert alert-danger show').removeClass('alert-success').fadeIn()
+                  }
+                             
+
+
+                           
+                                setTimeout(function () {
+                                    $("#alert-watchlist").fadeOut();
+                                }, 3000);
+                            
+                                fetchWatchlistData();
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                console.log("Error occurred while deleting item:", errorThrown);
+                            },
+                        });
+                    });
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("Error occurred while fetching watchlist data:", errorThrown);
+                },
+            });
+        }
+
+
+
+        fetchWatchlistData();
+
+    })
+</script>
+
+
+{% endblock dashboard_body %}
