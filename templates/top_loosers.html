@@ -453,7 +453,8 @@
             "info": true,
             "order": [] // Disable default sorting
         });
-
+        $('#stock-table').wrap('<div class="parent_table"></div>');
+        $('#stock-table_length,#stock-table_filter').wrapAll('<div class="parent_search_length"></div>');
         function loadStockData(filter) {
             $.ajax({
                 url: "/get_loosers_data_separate",
@@ -532,7 +533,7 @@
     </div>
     <div class="upper_main_top_gainers_table">
         <div class="main_table">
-        <table id="stock-table" class="table table-hover">
+        <table id="stock-table" class="table table-hover table-striped-custom">
             <thead>
                 <tr>
                  

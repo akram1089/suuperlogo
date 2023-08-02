@@ -3821,6 +3821,12 @@ font-weight: 100;
         $('#lots').DataTable({
           "pageLength": 25
         });
+        
+    $('#lots').wrap('<div class="parent_table"></div>');
+    $('#lots_length,#lots_filter').wrapAll('<div class="parent_search_length"></div>');
+    $('#example').wrap('<div class="parent_table"></div>');
+    $('#example_length,#example_filter').wrapAll('<div class="parent_search_length"></div>');
+
         $('#Open_interest').DataTable({
           "pageLength": 50
         });
